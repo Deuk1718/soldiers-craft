@@ -14,8 +14,9 @@ import {
   Shield, LogOut, Mail, Phone, Calendar, Clock, Loader2, Users,
   CalendarCheck, ClockAlert, CheckCircle2, UserCog, Pencil, Save,
   Trash2, Plus, AlertTriangle, RefreshCw, FileText, Star, Power,
-  Bell, BellDot, Eye, EyeOff, Check
+  Bell, BellDot, Eye, EyeOff, Check, Link2, UserCheck
 } from "lucide-react";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
