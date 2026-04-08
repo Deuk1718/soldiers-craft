@@ -145,7 +145,7 @@ const BuddySearch = () => {
           className="mb-10 text-center"
         >
           <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            전우애는 영원하다, 동기 찾기
+            전우애는 영원하다 ,전우 찾다.
           </h2>
           <p className="mt-3 text-muted-foreground">
             부대, 기수, 이름 등 기억나는 정보를 자유롭게 입력하세요
