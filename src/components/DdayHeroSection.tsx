@@ -1,17 +1,19 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Shield, Calendar, Clock } from "lucide-react";
+import { Shield, Calendar, Clock, CreditCard } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import MemberCardModal from "@/components/MemberCardModal";
 
 const DdayHeroSection = () => {
   const { t } = useLanguage();
   const [enlistDate, setEnlistDate] = useState("");
-  const [serviceDays, setServiceDays] = useState(548); // 육군 기본 복무일
+  const [serviceDays, setServiceDays] = useState(548);
   const [animatedProgress, setAnimatedProgress] = useState(0);
+  const [memberCardOpen, setMemberCardOpen] = useState(false);
 
   const result = useMemo(() => {
     if (!enlistDate) return null;
@@ -34,7 +36,9 @@ const DdayHeroSection = () => {
 
     const dischargeStr = `${discharge.getFullYear()}.${String(discharge.getMonth() + 1).padStart(2, "0")}.${String(discharge.getDate()).padStart(2, "0")}`;
 
-    return { remainingDays, elapsedDays, progressPct, dischargeStr, discharged: remainingDays <= 0 };
+  const currentBranch = branchOptions.find(b => b.days === serviceDays)?.label || branchOptions[0].label;
+
+  return { remainingDays, elapsedDays, progressPct, dischargeStr, discharged: remainingDays <= 0 };
   }, [enlistDate, serviceDays]);
 
   // Animate progress bar from 0 to target
@@ -111,12 +115,24 @@ const DdayHeroSection = () => {
             {/* Enlist date input */}
             <div className="mb-6">
               <Label className="mb-2 block text-sm font-medium text-navy-foreground/70">{t("dday.enlistDate")}</Label>
-              <Input
-                type="date"
-                value={enlistDate}
-                onChange={(e) => setEnlistDate(e.target.value)}
-                className="max-w-xs bg-navy-foreground/5 border-navy-foreground/10 text-navy-foreground placeholder:text-navy-foreground/30"
-              />
+              <div className="flex items-end gap-3">
+                <Input
+                  type="date"
+                  value={enlistDate}
+                  onChange={(e) => setEnlistDate(e.target.value)}
+                  className="max-w-xs bg-navy-foreground/5 border-navy-foreground/10 text-navy-foreground placeholder:text-navy-foreground/30"
+                />
+                {result && (
+                  <Button
+                    onClick={() => setMemberCardOpen(true)}
+                    className="gap-1.5 bg-gold/20 text-gold border border-gold/40 hover:bg-gold/30 rounded-xl text-sm font-medium whitespace-nowrap"
+                    size="sm"
+                  >
+                    <CreditCard className="h-4 w-4" />
+                    멤버증 발급
+                  </Button>
+                )}
+              </div>
             </div>
 
             {/* Result */}
