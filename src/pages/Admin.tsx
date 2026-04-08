@@ -14,8 +14,9 @@ import {
   Shield, LogOut, Mail, Phone, Calendar, Clock, Loader2, Users,
   CalendarCheck, ClockAlert, CheckCircle2, UserCog, Pencil, Save,
   Trash2, Plus, AlertTriangle, RefreshCw, FileText, Star, Power,
-  Bell, BellDot, Eye, EyeOff, Check
+  Bell, BellDot, Eye, EyeOff, Check, Link2, UserCheck
 } from "lucide-react";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
@@ -109,6 +110,33 @@ const Admin = () => {
   const [serviceToggling, setServiceToggling] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [notifLoading, setNotifLoading] = useState(false);
+
+  // Matching management state
+  interface MatchRecord {
+    id: string;
+    userA: string;
+    userB: string;
+    unitA: string;
+    unitB: string;
+    status: "verified" | "pending" | "rejected";
+    date: string;
+  }
+  const [mockUsers] = useState([
+    { id: "u1", name: "김OO", unit: "3사단 22대대", classYear: "24-71기", period: "2023.01 ~ 2024.09" },
+    { id: "u2", name: "이OO", unit: "백골부대 수색중대", classYear: "24-71기", period: "2023.01 ~ 2024.09" },
+    { id: "u3", name: "박OO", unit: "3사단 1대대", classYear: "23-65기", period: "2022.06 ~ 2024.03" },
+    { id: "u4", name: "최OO", unit: "1사단 본부중대", classYear: "24-71기", period: "2023.03 ~ 2024.12" },
+    { id: "u5", name: "정OO", unit: "백골부대 3중대", classYear: "23-65기", period: "2022.06 ~ 2024.03" },
+    { id: "u6", name: "한OO", unit: "7사단 수색대대", classYear: "24-73기", period: "2023.06 ~ 2025.03" },
+    { id: "u7", name: "윤OO", unit: "3사단 22대대", classYear: "23-65기", period: "2022.03 ~ 2023.12" },
+    { id: "u8", name: "조OO", unit: "1사단 포병대대", classYear: "24-71기", period: "2023.01 ~ 2024.09" },
+  ]);
+  const [matches, setMatches] = useState<MatchRecord[]>([
+    { id: "m1", userA: "김OO", userB: "이OO", unitA: "3사단 22대대", unitB: "백골부대 수색중대", status: "verified", date: "2025-01-15" },
+    { id: "m2", userA: "박OO", userB: "정OO", unitA: "3사단 1대대", unitB: "백골부대 3중대", status: "pending", date: "2025-01-20" },
+  ]);
+  const [matchSelectA, setMatchSelectA] = useState("");
+  const [matchSelectB, setMatchSelectB] = useState("");
 
   // 30-minute inactivity auto-logout
   useEffect(() => {
@@ -312,7 +340,7 @@ const Admin = () => {
               <Shield className="h-8 w-8 text-primary" />
             </div>
             <h1 className="text-2xl font-bold text-foreground">관리자 로그인</h1>
-            <p className="mt-1 text-sm text-muted-foreground">이혼 가이드 관리 시스템</p>
+            <p className="mt-1 text-sm text-muted-foreground">전우찾기 관리 시스템</p>
           </div>
           <Card className="shadow-card">
             <CardContent className="p-6">
@@ -416,7 +444,7 @@ const Admin = () => {
                 <Power className={`h-5 w-5 ${serviceEnabled ? "text-success" : "text-destructive"}`} />
               </div>
               <div>
-                <h3 className="text-base font-bold text-foreground">이혼 가이드 서비스 전체 공개</h3>
+                <h3 className="text-base font-bold text-foreground">전우찾기 서비스 전체 공개</h3>
                 <p className="text-sm text-muted-foreground">
                   {serviceEnabled ? "현재 서비스가 공개 상태입니다. 모든 사용자가 접근 가능합니다." : "현재 서비스가 비공개 상태입니다. 점검 안내 페이지가 표시됩니다."}
                 </p>
@@ -475,6 +503,9 @@ const Admin = () => {
                   {notifications.filter(n => !n.is_read).length}
                 </span>
               )}
+            </TabsTrigger>
+            <TabsTrigger value="matching" className="gap-1.5 rounded-lg px-4 data-[state=active]:bg-background data-[state=active]:shadow-sm">
+              <Link2 className="h-4 w-4" />매칭 관리
             </TabsTrigger>
           </TabsList>
 
@@ -697,6 +728,166 @@ const Admin = () => {
                 ))}
               </div>
             )}
+          </TabsContent>
+
+          {/* Matching Tab */}
+          <TabsContent value="matching">
+            <div className="mb-5">
+              <h2 className="text-xl font-bold text-foreground">전우 매칭 관리</h2>
+              <p className="text-sm text-muted-foreground">등록된 사용자를 확인하고 수동 매칭을 관리합니다.</p>
+            </div>
+
+            {/* User Management Table */}
+            <Card className="mb-6 shadow-card">
+              <CardContent className="p-0">
+                <div className="border-b border-border px-5 py-3">
+                  <h3 className="text-sm font-semibold text-foreground">등록 사용자 목록</h3>
+                </div>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>이름</TableHead>
+                        <TableHead>부대</TableHead>
+                        <TableHead>기수</TableHead>
+                        <TableHead>복무 기간</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {mockUsers.map((u) => (
+                        <TableRow key={u.id}>
+                          <TableCell className="font-medium">{u.name}</TableCell>
+                          <TableCell>{u.unit}</TableCell>
+                          <TableCell><Badge variant="outline" className="text-xs">{u.classYear}</Badge></TableCell>
+                          <TableCell className="text-muted-foreground text-xs">{u.period}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Manual Matching Tool */}
+            <Card className="mb-6 shadow-card">
+              <CardContent className="p-5">
+                <h3 className="mb-3 text-sm font-semibold text-foreground">수동 매칭</h3>
+                <div className="flex flex-wrap items-end gap-3">
+                  <div className="flex-1 min-w-[140px]">
+                    <label className="mb-1 block text-xs text-muted-foreground">사용자 A</label>
+                    <Select value={matchSelectA} onValueChange={setMatchSelectA}>
+                      <SelectTrigger className="h-10"><SelectValue placeholder="선택..." /></SelectTrigger>
+                      <SelectContent>
+                        {mockUsers.map(u => (
+                          <SelectItem key={u.id} value={u.id}>{u.name} ({u.unit})</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex h-10 items-center">
+                    <Link2 className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                  <div className="flex-1 min-w-[140px]">
+                    <label className="mb-1 block text-xs text-muted-foreground">사용자 B</label>
+                    <Select value={matchSelectB} onValueChange={setMatchSelectB}>
+                      <SelectTrigger className="h-10"><SelectValue placeholder="선택..." /></SelectTrigger>
+                      <SelectContent>
+                        {mockUsers.filter(u => u.id !== matchSelectA).map(u => (
+                          <SelectItem key={u.id} value={u.id}>{u.name} ({u.unit})</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button
+                    variant="warmBrown"
+                    className="h-10 gap-1.5"
+                    disabled={!matchSelectA || !matchSelectB}
+                    onClick={() => {
+                      const a = mockUsers.find(u => u.id === matchSelectA);
+                      const b = mockUsers.find(u => u.id === matchSelectB);
+                      if (a && b) {
+                        setMatches(prev => [...prev, {
+                          id: `m${Date.now()}`,
+                          userA: a.name, userB: b.name,
+                          unitA: a.unit, unitB: b.unit,
+                          status: "verified",
+                          date: new Date().toISOString().split("T")[0],
+                        }]);
+                        setMatchSelectA("");
+                        setMatchSelectB("");
+                        toast({ title: "매칭 완료", description: `${a.name}님과 ${b.name}님이 매칭되었습니다.` });
+                      }
+                    }}
+                  >
+                    <UserCheck className="h-4 w-4" />매칭
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Matching Status */}
+            <Card className="shadow-card">
+              <CardContent className="p-0">
+                <div className="border-b border-border px-5 py-3">
+                  <h3 className="text-sm font-semibold text-foreground">매칭 현황 ({matches.length}건)</h3>
+                </div>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>사용자 A</TableHead>
+                        <TableHead>사용자 B</TableHead>
+                        <TableHead>상태</TableHead>
+                        <TableHead>날짜</TableHead>
+                        <TableHead>관리</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {matches.map((m) => (
+                        <TableRow key={m.id}>
+                          <TableCell>
+                            <div>
+                              <p className="font-medium text-foreground">{m.userA}</p>
+                              <p className="text-xs text-muted-foreground">{m.unitA}</p>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div>
+                              <p className="font-medium text-foreground">{m.userB}</p>
+                              <p className="text-xs text-muted-foreground">{m.unitB}</p>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className={
+                              m.status === "verified" ? "border-success/30 bg-success/10 text-success" :
+                              m.status === "pending" ? "border-warning/30 bg-warning/10 text-warning" :
+                              "border-destructive/30 bg-destructive/10 text-destructive"
+                            }>
+                              {m.status === "verified" ? "인증완료" : m.status === "pending" ? "대기중" : "거절"}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-xs text-muted-foreground">{m.date}</TableCell>
+                          <TableCell>
+                            <div className="flex gap-1">
+                              {m.status === "pending" && (
+                                <Button variant="outline" size="sm" className="h-7 text-xs gap-1"
+                                  onClick={() => setMatches(prev => prev.map(x => x.id === m.id ? { ...x, status: "verified" } : x))}>
+                                  <CheckCircle2 className="h-3 w-3" />승인
+                                </Button>
+                              )}
+                              <Button variant="ghost" size="sm" className="h-7 text-xs text-destructive hover:bg-destructive/10"
+                                onClick={() => setMatches(prev => prev.filter(x => x.id !== m.id))}>
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </main>
