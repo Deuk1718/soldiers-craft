@@ -1,17 +1,19 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Shield, Calendar, Clock } from "lucide-react";
+import { Shield, Calendar, Clock, CreditCard } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import MemberCardModal from "@/components/MemberCardModal";
 
 const DdayHeroSection = () => {
   const { t } = useLanguage();
   const [enlistDate, setEnlistDate] = useState("");
-  const [serviceDays, setServiceDays] = useState(548); // 육군 기본 복무일
+  const [serviceDays, setServiceDays] = useState(548);
   const [animatedProgress, setAnimatedProgress] = useState(0);
+  const [memberCardOpen, setMemberCardOpen] = useState(false);
 
   const result = useMemo(() => {
     if (!enlistDate) return null;
@@ -34,7 +36,7 @@ const DdayHeroSection = () => {
 
     const dischargeStr = `${discharge.getFullYear()}.${String(discharge.getMonth() + 1).padStart(2, "0")}.${String(discharge.getDate()).padStart(2, "0")}`;
 
-    return { remainingDays, elapsedDays, progressPct, dischargeStr, discharged: remainingDays <= 0 };
+  return { remainingDays, elapsedDays, progressPct, dischargeStr, discharged: remainingDays <= 0 };
   }, [enlistDate, serviceDays]);
 
   // Animate progress bar from 0 to target
@@ -55,7 +57,10 @@ const DdayHeroSection = () => {
     { label: t("dday.branch.marine"), days: 548 },
   ];
 
+  const currentBranch = branchOptions.find(b => b.days === serviceDays)?.label || branchOptions[0].label;
+
   return (
+    <>
     <section className="relative overflow-hidden bg-navy py-24 lg:py-32" id="dday">
       <div className="absolute inset-0 opacity-[0.04]" style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c5a0' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
@@ -111,12 +116,24 @@ const DdayHeroSection = () => {
             {/* Enlist date input */}
             <div className="mb-6">
               <Label className="mb-2 block text-sm font-medium text-navy-foreground/70">{t("dday.enlistDate")}</Label>
-              <Input
-                type="date"
-                value={enlistDate}
-                onChange={(e) => setEnlistDate(e.target.value)}
-                className="max-w-xs bg-navy-foreground/5 border-navy-foreground/10 text-navy-foreground placeholder:text-navy-foreground/30"
-              />
+              <div className="flex items-end gap-3">
+                <Input
+                  type="date"
+                  value={enlistDate}
+                  onChange={(e) => setEnlistDate(e.target.value)}
+                  className="max-w-xs bg-navy-foreground/5 border-navy-foreground/10 text-navy-foreground placeholder:text-navy-foreground/30"
+                />
+                {result && (
+                  <Button
+                    onClick={() => setMemberCardOpen(true)}
+                    className="gap-1.5 bg-gold/20 text-gold border border-gold/40 hover:bg-gold/30 rounded-xl text-sm font-medium whitespace-nowrap"
+                    size="sm"
+                  >
+                    <CreditCard className="h-4 w-4" />
+                    멤버증 발급
+                  </Button>
+                )}
+              </div>
             </div>
 
             {/* Result */}
@@ -171,6 +188,20 @@ const DdayHeroSection = () => {
         </motion.div>
       </div>
     </section>
+
+    {result && (
+      <MemberCardModal
+        open={memberCardOpen}
+        onClose={() => setMemberCardOpen(false)}
+        enlistDate={enlistDate}
+        dischargeDate={result.dischargeStr}
+        serviceDays={serviceDays}
+        elapsedDays={result.elapsedDays}
+        progressPct={result.progressPct}
+        branchLabel={currentBranch}
+      />
+    )}
+    </>
   );
 };
 
