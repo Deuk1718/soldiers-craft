@@ -200,16 +200,25 @@ const Admin = () => {
   const fetchMatches = async () => {
     setMatchesLoading(true);
     const { data } = await supabase.from("buddy_matches").select("*").order("created_at", { ascending: false });
-    if (data) {
-      // Enrich with user info
-      const { data: users } = await supabase.from("buddy_waiting_users").select("*");
-      const userMap = new Map((users || []).map((u: any) => [u.id, u]));
+    if (data && data.length > 0) {
+      // Collect all user IDs from matches
+      const userIds = [...new Set(data.flatMap((m: any) => [m.user_a_id, m.user_b_id]))];
+      // Fetch only matched users (in batches if needed)
+      const allUsers: any[] = [];
+      for (let i = 0; i < userIds.length; i += 50) {
+        const batch = userIds.slice(i, i + 50);
+        const { data: users } = await supabase.from("buddy_waiting_users").select("*").in("id", batch);
+        if (users) allUsers.push(...users);
+      }
+      const userMap = new Map(allUsers.map((u: any) => [u.id, u]));
       const enriched = data.map((m: any) => ({
         ...m,
         user_a: userMap.get(m.user_a_id),
         user_b: userMap.get(m.user_b_id),
       }));
       setMatches(enriched as MatchRecord[]);
+    } else {
+      setMatches([]);
     }
     setMatchesLoading(false);
   };
