@@ -340,7 +340,7 @@ const Admin = () => {
               <Shield className="h-8 w-8 text-primary" />
             </div>
             <h1 className="text-2xl font-bold text-foreground">관리자 로그인</h1>
-            <p className="mt-1 text-sm text-muted-foreground">이혼 가이드 관리 시스템</p>
+            <p className="mt-1 text-sm text-muted-foreground">전우찾기 관리 시스템</p>
           </div>
           <Card className="shadow-card">
             <CardContent className="p-6">
@@ -444,7 +444,7 @@ const Admin = () => {
                 <Power className={`h-5 w-5 ${serviceEnabled ? "text-success" : "text-destructive"}`} />
               </div>
               <div>
-                <h3 className="text-base font-bold text-foreground">이혼 가이드 서비스 전체 공개</h3>
+                <h3 className="text-base font-bold text-foreground">전우찾기 서비스 전체 공개</h3>
                 <p className="text-sm text-muted-foreground">
                   {serviceEnabled ? "현재 서비스가 공개 상태입니다. 모든 사용자가 접근 가능합니다." : "현재 서비스가 비공개 상태입니다. 점검 안내 페이지가 표시됩니다."}
                 </p>
