@@ -1,0 +1,23 @@
+-- Add multilingual columns for experts table
+ALTER TABLE public.experts
+  ADD COLUMN name_en text NOT NULL DEFAULT '',
+  ADD COLUMN name_ja text NOT NULL DEFAULT '',
+  ADD COLUMN name_zh text NOT NULL DEFAULT '',
+  ADD COLUMN expertise_en text NOT NULL DEFAULT '',
+  ADD COLUMN expertise_ja text NOT NULL DEFAULT '',
+  ADD COLUMN expertise_zh text NOT NULL DEFAULT '',
+  ADD COLUMN career_en text NOT NULL DEFAULT '',
+  ADD COLUMN career_ja text NOT NULL DEFAULT '',
+  ADD COLUMN career_zh text NOT NULL DEFAULT '',
+  ADD COLUMN description_en text NOT NULL DEFAULT '',
+  ADD COLUMN description_ja text NOT NULL DEFAULT '',
+  ADD COLUMN description_zh text NOT NULL DEFAULT '',
+  ADD COLUMN consult_fee_en text NOT NULL DEFAULT '',
+  ADD COLUMN consult_fee_ja text NOT NULL DEFAULT '',
+  ADD COLUMN consult_fee_zh text NOT NULL DEFAULT '',
+  ADD COLUMN tags_en text[] NOT NULL DEFAULT '{}',
+  ADD COLUMN tags_ja text[] NOT NULL DEFAULT '{}',
+  ADD COLUMN tags_zh text[] NOT NULL DEFAULT '{}',
+  ADD COLUMN specialties_en text[] NOT NULL DEFAULT '{}',
+  ADD COLUMN specialties_ja text[] NOT NULL DEFAULT '{}',
+  ADD COLUMN specialties_zh text[] NOT NULL DEFAULT '{}';

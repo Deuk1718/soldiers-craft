@@ -1,0 +1,1 @@
+UPDATE experts SET career = '세무사 네트워크 평점 90점 이상 베테랑 매칭 | 초기 상담 연결 지원' WHERE id = '0ccb8ce2-229f-49e5-b36f-05e48c7f0df6';

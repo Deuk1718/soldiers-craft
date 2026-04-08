@@ -1,0 +1,1 @@
+UPDATE experts SET consult_fee = '초기 상담 연결 지원' WHERE consult_fee = '초기 상담 무료';

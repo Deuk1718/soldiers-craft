@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+KR:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* 차분한 블루-그레이 배경 — 신뢰와 전문성 */
+    --background: 220 20% 97%;
+    --foreground: 220 15% 15%;
+
+    --card: 220 15% 99%;
+    --card-foreground: 220 15% 15%;
+
+    --popover: 220 15% 99%;
+    --popover-foreground: 220 15% 15%;
+
+    /* 차분한 인디고 블루 — 신뢰, 안정감 */
+    --primary: 220 40% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    /* 부드러운 라벤더 */
+    --secondary: 230 20% 94%;
+    --secondary-foreground: 220 15% 25%;
+
+    /* 뮤트된 슬레이트 */
+    --muted: 220 12% 92%;
+    --muted-foreground: 220 10% 50%;
+
+    /* 부드러운 라일락 */
+    --accent: 225 18% 94%;
+    --accent-foreground: 220 15% 22%;
+
+    /* 차분한 레드 */
+    --destructive: 0 45% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 88%;
+    --input: 220 15% 88%;
+    --ring: 220 40% 55%;
+
+    --radius: 0.75rem;
+
+    /* 파스텔 민트 — 성공 */
+    --success: 160 30% 50%;
+    --success-foreground: 0 0% 100%;
+    /* 부드러운 앰버 — 주의 */
+    --warning: 35 50% 55%;
+    --warning-foreground: 0 0% 100%;
+    /* 딥 네이비 */
+    --navy: 220 30% 20%;
+    --navy-foreground: 220 15% 95%;
+    /* 세이지 그린-골드 */
+    --gold: 200 35% 50%;
+    --gold-foreground: 0 0% 100%;
+
+    --surface-elevated: 220 15% 99%;
+
+    --shadow-card: 0 1px 2px rgba(100,120,150,.06), 0 4px 12px rgba(100,120,150,.06);
+    --shadow-card-hover: 0 2px 4px rgba(100,120,150,.08), 0 8px 24px rgba(100,120,150,.10);
+
+    --sidebar-background: 220 15% 97%;
+    --sidebar-foreground: 220 15% 30%;
+    --sidebar-primary: 220 40% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 225 18% 94%;
+    --sidebar-accent-foreground: 220 15% 25%;
+    --sidebar-border: 220 12% 89%;
+    --sidebar-ring: 220 40% 55%;
+  }
+
+  .dark {
+    --background: 220 15% 8%;
+    --foreground: 220 15% 90%;
+    --card: 220 15% 11%;
+    --card-foreground: 220 15% 90%;
+    --popover: 220 15% 11%;
+    --popover-foreground: 220 15% 90%;
+    --primary: 220 45% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 12% 16%;
+    --secondary-foreground: 220 15% 90%;
+    --muted: 220 12% 16%;
+    --muted-foreground: 220 12% 55%;
+    --accent: 220 12% 16%;
+    --accent-foreground: 220 15% 90%;
+    --destructive: 0 45% 40%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 12% 18%;
+    --input: 220 12% 18%;
+    --ring: 220 45% 60%;
+    --sidebar-background: 220 15% 10%;
+    --sidebar-foreground: 220 12% 85%;
+    --sidebar-primary: 220 45% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 12% 15%;
+    --sidebar-accent-foreground: 220 12% 85%;
+    --sidebar-border: 220 12% 18%;
+    --sidebar-ring: 220 45% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Noto Serif KR', 'Source Serif 4', Georgia, serif;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer utilities {
+  .font-serif-legal {
+    font-family: 'Source Serif 4', 'Noto Serif KR', Georgia, serif;
+  }
+
+  .font-mono-num {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-card-hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}

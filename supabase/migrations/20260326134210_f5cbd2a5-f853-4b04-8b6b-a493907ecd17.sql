@@ -1,0 +1,1 @@
+UPDATE experts SET description = '신탁 연계 자산관리 및 디지털 자산 관리 전문가입니다. 가상자산 상속, 스마트 컨트랙트 기반 자산 이전 등 미래 자산에 대한 포괄적인 관리 체계와 포트폴리오를 구축합니다.' WHERE description LIKE '신탁 설계 및 디지털 자산 관리 전문가%';

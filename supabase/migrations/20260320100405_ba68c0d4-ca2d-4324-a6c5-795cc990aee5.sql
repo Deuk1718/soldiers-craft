@@ -1,0 +1,2 @@
+ALTER TABLE public.consultations DROP CONSTRAINT consultations_status_check;
+ALTER TABLE public.consultations ADD CONSTRAINT consultations_status_check CHECK (status = ANY (ARRAY['pending'::text, 'confirmed'::text, 'cancelled'::text, 'completed'::text]));

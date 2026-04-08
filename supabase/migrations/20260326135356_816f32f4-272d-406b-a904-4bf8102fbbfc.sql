@@ -1,0 +1,1 @@
+UPDATE experts SET specialties = ARRAY['상속세 절세 전략 매칭', '사전 증여 설계 안내', '세무 리스크 관리 파트너십', '부동산 및 디지털 자산 세무'] WHERE id = '0ccb8ce2-229f-49e5-b36f-05e48c7f0df6';

@@ -1,0 +1,1 @@
+UPDATE experts SET specialties = array_replace(specialties, '가족 신탁 설계', '가족 신탁 활용 자문') WHERE id = '9aed1bf5-0ca0-4a31-9072-81341f5f2b46';
