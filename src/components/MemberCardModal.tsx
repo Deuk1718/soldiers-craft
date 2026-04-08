@@ -30,14 +30,14 @@ const MemberCardModal = ({
 }: MemberCardModalProps) => {
   const { t } = useLanguage();
   const [name, setName] = useState("");
-  const [rank, setRank] = useState("병장");
+  const [rank, setRank] = useState("");
   const [unit, setUnit] = useState("");
 
   // Reset fields every time modal opens
   React.useEffect(() => {
     if (open) {
       setName(t("mc.name.default"));
-      setRank("병장");
+      setRank(t("rank.sergeant"));
       setUnit(t("mc.unit.default"));
     }
   }, [open, t]);
