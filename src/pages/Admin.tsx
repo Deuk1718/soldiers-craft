@@ -734,73 +734,72 @@ const Admin = () => {
           <TabsContent value="matching">
             <div className="mb-5">
               <h2 className="text-xl font-bold text-foreground">전우 매칭 관리</h2>
-              <p className="text-sm text-muted-foreground">등록된 사용자를 확인하고 수동 매칭을 관리합니다.</p>
+              <p className="text-sm text-muted-foreground">등록된 사용자를 확인하고 수동/자동 매칭을 관리합니다.</p>
             </div>
 
-            {/* User Management Table */}
-            <Card className="mb-6 shadow-card">
-              <CardContent className="p-0">
-                <div className="border-b border-border px-5 py-3">
-                  <h3 className="text-sm font-semibold text-foreground">등록 사용자 목록</h3>
-                </div>
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>이름</TableHead>
-                        <TableHead>부대</TableHead>
-                        <TableHead>기수</TableHead>
-                        <TableHead>복무 기간</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {mockUsers.map((u) => (
-                        <TableRow key={u.id}>
-                          <TableCell className="font-medium">{u.name}</TableCell>
-                          <TableCell>{u.unit}</TableCell>
-                          <TableCell><Badge variant="outline" className="text-xs">{u.classYear}</Badge></TableCell>
-                          <TableCell className="text-muted-foreground text-xs">{u.period}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-            </Card>
+            <Tabs defaultValue="manual" className="mb-6">
+              <TabsList className="mb-4 h-10 w-full justify-start rounded-xl bg-secondary/60 p-1 sm:w-auto">
+                <TabsTrigger value="manual" className="gap-1.5 rounded-lg px-4 data-[state=active]:bg-background data-[state=active]:shadow-sm">
+                  <UserCog className="h-4 w-4" />수동 매칭
+                </TabsTrigger>
+                <TabsTrigger value="auto" className="gap-1.5 rounded-lg px-4 data-[state=active]:bg-background data-[state=active]:shadow-sm">
+                  <RefreshCw className="h-4 w-4" />자동 매칭
+                </TabsTrigger>
+              </TabsList>
 
-            {/* Manual Matching Tool */}
-            <Card className="mb-6 shadow-card">
-              <CardContent className="p-5">
-                <h3 className="mb-3 text-sm font-semibold text-foreground">수동 매칭</h3>
-                <div className="flex flex-wrap items-end gap-3">
-                  <div className="flex-1 min-w-[140px]">
-                    <label className="mb-1 block text-xs text-muted-foreground">사용자 A</label>
-                    <Select value={matchSelectA} onValueChange={setMatchSelectA}>
-                      <SelectTrigger className="h-10"><SelectValue placeholder="선택..." /></SelectTrigger>
-                      <SelectContent>
-                        {mockUsers.map(u => (
-                          <SelectItem key={u.id} value={u.id}>{u.name} ({u.unit})</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex h-10 items-center">
-                    <Link2 className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <div className="flex-1 min-w-[140px]">
-                    <label className="mb-1 block text-xs text-muted-foreground">사용자 B</label>
-                    <Select value={matchSelectB} onValueChange={setMatchSelectB}>
-                      <SelectTrigger className="h-10"><SelectValue placeholder="선택..." /></SelectTrigger>
-                      <SelectContent>
-                        {mockUsers.filter(u => u.id !== matchSelectA).map(u => (
-                          <SelectItem key={u.id} value={u.id}>{u.name} ({u.unit})</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+              {/* Tab A: Manual Matching */}
+              <TabsContent value="manual" className="space-y-6">
+                {/* Waiting Users Table */}
+                <Card className="shadow-card">
+                  <CardContent className="p-0">
+                    <div className="border-b border-border px-5 py-3">
+                      <h3 className="text-sm font-semibold text-foreground">대기 사용자 목록</h3>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="w-10"></TableHead>
+                            <TableHead>이름</TableHead>
+                            <TableHead>부대</TableHead>
+                            <TableHead>기수</TableHead>
+                            <TableHead>복무 기간</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {mockUsers.map((u) => (
+                            <TableRow
+                              key={u.id}
+                              className={`cursor-pointer transition-colors ${matchSelectA === u.id || matchSelectB === u.id ? "bg-primary/10" : ""}`}
+                              onClick={() => {
+                                if (!matchSelectA) setMatchSelectA(u.id);
+                                else if (matchSelectA === u.id) setMatchSelectA("");
+                                else if (!matchSelectB && u.id !== matchSelectA) setMatchSelectB(u.id);
+                                else if (matchSelectB === u.id) setMatchSelectB("");
+                              }}
+                            >
+                              <TableCell>
+                                <div className={`h-4 w-4 rounded border ${matchSelectA === u.id ? "bg-primary border-primary" : matchSelectB === u.id ? "bg-primary border-primary" : "border-border"}`} />
+                              </TableCell>
+                              <TableCell className="font-medium">{u.name}</TableCell>
+                              <TableCell>{u.unit}</TableCell>
+                              <TableCell><Badge variant="outline" className="text-xs">{u.classYear}</Badge></TableCell>
+                              <TableCell className="text-muted-foreground text-xs">{u.period}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <div className="flex items-center gap-3">
+                  <p className="text-sm text-muted-foreground">
+                    선택: {matchSelectA ? mockUsers.find(u => u.id === matchSelectA)?.name : "—"} ↔ {matchSelectB ? mockUsers.find(u => u.id === matchSelectB)?.name : "—"}
+                  </p>
                   <Button
                     variant="warmBrown"
-                    className="h-10 gap-1.5"
+                    className="gap-1.5"
                     disabled={!matchSelectA || !matchSelectB}
                     onClick={() => {
                       const a = mockUsers.find(u => u.id === matchSelectA);
@@ -815,15 +814,75 @@ const Admin = () => {
                         }]);
                         setMatchSelectA("");
                         setMatchSelectB("");
-                        toast({ title: "매칭 완료", description: `${a.name}님과 ${b.name}님이 매칭되었습니다.` });
+                        toast({ title: "수동 매칭 완료", description: `${a.name}님과 ${b.name}님이 매칭되었습니다.` });
                       }
                     }}
                   >
-                    <UserCheck className="h-4 w-4" />매칭
+                    <UserCheck className="h-4 w-4" />수동 매칭 실행
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
+              </TabsContent>
+
+              {/* Tab B: Auto Matching */}
+              <TabsContent value="auto" className="space-y-6">
+                <Card className="shadow-card">
+                  <CardContent className="p-6 text-center">
+                    <RefreshCw className="mx-auto h-10 w-10 text-primary/40" />
+                    <h3 className="mt-3 text-lg font-semibold text-foreground">자동 매칭 시스템</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      동일한 부대 및 기수를 가진 사용자를 자동으로 찾아 매칭합니다.
+                    </p>
+                    <Button
+                      variant="warmBrown"
+                      className="mt-4 gap-1.5"
+                      onClick={() => {
+                        // Group by unit + classYear
+                        const groups: Record<string, typeof mockUsers> = {};
+                        mockUsers.forEach((u) => {
+                          const key = `${u.unit}|${u.classYear}`;
+                          if (!groups[key]) groups[key] = [];
+                          groups[key].push(u);
+                        });
+
+                        let newMatches = 0;
+                        Object.values(groups).forEach((group) => {
+                          if (group.length >= 2) {
+                            // Pair them up
+                            for (let i = 0; i < group.length - 1; i += 2) {
+                              const a = group[i];
+                              const b = group[i + 1];
+                              const exists = matches.some(
+                                (m) => (m.userA === a.name && m.userB === b.name) || (m.userA === b.name && m.userB === a.name)
+                              );
+                              if (!exists) {
+                                setMatches((prev) => [
+                                  ...prev,
+                                  {
+                                    id: `m${Date.now()}-${i}`,
+                                    userA: a.name, userB: b.name,
+                                    unitA: a.unit, unitB: b.unit,
+                                    status: "pending",
+                                    date: new Date().toISOString().split("T")[0],
+                                  },
+                                ]);
+                                newMatches++;
+                              }
+                            }
+                          }
+                        });
+
+                        toast({
+                          title: "자동 매칭 완료",
+                          description: newMatches > 0 ? `${newMatches}건의 새로운 매칭이 발견되었습니다.` : "새로운 매칭이 없습니다.",
+                        });
+                      }}
+                    >
+                      <RefreshCw className="h-4 w-4" />자동 매칭 시스템 가동
+                    </Button>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
 
             {/* Matching Status */}
             <Card className="shadow-card">

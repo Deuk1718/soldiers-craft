@@ -133,7 +133,7 @@ const MatchSuccessAnimation = ({ open, onClose, userA, userB, contactInfo }: Mat
               transition={{ delay: 1.8 }}
             >
               <h2 className="text-2xl font-bold text-foreground">
-                {contactInfo ? "매칭 성공! 전우의 연락처가 공개되었습니다." : "새로운 전우가 연결되었습니다!"}
+                {contactInfo ? "매칭 성공! 유료 결제(900원) 후 연락처가 공개됩니다." : "새로운 전우가 연결되었습니다!"}
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">{userA.period} ~ {userB.period}</p>
             </motion.div>
