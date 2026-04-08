@@ -530,6 +530,12 @@ const ko: Record<string, string> = {
   "mc.clipboard": "이미지가 클립보드에 복사되었습니다! 카카오톡이나 인스타그램에 붙여넣기 하세요.",
   "mc.noname": "무명",
   "mc.name.empty": "이름 입력",
+  "rank.private": "이병", "rank.pfc": "일병", "rank.corporal": "상병", "rank.sergeant": "병장",
+  "rank.staff_sgt": "하사", "rank.sfc": "중사", "rank.msgt": "상사", "rank.sma": "원사",
+  "rank.wo": "준위",
+  "rank.2lt": "소위", "rank.1lt": "중위", "rank.cpt": "대위",
+  "rank.maj": "소령", "rank.ltc": "중령", "rank.col": "대령",
+  "rank.bg": "준장 ★", "rank.mg": "소장 ★★", "rank.lg": "중장 ★★★", "rank.gen": "대장 ★★★★",
 };
 
 const en: Record<string, string> = {
@@ -1038,6 +1044,12 @@ const en: Record<string, string> = {
   "mc.clipboard": "Image copied to clipboard! Paste it on KakaoTalk or Instagram.",
   "mc.noname": "Unknown",
   "mc.name.empty": "Enter name",
+  "rank.private": "Private", "rank.pfc": "PFC", "rank.corporal": "Corporal", "rank.sergeant": "Sergeant",
+  "rank.staff_sgt": "Staff Sgt", "rank.sfc": "SFC", "rank.msgt": "Master Sgt", "rank.sma": "Sgt Major",
+  "rank.wo": "Warrant Officer",
+  "rank.2lt": "2nd Lt", "rank.1lt": "1st Lt", "rank.cpt": "Captain",
+  "rank.maj": "Major", "rank.ltc": "Lt Colonel", "rank.col": "Colonel",
+  "rank.bg": "Brig Gen ★", "rank.mg": "Maj Gen ★★", "rank.lg": "Lt Gen ★★★", "rank.gen": "General ★★★★",
 };
 
 // Japanese translations
@@ -1530,6 +1542,12 @@ const ja: Record<string, string> = {
   "mc.clipboard": "画像がクリップボードにコピーされました！カカオトークやインスタグラムに貼り付けてください。",
   "mc.noname": "無名",
   "mc.name.empty": "名前を入力",
+  "rank.private": "二等兵", "rank.pfc": "一等兵", "rank.corporal": "上等兵", "rank.sergeant": "兵長",
+  "rank.staff_sgt": "下士", "rank.sfc": "中士", "rank.msgt": "上士", "rank.sma": "元士",
+  "rank.wo": "准尉",
+  "rank.2lt": "少尉", "rank.1lt": "中尉", "rank.cpt": "大尉",
+  "rank.maj": "少佐", "rank.ltc": "中佐", "rank.col": "大佐",
+  "rank.bg": "准将 ★", "rank.mg": "少将 ★★", "rank.lg": "中将 ★★★", "rank.gen": "大将 ★★★★",
 };
 
 // Chinese translations
@@ -2022,6 +2040,12 @@ const zh: Record<string, string> = {
   "mc.clipboard": "图片已复制到剪贴板！请粘贴到KakaoTalk或Instagram。",
   "mc.noname": "无名",
   "mc.name.empty": "输入姓名",
+  "rank.private": "列兵", "rank.pfc": "上等兵", "rank.corporal": "下士", "rank.sergeant": "中士",
+  "rank.staff_sgt": "上士", "rank.sfc": "四级军士长", "rank.msgt": "三级军士长", "rank.sma": "二级军士长",
+  "rank.wo": "准尉",
+  "rank.2lt": "少尉", "rank.1lt": "中尉", "rank.cpt": "上尉",
+  "rank.maj": "少校", "rank.ltc": "中校", "rank.col": "上校",
+  "rank.bg": "准将 ★", "rank.mg": "少将 ★★", "rank.lg": "中将 ★★★", "rank.gen": "上将 ★★★★",
 };
 
 export type TranslationKey = keyof typeof ko;
