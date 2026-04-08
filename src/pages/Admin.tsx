@@ -111,30 +111,31 @@ const Admin = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [notifLoading, setNotifLoading] = useState(false);
 
-  // Matching management state
+  // Matching management state — from DB
+  interface WaitingUser {
+    id: string;
+    name: string;
+    unit: string;
+    service_year: string;
+    phone: string;
+    email: string | null;
+    is_matched: boolean;
+    created_at: string;
+  }
   interface MatchRecord {
     id: string;
-    userA: string;
-    userB: string;
-    unitA: string;
-    unitB: string;
-    status: "verified" | "pending" | "rejected";
-    date: string;
+    user_a_id: string;
+    user_b_id: string;
+    match_type: string;
+    status: string;
+    created_at: string;
+    user_a?: WaitingUser;
+    user_b?: WaitingUser;
   }
-  const [mockUsers] = useState([
-    { id: "u1", name: "김OO", unit: "3사단 22대대", classYear: "24-71기", period: "2023.01 ~ 2024.09" },
-    { id: "u2", name: "이OO", unit: "백골부대 수색중대", classYear: "24-71기", period: "2023.01 ~ 2024.09" },
-    { id: "u3", name: "박OO", unit: "3사단 1대대", classYear: "23-65기", period: "2022.06 ~ 2024.03" },
-    { id: "u4", name: "최OO", unit: "1사단 본부중대", classYear: "24-71기", period: "2023.03 ~ 2024.12" },
-    { id: "u5", name: "정OO", unit: "백골부대 3중대", classYear: "23-65기", period: "2022.06 ~ 2024.03" },
-    { id: "u6", name: "한OO", unit: "7사단 수색대대", classYear: "24-73기", period: "2023.06 ~ 2025.03" },
-    { id: "u7", name: "윤OO", unit: "3사단 22대대", classYear: "23-65기", period: "2022.03 ~ 2023.12" },
-    { id: "u8", name: "조OO", unit: "1사단 포병대대", classYear: "24-71기", period: "2023.01 ~ 2024.09" },
-  ]);
-  const [matches, setMatches] = useState<MatchRecord[]>([
-    { id: "m1", userA: "김OO", userB: "이OO", unitA: "3사단 22대대", unitB: "백골부대 수색중대", status: "verified", date: "2025-01-15" },
-    { id: "m2", userA: "박OO", userB: "정OO", unitA: "3사단 1대대", unitB: "백골부대 3중대", status: "pending", date: "2025-01-20" },
-  ]);
+  const [waitingUsers, setWaitingUsers] = useState<WaitingUser[]>([]);
+  const [waitingLoading, setWaitingLoading] = useState(false);
+  const [matches, setMatches] = useState<MatchRecord[]>([]);
+  const [matchesLoading, setMatchesLoading] = useState(false);
   const [matchSelectA, setMatchSelectA] = useState("");
   const [matchSelectB, setMatchSelectB] = useState("");
 
