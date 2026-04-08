@@ -781,13 +781,21 @@ const Admin = () => {
               <TabsContent value="manual" className="space-y-6">
                 <Card className="shadow-card">
                   <CardContent className="p-0">
-                    <div className="border-b border-border px-5 py-3 flex items-center justify-between">
-                      <h3 className="text-sm font-semibold text-foreground">대기 사용자 목록 ({waitingUsers.filter(u => !u.is_matched).length}명)</h3>
-                      <Button variant="outline" size="sm" onClick={fetchWaitingUsers} disabled={waitingLoading} className="gap-1.5">
-                        <RefreshCw className={`h-3.5 w-3.5 ${waitingLoading ? "animate-spin" : ""}`} />
-                      </Button>
+                    <div className="border-b border-border px-5 py-3 flex items-center justify-between gap-3">
+                      <h3 className="text-sm font-semibold text-foreground shrink-0">대기 사용자 목록 ({waitingUsers.filter(u => !u.is_matched).length}명)</h3>
+                      <div className="flex items-center gap-2 flex-1 max-w-sm">
+                        <Input
+                          placeholder="이름, 부대, 연도 검색..."
+                          value={matchSearchQuery}
+                          onChange={(e) => setMatchSearchQuery(e.target.value)}
+                          className="h-8 text-xs"
+                        />
+                        <Button variant="outline" size="sm" onClick={fetchWaitingUsers} disabled={waitingLoading} className="gap-1.5 shrink-0">
+                          <RefreshCw className={`h-3.5 w-3.5 ${waitingLoading ? "animate-spin" : ""}`} />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
                       <Table>
                          <TableHeader>
                           <TableRow>
@@ -801,7 +809,12 @@ const Admin = () => {
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {waitingUsers.filter(u => !u.is_matched).map((u) => (
+                          {waitingUsers.filter(u => {
+                            if (u.is_matched) return false;
+                            if (!matchSearchQuery.trim()) return true;
+                            const q = matchSearchQuery.toLowerCase();
+                            return `${u.name} ${u.unit} ${u.service_year} ${u.phone}`.toLowerCase().includes(q);
+                          }).map((u) => (
                             <TableRow
                               key={u.id}
                               className={`cursor-pointer transition-colors ${matchSelectA === u.id || matchSelectB === u.id ? "bg-primary/10" : ""}`}
