@@ -192,24 +192,43 @@ const Admin = () => {
 
   const fetchWaitingUsers = async () => {
     setWaitingLoading(true);
-    const { data } = await supabase.from("buddy_waiting_users").select("*").order("created_at", { ascending: false });
-    if (data) setWaitingUsers(data as unknown as WaitingUser[]);
+    const allUsers: any[] = [];
+    let from = 0;
+    const pageSize = 1000;
+    while (true) {
+      const { data } = await supabase.from("buddy_waiting_users").select("*").order("created_at", { ascending: false }).range(from, from + pageSize - 1);
+      if (data && data.length > 0) {
+        allUsers.push(...data);
+        if (data.length < pageSize) break;
+        from += pageSize;
+      } else break;
+    }
+    setWaitingUsers(allUsers as unknown as WaitingUser[]);
     setWaitingLoading(false);
   };
 
   const fetchMatches = async () => {
     setMatchesLoading(true);
     const { data } = await supabase.from("buddy_matches").select("*").order("created_at", { ascending: false });
-    if (data) {
-      // Enrich with user info
-      const { data: users } = await supabase.from("buddy_waiting_users").select("*");
-      const userMap = new Map((users || []).map((u: any) => [u.id, u]));
+    if (data && data.length > 0) {
+      // Collect all user IDs from matches
+      const userIds = [...new Set(data.flatMap((m: any) => [m.user_a_id, m.user_b_id]))];
+      // Fetch only matched users (in batches if needed)
+      const allUsers: any[] = [];
+      for (let i = 0; i < userIds.length; i += 50) {
+        const batch = userIds.slice(i, i + 50);
+        const { data: users } = await supabase.from("buddy_waiting_users").select("*").in("id", batch);
+        if (users) allUsers.push(...users);
+      }
+      const userMap = new Map(allUsers.map((u: any) => [u.id, u]));
       const enriched = data.map((m: any) => ({
         ...m,
         user_a: userMap.get(m.user_a_id),
         user_b: userMap.get(m.user_b_id),
       }));
       setMatches(enriched as MatchRecord[]);
+    } else {
+      setMatches([]);
     }
     setMatchesLoading(false);
   };
