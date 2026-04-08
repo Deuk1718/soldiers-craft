@@ -211,9 +211,12 @@ const BuddySearch = () => {
                             {r.service_year}
                           </Badge>
                         </div>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                          {r.name}
-                        </p>
+                        <div className="mt-1 flex items-center gap-2">
+                          <p className="text-xs text-muted-foreground">{r.name}</p>
+                          <Badge variant="outline" className={`text-xs ${r.match_fee_type === "paid" ? "border-primary/30 bg-primary/10 text-primary" : "border-muted"}`}>
+                            {r.match_fee_type === "paid" ? `₩${(r.match_fee || 0).toLocaleString()}` : "무료"}
+                          </Badge>
+                        </div>
                       </div>
                     </div>
                     <Button variant="warmBrown" size="sm" onClick={() => handleConnect(r)}>
