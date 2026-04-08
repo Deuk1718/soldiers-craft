@@ -884,6 +884,7 @@ const Admin = () => {
                     <p className="mt-1 text-sm text-muted-foreground">
                       동일한 부대 및 복무 연도를 가진 사용자를 자동으로 찾아 매칭합니다.
                     </p>
+                    <p className="mt-1 text-xs text-primary font-medium">기본 인증 비용: ₩20,000</p>
                     <Button
                       variant="warmBrown"
                       className="mt-4 gap-1.5"
