@@ -28,6 +28,7 @@ const MemberCardModal = ({
   progressPct,
   branchLabel,
 }: MemberCardModalProps) => {
+  const { t } = useLanguage();
   const [name, setName] = useState("");
   const [rank, setRank] = useState("병장");
   const [unit, setUnit] = useState("");
@@ -35,11 +36,11 @@ const MemberCardModal = ({
   // Reset fields every time modal opens
   React.useEffect(() => {
     if (open) {
-      setName("손오공 902002-100000");
+      setName(t("mc.name.default"));
       setRank("병장");
-      setUnit("특수 공격전단대 010-2345-6789");
+      setUnit(t("mc.unit.default"));
     }
-  }, [open]);
+  }, [open, t]);
   const cardRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
 
