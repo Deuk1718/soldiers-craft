@@ -729,6 +729,166 @@ const Admin = () => {
               </div>
             )}
           </TabsContent>
+
+          {/* Matching Tab */}
+          <TabsContent value="matching">
+            <div className="mb-5">
+              <h2 className="text-xl font-bold text-foreground">전우 매칭 관리</h2>
+              <p className="text-sm text-muted-foreground">등록된 사용자를 확인하고 수동 매칭을 관리합니다.</p>
+            </div>
+
+            {/* User Management Table */}
+            <Card className="mb-6 shadow-card">
+              <CardContent className="p-0">
+                <div className="border-b border-border px-5 py-3">
+                  <h3 className="text-sm font-semibold text-foreground">등록 사용자 목록</h3>
+                </div>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>이름</TableHead>
+                        <TableHead>부대</TableHead>
+                        <TableHead>기수</TableHead>
+                        <TableHead>복무 기간</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {mockUsers.map((u) => (
+                        <TableRow key={u.id}>
+                          <TableCell className="font-medium">{u.name}</TableCell>
+                          <TableCell>{u.unit}</TableCell>
+                          <TableCell><Badge variant="outline" className="text-xs">{u.classYear}</Badge></TableCell>
+                          <TableCell className="text-muted-foreground text-xs">{u.period}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Manual Matching Tool */}
+            <Card className="mb-6 shadow-card">
+              <CardContent className="p-5">
+                <h3 className="mb-3 text-sm font-semibold text-foreground">수동 매칭</h3>
+                <div className="flex flex-wrap items-end gap-3">
+                  <div className="flex-1 min-w-[140px]">
+                    <label className="mb-1 block text-xs text-muted-foreground">사용자 A</label>
+                    <Select value={matchSelectA} onValueChange={setMatchSelectA}>
+                      <SelectTrigger className="h-10"><SelectValue placeholder="선택..." /></SelectTrigger>
+                      <SelectContent>
+                        {mockUsers.map(u => (
+                          <SelectItem key={u.id} value={u.id}>{u.name} ({u.unit})</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex h-10 items-center">
+                    <Link2 className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                  <div className="flex-1 min-w-[140px]">
+                    <label className="mb-1 block text-xs text-muted-foreground">사용자 B</label>
+                    <Select value={matchSelectB} onValueChange={setMatchSelectB}>
+                      <SelectTrigger className="h-10"><SelectValue placeholder="선택..." /></SelectTrigger>
+                      <SelectContent>
+                        {mockUsers.filter(u => u.id !== matchSelectA).map(u => (
+                          <SelectItem key={u.id} value={u.id}>{u.name} ({u.unit})</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button
+                    variant="warmBrown"
+                    className="h-10 gap-1.5"
+                    disabled={!matchSelectA || !matchSelectB}
+                    onClick={() => {
+                      const a = mockUsers.find(u => u.id === matchSelectA);
+                      const b = mockUsers.find(u => u.id === matchSelectB);
+                      if (a && b) {
+                        setMatches(prev => [...prev, {
+                          id: `m${Date.now()}`,
+                          userA: a.name, userB: b.name,
+                          unitA: a.unit, unitB: b.unit,
+                          status: "verified",
+                          date: new Date().toISOString().split("T")[0],
+                        }]);
+                        setMatchSelectA("");
+                        setMatchSelectB("");
+                        toast({ title: "매칭 완료", description: `${a.name}님과 ${b.name}님이 매칭되었습니다.` });
+                      }
+                    }}
+                  >
+                    <UserCheck className="h-4 w-4" />매칭
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Matching Status */}
+            <Card className="shadow-card">
+              <CardContent className="p-0">
+                <div className="border-b border-border px-5 py-3">
+                  <h3 className="text-sm font-semibold text-foreground">매칭 현황 ({matches.length}건)</h3>
+                </div>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>사용자 A</TableHead>
+                        <TableHead>사용자 B</TableHead>
+                        <TableHead>상태</TableHead>
+                        <TableHead>날짜</TableHead>
+                        <TableHead>관리</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {matches.map((m) => (
+                        <TableRow key={m.id}>
+                          <TableCell>
+                            <div>
+                              <p className="font-medium text-foreground">{m.userA}</p>
+                              <p className="text-xs text-muted-foreground">{m.unitA}</p>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div>
+                              <p className="font-medium text-foreground">{m.userB}</p>
+                              <p className="text-xs text-muted-foreground">{m.unitB}</p>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className={
+                              m.status === "verified" ? "border-success/30 bg-success/10 text-success" :
+                              m.status === "pending" ? "border-warning/30 bg-warning/10 text-warning" :
+                              "border-destructive/30 bg-destructive/10 text-destructive"
+                            }>
+                              {m.status === "verified" ? "인증완료" : m.status === "pending" ? "대기중" : "거절"}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-xs text-muted-foreground">{m.date}</TableCell>
+                          <TableCell>
+                            <div className="flex gap-1">
+                              {m.status === "pending" && (
+                                <Button variant="outline" size="sm" className="h-7 text-xs gap-1"
+                                  onClick={() => setMatches(prev => prev.map(x => x.id === m.id ? { ...x, status: "verified" } : x))}>
+                                  <CheckCircle2 className="h-3 w-3" />승인
+                                </Button>
+                              )}
+                              <Button variant="ghost" size="sm" className="h-7 text-xs text-destructive hover:bg-destructive/10"
+                                onClick={() => setMatches(prev => prev.filter(x => x.id !== m.id))}>
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
       </main>
 
