@@ -8,7 +8,7 @@ const ko: Record<string, string> = {
   // ── Navbar ──
   "nav.will": "전역 준비",
   "nav.services": "서비스",
-  "nav.assets": "복무 정보",
+  "nav.assets": "전우 찾다",
   "nav.tax": "전역일 계산기",
   "nav.experts": "전문가 매칭",
   "nav.consult": "상담 시작",
@@ -41,12 +41,12 @@ const ko: Record<string, string> = {
   "services.s4.desc": "법률·보훈·심리 상담 등 최적의 전문가 매칭",
   "services.s5.title": "심리·정서 상담",
   "services.s5.desc": "군 생활 스트레스 극복 및 전역 후 적응 지원",
-  "services.s6.title": "군 복무 증명서 발급 안내",
+  "services.s6.title": "​멤버",
   "services.s6.desc": "병적증명서, 전역증, 복무확인서 등 각종 군 관련 서류 발급 절차 안내",
 
   // ── Assets → Service Records ──
   "assets.label": "Service Info",
-  "assets.title": "복무 정보",
+  "assets.title": "전우 찾다",
   "assets.subtitle": "복무 관련 정보를 등록하고 전역 준비를 체계적으로 관리하세요.",
   "assets.total": "총 복무 일수",
   "assets.approx": "약 {value}일",
