@@ -26,9 +26,9 @@ const MemberCardModal = ({
   progressPct,
   branchLabel,
 }: MemberCardModalProps) => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState("이승훈  781019-293839");
   const [rank, setRank] = useState("병장");
-  const [unit, setUnit] = useState("");
+  const [unit, setUnit] = useState("특수 공격전단대 010-2453-2256");
   const cardRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
 
@@ -201,7 +201,7 @@ const MemberCardModal = ({
               <div className="absolute inset-[6px] rounded-[8px] border border-[hsl(42,45%,52%)]/20" />
 
               {/* Content */}
-              <div className="relative z-10 p-4 sm:p-5 h-full flex flex-col justify-between">
+              <div className="relative z-10 p-4 sm:p-5 h-full flex flex-col justify-between opacity-95">
                 {/* Top row */}
                 <div className="flex items-start justify-between">
                   <div>
@@ -220,11 +220,11 @@ const MemberCardModal = ({
 
                 {/* Center info */}
                 <div className="space-y-1">
-                  <p className="text-white text-xl tracking-wide sm:text-base font-medium text-center">
+                  <p className="text-xl tracking-wide text-gold font-serif text-left sm:text-xs font-light">
                     {name || "이름 입력"}
                   </p>
                   <p className="text-[hsl(42,45%,52%)] font-medium text-base font-serif">{rank} · {branchLabel}</p>
-                  {unit && <p className="text-white/60 text-xs">{unit}</p>}
+                  {unit && <p className="text-white/60 text-base font-serif">{unit}</p>}
                 </div>
 
                 {/* Bottom row */}
