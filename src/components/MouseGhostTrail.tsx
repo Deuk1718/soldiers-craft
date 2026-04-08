@@ -20,9 +20,9 @@ const MouseGhostTrail = () => {
   const idleTimerRef = useRef<number>(0);
   const idleIntervalRef = useRef<number>(0);
   const selectedColorRef = useRef<number>(-2);
-  const pausedRef = useRef(false);
+  const pausedRef = useRef(true);
   const [selectedIdx, setSelectedIdx] = useState(-2);
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(true);
   const customColorRef = useRef<[number, number, number] | null>(null);
 
   const getColor = useCallback((): [number, number, number] => {
