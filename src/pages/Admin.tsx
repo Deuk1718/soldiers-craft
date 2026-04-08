@@ -192,8 +192,18 @@ const Admin = () => {
 
   const fetchWaitingUsers = async () => {
     setWaitingLoading(true);
-    const { data } = await supabase.from("buddy_waiting_users").select("*").order("created_at", { ascending: false });
-    if (data) setWaitingUsers(data as unknown as WaitingUser[]);
+    const allUsers: any[] = [];
+    let from = 0;
+    const pageSize = 1000;
+    while (true) {
+      const { data } = await supabase.from("buddy_waiting_users").select("*").order("created_at", { ascending: false }).range(from, from + pageSize - 1);
+      if (data && data.length > 0) {
+        allUsers.push(...data);
+        if (data.length < pageSize) break;
+        from += pageSize;
+      } else break;
+    }
+    setWaitingUsers(allUsers as unknown as WaitingUser[]);
     setWaitingLoading(false);
   };
 
