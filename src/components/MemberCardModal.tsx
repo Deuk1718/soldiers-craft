@@ -220,7 +220,7 @@ const MemberCardModal = ({
 
                 {/* Center info */}
                 <div className="space-y-1">
-                  <p className="text-white text-xl tracking-wide sm:text-base font-medium">
+                  <p className="text-white text-xl tracking-wide sm:text-base font-medium text-center">
                     {name || "이름 입력"}
                   </p>
                   <p className="text-[hsl(42,45%,52%)] font-medium text-base font-serif">{rank} · {branchLabel}</p>
