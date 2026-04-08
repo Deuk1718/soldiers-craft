@@ -140,6 +140,7 @@ const Admin = () => {
   const [matchesLoading, setMatchesLoading] = useState(false);
   const [matchSelectA, setMatchSelectA] = useState("");
   const [matchSelectB, setMatchSelectB] = useState("");
+  const [matchSearchQuery, setMatchSearchQuery] = useState("");
 
   // 30-minute inactivity auto-logout
   useEffect(() => {
