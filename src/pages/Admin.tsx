@@ -830,12 +830,19 @@ const Admin = () => {
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {waitingUsers.filter(u => {
-                            if (u.is_matched) return false;
-                            if (!matchSearchQuery.trim()) return true;
-                            const q = matchSearchQuery.toLowerCase();
-                            return `${u.name} ${u.unit} ${u.service_year} ${u.phone}`.toLowerCase().includes(q);
-                          }).map((u) => (
+                          {(() => {
+                            const filtered = waitingUsers.filter(u => {
+                              if (u.is_matched) return false;
+                              if (!matchSearchQuery.trim()) return true;
+                              const q = matchSearchQuery.toLowerCase();
+                              return `${u.name} ${u.unit} ${u.service_year} ${u.phone}`.toLowerCase().includes(q);
+                            });
+                            const totalPages = Math.ceil(filtered.length / MATCH_PAGE_SIZE);
+                            const currentPage = Math.min(matchPage, Math.max(0, totalPages - 1));
+                            const paged = filtered.slice(currentPage * MATCH_PAGE_SIZE, (currentPage + 1) * MATCH_PAGE_SIZE);
+                            return (
+                              <>
+                                {paged.map((u) => (
                             <TableRow
                               key={u.id}
                               className={`cursor-pointer transition-colors ${matchSelectA === u.id || matchSelectB === u.id ? "bg-primary/10" : ""}`}
@@ -862,14 +869,30 @@ const Admin = () => {
                                 <Badge variant="outline" className="text-xs border-success/30 bg-success/10 text-success">대기중</Badge>
                               </TableCell>
                             </TableRow>
-                          ))}
-                          {waitingUsers.filter(u => !u.is_matched).length === 0 && (
+                                ))}
+                                {filtered.length === 0 && (
                             <TableRow>
                             <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                                 등록된 대기 사용자가 없습니다.
                               </TableCell>
                             </TableRow>
-                          )}
+                                )}
+                                {totalPages > 1 && (
+                                  <TableRow>
+                                    <TableCell colSpan={7}>
+                                      <div className="flex items-center justify-between py-2">
+                                        <span className="text-xs text-muted-foreground">총 {filtered.length}명 (페이지 {currentPage + 1}/{totalPages})</span>
+                                        <div className="flex gap-1">
+                                          <Button variant="outline" size="sm" className="h-7 text-xs" disabled={currentPage === 0} onClick={() => setMatchPage(currentPage - 1)}>이전</Button>
+                                          <Button variant="outline" size="sm" className="h-7 text-xs" disabled={currentPage >= totalPages - 1} onClick={() => setMatchPage(currentPage + 1)}>다음</Button>
+                                        </div>
+                                      </div>
+                                    </TableCell>
+                                  </TableRow>
+                                )}
+                              </>
+                            );
+                          })()}
                         </TableBody>
                       </Table>
                     </div>
