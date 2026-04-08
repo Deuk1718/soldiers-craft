@@ -124,7 +124,7 @@ const BuddySearch = () => {
     setRegistering(false);
   };
 
-  const canProceedStep1 = privacyConsent && userPhone.length >= 10 && userEmail.includes("@");
+  const canProceedStep1 = privacyConsent && userPhone.length >= 10;
 
   return (
     <section className="bg-accent/30 py-20" id="buddy">
@@ -342,7 +342,7 @@ const BuddySearch = () => {
                   </div>
                   <div>
                     <label className="mb-1.5 block text-sm font-medium text-foreground">
-                      <Mail className="mr-1 inline h-3.5 w-3.5" />이메일 주소
+                      <Mail className="mr-1 inline h-3.5 w-3.5" />이메일 주소 (선택사항)
                     </label>
                     <Input type="email" placeholder="email@example.com" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
                   </div>
