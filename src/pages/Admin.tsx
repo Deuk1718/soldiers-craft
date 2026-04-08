@@ -121,6 +121,8 @@ const Admin = () => {
     email: string | null;
     is_matched: boolean;
     created_at: string;
+    match_fee_type: string;
+    match_fee: number;
   }
   interface MatchRecord {
     id: string;
