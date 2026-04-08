@@ -36,10 +36,9 @@ const Navbar = ({ onConsultClick }: NavbarProps) => {
   }, [navigate]);
 
   const navItems = [
-    { label: t("nav.will"), href: "#will" },
-    { label: t("nav.services"), href: "#services" },
-    { label: t("nav.assets"), href: "#assets" },
-    { label: t("nav.tax"), href: "#tax" },
+    { label: t("nav.will"), href: "#checklist" },
+    { label: t("nav.tax"), href: "#dday" },
+    { label: t("nav.assets"), href: "#buddy" },
     { label: t("nav.experts"), href: "#experts" },
   ];
 
