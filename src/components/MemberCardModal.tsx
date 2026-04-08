@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useMemo } from "react";
+import React, { useState, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Download, Share2, Shield, SquareStack as SquaresSubtract } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -27,9 +27,18 @@ const MemberCardModal = ({
   progressPct,
   branchLabel,
 }: MemberCardModalProps) => {
-  const [name, setName] = useState("이승훈  781019-293839");
+  const [name, setName] = useState("");
   const [rank, setRank] = useState("병장");
-  const [unit, setUnit] = useState("특수 공격전단대 010-2453-2256");
+  const [unit, setUnit] = useState("");
+
+  // Reset fields every time modal opens
+  React.useEffect(() => {
+    if (open) {
+      setName("손오공 902002-100000");
+      setRank("병장");
+      setUnit("특수 공격전단대 010-2345-6789");
+    }
+  }, [open]);
   const cardRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
 
