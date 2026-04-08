@@ -32,7 +32,14 @@ const MemberCardModal = ({
   const cardRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
 
-  const ranks = ["이병", "일병", "상병", "병장", "하사", "중사", "상사"];
+  const ranks = [
+    "이병", "일병", "상병", "병장",
+    "하사", "중사", "상사", "원사",
+    "준위",
+    "소위", "중위", "대위",
+    "소령", "중령", "대령",
+    "준장 ★", "소장 ★★", "중장 ★★★", "대장 ★★★★",
+  ];
 
   const formatDate = (d: string) => {
     if (!d) return "____.__.__";
@@ -51,10 +58,11 @@ const MemberCardModal = ({
     try {
       const canvas = await captureCard();
       if (!canvas) return;
-      const pdf = new jsPDF("l", "mm", [100, 65]);
-      const w = 100;
-      const h = (canvas.height / canvas.width) * w;
-      pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, w, Math.min(h, 65));
+      // Credit card size: 85.6mm x 53.98mm (ISO/IEC 7810 ID-1)
+      const cardW = 85.6;
+      const cardH = 53.98;
+      const pdf = new jsPDF("l", "mm", [cardW, cardH]);
+      pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, cardW, cardH);
       pdf.save(`Soldiers_Craft_멤버증_${name || "무명"}.pdf`);
     } finally {
       setGenerating(false);
