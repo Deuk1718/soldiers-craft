@@ -37,6 +37,8 @@ const BuddySearch = () => {
   const [waitPhone, setWaitPhone] = useState("");
   const [waitEmail, setWaitEmail] = useState("");
   const [waitConsent, setWaitConsent] = useState(false);
+  const [waitFeeType, setWaitFeeType] = useState<"free" | "paid">("free");
+  const [waitFeeAmount, setWaitFeeAmount] = useState("");
   const [registered, setRegistered] = useState(false);
   const [registering, setRegistering] = useState(false);
 
@@ -106,6 +108,8 @@ const BuddySearch = () => {
       service_year: waitYear,
       phone: waitPhone,
       email: waitEmail || null,
+      match_fee_type: waitFeeType,
+      match_fee: waitFeeType === "paid" ? parseInt(waitFeeAmount) || 0 : 0,
     } as any);
 
     if (error) {
@@ -121,6 +125,8 @@ const BuddySearch = () => {
     setWaitPhone("");
     setWaitEmail("");
     setWaitConsent(false);
+    setWaitFeeType("free");
+    setWaitFeeAmount("");
     setRegistering(false);
   };
 
