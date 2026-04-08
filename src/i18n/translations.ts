@@ -495,7 +495,7 @@ const ko: Record<string, string> = {
 
   // ── Buddy Search ──
   "buddy.label": "Buddy Search",
-  "buddy.title": "동기·전우 찾기",
+  "buddy.title": "전우애는 영원하다 ,전우 찾다.",
   "buddy.subtitle": "부대명이나 기수로 같은 시기 복무한 전우를 검색하세요.",
   "buddy.searchPlaceholder": "부대명, 기수, 이름으로 검색...",
   "buddy.searchBtn": "검색",
