@@ -30,7 +30,7 @@ const ColorPalettePicker = ({ selectedIdx, onSelect, onCustomColor, paused, onTo
     ? customColorProp!
     : selectedIdx >= 0 && selectedIdx < lastIdx
       ? PASTEL_PRESETS[selectedIdx].rgb
-      : [245, 225, 195]; // sand default or random fallback
+      : [190, 215, 180]; // moss default or random fallback
 
   const buttonBg = isCustom
     ? `rgba(${activeRgb[0]}, ${activeRgb[1]}, ${activeRgb[2]}, 0.85)`
