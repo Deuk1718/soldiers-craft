@@ -106,6 +106,7 @@ const ExpertMatchSection = () => {
                   key={expert.id}
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
                   layout
