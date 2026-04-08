@@ -1014,9 +1014,8 @@ const Admin = () => {
                                   <CheckCircle2 className="h-3 w-3" />승인
                                 </Button>
                               )}
-                              <Button variant="ghost" size="sm" className="h-7 text-xs text-destructive hover:bg-destructive/10"
+                              <Button variant="outline" size="sm" className="h-7 text-xs gap-1 text-warning hover:bg-warning/10"
                                 onClick={async () => {
-                                  // Reset is_matched for both users
                                   if (m.user_a_id) await supabase.from("buddy_waiting_users").update({ is_matched: false } as any).eq("id", m.user_a_id);
                                   if (m.user_b_id) await supabase.from("buddy_waiting_users").update({ is_matched: false } as any).eq("id", m.user_b_id);
                                   await supabase.from("buddy_matches").delete().eq("id", m.id);
@@ -1024,7 +1023,15 @@ const Admin = () => {
                                   fetchWaitingUsers();
                                   toast({ title: "매칭 취소 완료", description: "사용자가 대기 목록으로 복귀되었습니다." });
                                 }}>
-                                <Trash2 className="h-3 w-3" />
+                                <RefreshCw className="h-3 w-3" />취소
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 text-xs text-destructive hover:bg-destructive/10"
+                                onClick={async () => {
+                                  await supabase.from("buddy_matches").delete().eq("id", m.id);
+                                  fetchMatches();
+                                  toast({ title: "매칭 삭제 완료", description: "매칭 기록이 완전히 삭제되었습니다." });
+                                }}>
+                                <Trash2 className="h-3 w-3" />삭제
                               </Button>
                             </div>
                           </TableCell>
