@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { QRCodeSVG } from "qrcode.react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface MemberCardModalProps {
   open: boolean;
