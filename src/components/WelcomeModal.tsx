@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, X, Sparkles } from "lucide-react";
+import { Shield, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -45,11 +45,11 @@ const WelcomeModal = ({ onStart }: WelcomeModalProps) => {
 
             <div className="px-6 pb-6 pt-5 sm:px-8 sm:pb-8 sm:pt-6">
               <div className="flex items-center gap-2 text-center justify-center mb-4">
-                <Heart className="h-5 w-5 text-gold fill-gold/30" />
+                <Shield className="h-5 w-5 text-gold" />
                 <h2 className="font-serif-legal text-lg font-bold text-foreground sm:text-xl">
                   {t("welcome.title")}
                 </h2>
-                <Heart className="h-5 w-5 text-gold fill-gold/30" />
+                <Shield className="h-5 w-5 text-gold" />
               </div>
 
               <blockquote className="mx-auto mb-5 max-w-md rounded-xl border border-gold/15 bg-gold/5 px-4 py-3 text-center text-sm leading-relaxed text-muted-foreground italic whitespace-pre-line">

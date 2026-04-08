@@ -1,4 +1,4 @@
-import { Heart, Share2 } from "lucide-react";
+import { Shield, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
@@ -37,7 +37,7 @@ const Footer = ({ onConsultClick }: FooterProps) => {
       <div className="container mx-auto max-w-6xl px-4">
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center gap-2">
-            <Heart className="h-6 w-6 text-gold" />
+            <Shield className="h-6 w-6 text-gold" />
             <span className="font-serif-legal text-xl font-bold">{t("brand.name")}</span>
           </div>
           <p className="mt-4 max-w-md text-sm text-navy-foreground/50">
