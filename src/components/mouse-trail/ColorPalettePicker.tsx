@@ -42,7 +42,7 @@ const ColorPalettePicker = ({ selectedIdx, onSelect, onCustomColor, paused, onTo
     <div style={{ position: "fixed", bottom: 20, right: 20, zIndex: 10000 }}>
       <button
         onClick={() => setOpen((p) => !p)}
-        className="w-11 h-11 rounded-full shadow-lg flex items-center justify-center backdrop-blur-sm border border-white/20 transition-all hover:scale-110"
+        className="w-11 h-11 rounded-full shadow-lg flex items-center justify-center backdrop-blur-sm border border-white/20 transition-all hover:scale-110 bg-[#496209]/[0.58]"
         style={{
           background: buttonBg,
         }}
