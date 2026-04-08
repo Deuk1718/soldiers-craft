@@ -141,6 +141,8 @@ const Admin = () => {
   const [matchSelectA, setMatchSelectA] = useState("");
   const [matchSelectB, setMatchSelectB] = useState("");
   const [matchSearchQuery, setMatchSearchQuery] = useState("");
+  const [matchPage, setMatchPage] = useState(0);
+  const MATCH_PAGE_SIZE = 50;
 
   // 30-minute inactivity auto-logout
   useEffect(() => {
