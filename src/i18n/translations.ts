@@ -41,8 +41,8 @@ const ko: Record<string, string> = {
   "services.s4.desc": "법률·보훈·심리 상담 등 최적의 전문가 매칭",
   "services.s5.title": "심리·정서 상담",
   "services.s5.desc": "군 생활 스트레스 극복 및 전역 후 적응 지원",
-  "services.s6.title": "​멤버",
-  "services.s6.desc": "병적증명서, 전역증, 복무확인서 등 각종 군 관련 서류 발급 절차 안내",
+  "services.s6.title": "Soldiers Craft 멤버증 발급",
+  "services.s6.desc": "간단히 작성해서 이름, 전화번호 등을 설정할 수 있습니다.",
 
   // ── Assets → Service Records ──
   "assets.label": "Service Info",
