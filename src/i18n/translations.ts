@@ -462,6 +462,8 @@ const ko: Record<string, string> = {
   "dday.discharged": "전역 완료",
   "dday.done": "전역!",
   "dday.placeholder": "입대일을 선택하면 D-Day가 계산됩니다.",
+  "dday.memberCard": "멤버증 발급",
+  "dday.dateHint": "연도-월-일",
 
   // ── Checklist ──
   "checklist.label": "Checklist",
@@ -1009,6 +1011,8 @@ const en: Record<string, string> = {
   "dday.discharged": "Discharged",
   "dday.done": "Done!",
   "dday.placeholder": "Select your enlistment date to calculate D-Day.",
+  "dday.memberCard": "Issue Member Card",
+  "dday.dateHint": "YYYY-MM-DD",
 
   "checklist.label": "Checklist",
   "checklist.title": "Discharge Preparation Checklist",
@@ -1538,6 +1542,8 @@ const ja: Record<string, string> = {
   "dday.discharged": "除隊完了",
   "dday.done": "除隊！",
   "dday.placeholder": "入隊日を選択するとD-Dayが計算されます。",
+  "dday.memberCard": "メンバー証発行",
+  "dday.dateHint": "年-月-日",
 
   "checklist.label": "チェックリスト",
   "checklist.title": "除隊準備チェックリスト",
@@ -2067,6 +2073,8 @@ const zh: Record<string, string> = {
   "dday.discharged": "已退伍",
   "dday.done": "退伍！",
   "dday.placeholder": "选择入伍日期后将计算D-Day。",
+  "dday.memberCard": "会员证发行",
+  "dday.dateHint": "年-月-日",
 
   "checklist.label": "清单",
   "checklist.title": "退伍准备清单",

@@ -115,7 +115,9 @@ const DdayHeroSection = () => {
 
             {/* Enlist date input */}
             <div className="mb-6">
-              <Label className="mb-2 block text-sm font-medium text-navy-foreground/70">{t("dday.enlistDate")}</Label>
+              <Label className="mb-2 block text-sm font-medium text-navy-foreground/70">
+                {t("dday.enlistDate")} <span className="text-xs text-navy-foreground/40 ml-1">({t("dday.dateHint")})</span>
+              </Label>
               <div className="flex items-end gap-3">
                 <Input
                   type="date"
@@ -129,7 +131,7 @@ const DdayHeroSection = () => {
                   size="sm"
                 >
                   <CreditCard className="h-4 w-4" />
-                  멤버증 발급
+                  {t("dday.memberCard")}
                 </Button>
               </div>
             </div>
