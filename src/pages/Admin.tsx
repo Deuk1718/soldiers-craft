@@ -504,6 +504,9 @@ const Admin = () => {
                 </span>
               )}
             </TabsTrigger>
+            <TabsTrigger value="matching" className="gap-1.5 rounded-lg px-4 data-[state=active]:bg-background data-[state=active]:shadow-sm">
+              <Link2 className="h-4 w-4" />매칭 관리
+            </TabsTrigger>
           </TabsList>
 
           {/* Consultations Tab */}
