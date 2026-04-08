@@ -30,28 +30,30 @@ const MemberCardModal = ({
 }: MemberCardModalProps) => {
   const { t } = useLanguage();
   const [name, setName] = useState("");
-  const [rank, setRank] = useState("병장");
+  const [rank, setRank] = useState("");
   const [unit, setUnit] = useState("");
 
   // Reset fields every time modal opens
   React.useEffect(() => {
     if (open) {
       setName(t("mc.name.default"));
-      setRank("병장");
+      setRank(t("rank.sergeant"));
       setUnit(t("mc.unit.default"));
     }
   }, [open, t]);
   const cardRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
 
-  const ranks = [
-    "이병", "일병", "상병", "병장",
-    "하사", "중사", "상사", "원사",
-    "준위",
-    "소위", "중위", "대위",
-    "소령", "중령", "대령",
-    "준장 ★", "소장 ★★", "중장 ★★★", "대장 ★★★★",
+  const rankKeys = [
+    "rank.private", "rank.pfc", "rank.corporal", "rank.sergeant",
+    "rank.staff_sgt", "rank.sfc", "rank.msgt", "rank.sma",
+    "rank.wo",
+    "rank.2lt", "rank.1lt", "rank.cpt",
+    "rank.maj", "rank.ltc", "rank.col",
+    "rank.bg", "rank.mg", "rank.lg", "rank.gen",
   ];
+
+  const ranks = rankKeys.map((k) => t(k));
 
   const formatDate = (d: string) => {
     if (!d) return "____.__.__";
