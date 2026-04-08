@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Download, Share2, Shield, Star } from "lucide-react";
+import { X, Download, Share2, Shield, SquareStack as SquaresSubtract } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -212,18 +212,18 @@ const MemberCardModal = ({
                     <p className="text-[hsl(42,45%,52%)]/60 text-[9px] mt-0.5 tracking-widest">MEMBER CARD</p>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Star className="h-3 w-3 text-[hsl(42,45%,52%)]" fill="hsl(42,45%,52%)" />
-                    <Star className="h-3 w-3 text-[hsl(42,45%,52%)]" fill="hsl(42,45%,52%)" />
-                    <Star className="h-3 w-3 text-[hsl(42,45%,52%)]" fill="hsl(42,45%,52%)" />
+                    <SquaresSubtract className="h-3 w-3 text-[hsl(42,45%,52%)]" fill="hsl(42,45%,52%)" />
+                    <SquaresSubtract className="h-3 w-3 text-[hsl(42,45%,52%)]" fill="hsl(42,45%,52%)" />
+                    <SquaresSubtract className="h-3 w-3 text-[hsl(42,45%,52%)]" fill="hsl(42,45%,52%)" />
                   </div>
                 </div>
 
                 {/* Center info */}
                 <div className="space-y-1">
-                  <p className="text-white text-xl sm:text-2xl font-bold tracking-wide">
+                  <p className="text-white text-xl tracking-wide sm:text-base font-medium">
                     {name || "이름 입력"}
                   </p>
-                  <p className="text-[hsl(42,45%,52%)] text-sm font-medium">{rank} · {branchLabel}</p>
+                  <p className="text-[hsl(42,45%,52%)] font-medium text-base font-serif">{rank} · {branchLabel}</p>
                   {unit && <p className="text-white/60 text-xs">{unit}</p>}
                 </div>
 
