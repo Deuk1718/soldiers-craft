@@ -111,30 +111,31 @@ const Admin = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [notifLoading, setNotifLoading] = useState(false);
 
-  // Matching management state
+  // Matching management state — from DB
+  interface WaitingUser {
+    id: string;
+    name: string;
+    unit: string;
+    service_year: string;
+    phone: string;
+    email: string | null;
+    is_matched: boolean;
+    created_at: string;
+  }
   interface MatchRecord {
     id: string;
-    userA: string;
-    userB: string;
-    unitA: string;
-    unitB: string;
-    status: "verified" | "pending" | "rejected";
-    date: string;
+    user_a_id: string;
+    user_b_id: string;
+    match_type: string;
+    status: string;
+    created_at: string;
+    user_a?: WaitingUser;
+    user_b?: WaitingUser;
   }
-  const [mockUsers] = useState([
-    { id: "u1", name: "김OO", unit: "3사단 22대대", classYear: "24-71기", period: "2023.01 ~ 2024.09" },
-    { id: "u2", name: "이OO", unit: "백골부대 수색중대", classYear: "24-71기", period: "2023.01 ~ 2024.09" },
-    { id: "u3", name: "박OO", unit: "3사단 1대대", classYear: "23-65기", period: "2022.06 ~ 2024.03" },
-    { id: "u4", name: "최OO", unit: "1사단 본부중대", classYear: "24-71기", period: "2023.03 ~ 2024.12" },
-    { id: "u5", name: "정OO", unit: "백골부대 3중대", classYear: "23-65기", period: "2022.06 ~ 2024.03" },
-    { id: "u6", name: "한OO", unit: "7사단 수색대대", classYear: "24-73기", period: "2023.06 ~ 2025.03" },
-    { id: "u7", name: "윤OO", unit: "3사단 22대대", classYear: "23-65기", period: "2022.03 ~ 2023.12" },
-    { id: "u8", name: "조OO", unit: "1사단 포병대대", classYear: "24-71기", period: "2023.01 ~ 2024.09" },
-  ]);
-  const [matches, setMatches] = useState<MatchRecord[]>([
-    { id: "m1", userA: "김OO", userB: "이OO", unitA: "3사단 22대대", unitB: "백골부대 수색중대", status: "verified", date: "2025-01-15" },
-    { id: "m2", userA: "박OO", userB: "정OO", unitA: "3사단 1대대", unitB: "백골부대 3중대", status: "pending", date: "2025-01-20" },
-  ]);
+  const [waitingUsers, setWaitingUsers] = useState<WaitingUser[]>([]);
+  const [waitingLoading, setWaitingLoading] = useState(false);
+  const [matches, setMatches] = useState<MatchRecord[]>([]);
+  const [matchesLoading, setMatchesLoading] = useState(false);
   const [matchSelectA, setMatchSelectA] = useState("");
   const [matchSelectB, setMatchSelectB] = useState("");
 
@@ -181,8 +182,34 @@ const Admin = () => {
       fetchExperts();
       fetchServiceStatus();
       fetchNotifications();
+      fetchWaitingUsers();
+      fetchMatches();
     }
   }, [session]);
+
+  const fetchWaitingUsers = async () => {
+    setWaitingLoading(true);
+    const { data } = await supabase.from("buddy_waiting_users").select("*").order("created_at", { ascending: false });
+    if (data) setWaitingUsers(data as unknown as WaitingUser[]);
+    setWaitingLoading(false);
+  };
+
+  const fetchMatches = async () => {
+    setMatchesLoading(true);
+    const { data } = await supabase.from("buddy_matches").select("*").order("created_at", { ascending: false });
+    if (data) {
+      // Enrich with user info
+      const { data: users } = await supabase.from("buddy_waiting_users").select("*");
+      const userMap = new Map((users || []).map((u: any) => [u.id, u]));
+      const enriched = data.map((m: any) => ({
+        ...m,
+        user_a: userMap.get(m.user_a_id),
+        user_b: userMap.get(m.user_b_id),
+      }));
+      setMatches(enriched as MatchRecord[]);
+    }
+    setMatchesLoading(false);
+  };
 
   const fetchServiceStatus = async () => {
     const { data } = await supabase.from("site_settings").select("service_enabled").eq("id", "main").single();
@@ -749,11 +776,13 @@ const Admin = () => {
 
               {/* Tab A: Manual Matching */}
               <TabsContent value="manual" className="space-y-6">
-                {/* Waiting Users Table */}
                 <Card className="shadow-card">
                   <CardContent className="p-0">
-                    <div className="border-b border-border px-5 py-3">
-                      <h3 className="text-sm font-semibold text-foreground">대기 사용자 목록</h3>
+                    <div className="border-b border-border px-5 py-3 flex items-center justify-between">
+                      <h3 className="text-sm font-semibold text-foreground">대기 사용자 목록 ({waitingUsers.filter(u => !u.is_matched).length}명)</h3>
+                      <Button variant="outline" size="sm" onClick={fetchWaitingUsers} disabled={waitingLoading} className="gap-1.5">
+                        <RefreshCw className={`h-3.5 w-3.5 ${waitingLoading ? "animate-spin" : ""}`} />
+                      </Button>
                     </div>
                     <div className="overflow-x-auto">
                       <Table>
@@ -762,12 +791,13 @@ const Admin = () => {
                             <TableHead className="w-10"></TableHead>
                             <TableHead>이름</TableHead>
                             <TableHead>부대</TableHead>
-                            <TableHead>기수</TableHead>
-                            <TableHead>복무 기간</TableHead>
+                            <TableHead>기수/연도</TableHead>
+                            <TableHead>전화번호</TableHead>
+                            <TableHead>상태</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {mockUsers.map((u) => (
+                          {waitingUsers.filter(u => !u.is_matched).map((u) => (
                             <TableRow
                               key={u.id}
                               className={`cursor-pointer transition-colors ${matchSelectA === u.id || matchSelectB === u.id ? "bg-primary/10" : ""}`}
@@ -779,14 +809,24 @@ const Admin = () => {
                               }}
                             >
                               <TableCell>
-                                <div className={`h-4 w-4 rounded border ${matchSelectA === u.id ? "bg-primary border-primary" : matchSelectB === u.id ? "bg-primary border-primary" : "border-border"}`} />
+                                <div className={`h-4 w-4 rounded border ${matchSelectA === u.id || matchSelectB === u.id ? "bg-primary border-primary" : "border-border"}`} />
                               </TableCell>
                               <TableCell className="font-medium">{u.name}</TableCell>
                               <TableCell>{u.unit}</TableCell>
-                              <TableCell><Badge variant="outline" className="text-xs">{u.classYear}</Badge></TableCell>
-                              <TableCell className="text-muted-foreground text-xs">{u.period}</TableCell>
+                              <TableCell><Badge variant="outline" className="text-xs">{u.service_year}</Badge></TableCell>
+                              <TableCell className="text-muted-foreground text-xs">{u.phone}</TableCell>
+                              <TableCell>
+                                <Badge variant="outline" className="text-xs border-success/30 bg-success/10 text-success">대기중</Badge>
+                              </TableCell>
                             </TableRow>
                           ))}
+                          {waitingUsers.filter(u => !u.is_matched).length === 0 && (
+                            <TableRow>
+                              <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                                등록된 대기 사용자가 없습니다.
+                              </TableCell>
+                            </TableRow>
+                          )}
                         </TableBody>
                       </Table>
                     </div>
@@ -795,26 +835,30 @@ const Admin = () => {
 
                 <div className="flex items-center gap-3">
                   <p className="text-sm text-muted-foreground">
-                    선택: {matchSelectA ? mockUsers.find(u => u.id === matchSelectA)?.name : "—"} ↔ {matchSelectB ? mockUsers.find(u => u.id === matchSelectB)?.name : "—"}
+                    선택: {matchSelectA ? waitingUsers.find(u => u.id === matchSelectA)?.name : "—"} ↔ {matchSelectB ? waitingUsers.find(u => u.id === matchSelectB)?.name : "—"}
                   </p>
                   <Button
                     variant="warmBrown"
                     className="gap-1.5"
                     disabled={!matchSelectA || !matchSelectB}
-                    onClick={() => {
-                      const a = mockUsers.find(u => u.id === matchSelectA);
-                      const b = mockUsers.find(u => u.id === matchSelectB);
-                      if (a && b) {
-                        setMatches(prev => [...prev, {
-                          id: `m${Date.now()}`,
-                          userA: a.name, userB: b.name,
-                          unitA: a.unit, unitB: b.unit,
-                          status: "verified",
-                          date: new Date().toISOString().split("T")[0],
-                        }]);
+                    onClick={async () => {
+                      const { error } = await supabase.from("buddy_matches").insert({
+                        user_a_id: matchSelectA,
+                        user_b_id: matchSelectB,
+                        match_type: "manual",
+                        status: "verified",
+                      } as any);
+                      if (error) {
+                        toast({ title: "매칭 실패", description: error.message, variant: "destructive" });
+                      } else {
+                        const a = waitingUsers.find(u => u.id === matchSelectA);
+                        const b = waitingUsers.find(u => u.id === matchSelectB);
+                        toast({ title: "수동 매칭 완료", description: `${a?.name}님과 ${b?.name}님이 매칭되었습니다.` });
                         setMatchSelectA("");
                         setMatchSelectB("");
-                        toast({ title: "수동 매칭 완료", description: `${a.name}님과 ${b.name}님이 매칭되었습니다.` });
+                        fetchMatches();
+                        fetchWaitingUsers();
+                        fetchNotifications();
                       }
                     }}
                   >
@@ -830,51 +874,43 @@ const Admin = () => {
                     <RefreshCw className="mx-auto h-10 w-10 text-primary/40" />
                     <h3 className="mt-3 text-lg font-semibold text-foreground">자동 매칭 시스템</h3>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      동일한 부대 및 기수를 가진 사용자를 자동으로 찾아 매칭합니다.
+                      동일한 부대 및 복무 연도를 가진 사용자를 자동으로 찾아 매칭합니다.
                     </p>
                     <Button
                       variant="warmBrown"
                       className="mt-4 gap-1.5"
-                      onClick={() => {
-                        // Group by unit + classYear
-                        const groups: Record<string, typeof mockUsers> = {};
-                        mockUsers.forEach((u) => {
-                          const key = `${u.unit}|${u.classYear}`;
+                      onClick={async () => {
+                        const unmatched = waitingUsers.filter(u => !u.is_matched);
+                        // Group by unit + service_year
+                        const groups: Record<string, WaitingUser[]> = {};
+                        unmatched.forEach((u) => {
+                          const key = `${u.unit}|${u.service_year}`;
                           if (!groups[key]) groups[key] = [];
                           groups[key].push(u);
                         });
 
                         let newMatches = 0;
-                        Object.values(groups).forEach((group) => {
+                        for (const group of Object.values(groups)) {
                           if (group.length >= 2) {
-                            // Pair them up
                             for (let i = 0; i < group.length - 1; i += 2) {
-                              const a = group[i];
-                              const b = group[i + 1];
-                              const exists = matches.some(
-                                (m) => (m.userA === a.name && m.userB === b.name) || (m.userA === b.name && m.userB === a.name)
-                              );
-                              if (!exists) {
-                                setMatches((prev) => [
-                                  ...prev,
-                                  {
-                                    id: `m${Date.now()}-${i}`,
-                                    userA: a.name, userB: b.name,
-                                    unitA: a.unit, unitB: b.unit,
-                                    status: "pending",
-                                    date: new Date().toISOString().split("T")[0],
-                                  },
-                                ]);
-                                newMatches++;
-                              }
+                              const { error } = await supabase.from("buddy_matches").insert({
+                                user_a_id: group[i].id,
+                                user_b_id: group[i + 1].id,
+                                match_type: "auto",
+                                status: "pending",
+                              } as any);
+                              if (!error) newMatches++;
                             }
                           }
-                        });
+                        }
 
                         toast({
                           title: "자동 매칭 완료",
                           description: newMatches > 0 ? `${newMatches}건의 새로운 매칭이 발견되었습니다.` : "새로운 매칭이 없습니다.",
                         });
+                        fetchMatches();
+                        fetchWaitingUsers();
+                        fetchNotifications();
                       }}
                     >
                       <RefreshCw className="h-4 w-4" />자동 매칭 시스템 가동
@@ -887,8 +923,11 @@ const Admin = () => {
             {/* Matching Status */}
             <Card className="shadow-card">
               <CardContent className="p-0">
-                <div className="border-b border-border px-5 py-3">
+                <div className="border-b border-border px-5 py-3 flex items-center justify-between">
                   <h3 className="text-sm font-semibold text-foreground">매칭 현황 ({matches.length}건)</h3>
+                  <Button variant="outline" size="sm" onClick={fetchMatches} disabled={matchesLoading} className="gap-1.5">
+                    <RefreshCw className={`h-3.5 w-3.5 ${matchesLoading ? "animate-spin" : ""}`} />
+                  </Button>
                 </div>
                 <div className="overflow-x-auto">
                   <Table>
@@ -896,6 +935,7 @@ const Admin = () => {
                       <TableRow>
                         <TableHead>사용자 A</TableHead>
                         <TableHead>사용자 B</TableHead>
+                        <TableHead>타입</TableHead>
                         <TableHead>상태</TableHead>
                         <TableHead>날짜</TableHead>
                         <TableHead>관리</TableHead>
@@ -906,15 +946,20 @@ const Admin = () => {
                         <TableRow key={m.id}>
                           <TableCell>
                             <div>
-                              <p className="font-medium text-foreground">{m.userA}</p>
-                              <p className="text-xs text-muted-foreground">{m.unitA}</p>
+                              <p className="font-medium text-foreground">{m.user_a?.name || "—"}</p>
+                              <p className="text-xs text-muted-foreground">{m.user_a?.unit || ""}</p>
                             </div>
                           </TableCell>
                           <TableCell>
                             <div>
-                              <p className="font-medium text-foreground">{m.userB}</p>
-                              <p className="text-xs text-muted-foreground">{m.unitB}</p>
+                              <p className="font-medium text-foreground">{m.user_b?.name || "—"}</p>
+                              <p className="text-xs text-muted-foreground">{m.user_b?.unit || ""}</p>
                             </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="text-xs">
+                              {m.match_type === "manual" ? "수동" : "자동"}
+                            </Badge>
                           </TableCell>
                           <TableCell>
                             <Badge variant="outline" className={
@@ -925,23 +970,39 @@ const Admin = () => {
                               {m.status === "verified" ? "인증완료" : m.status === "pending" ? "대기중" : "거절"}
                             </Badge>
                           </TableCell>
-                          <TableCell className="text-xs text-muted-foreground">{m.date}</TableCell>
+                          <TableCell className="text-xs text-muted-foreground">{format(new Date(m.created_at), "yyyy.MM.dd", { locale: ko })}</TableCell>
                           <TableCell>
                             <div className="flex gap-1">
                               {m.status === "pending" && (
                                 <Button variant="outline" size="sm" className="h-7 text-xs gap-1"
-                                  onClick={() => setMatches(prev => prev.map(x => x.id === m.id ? { ...x, status: "verified" } : x))}>
+                                  onClick={async () => {
+                                    await supabase.from("buddy_matches").update({ status: "verified" } as any).eq("id", m.id);
+                                    fetchMatches();
+                                    toast({ title: "매칭 승인 완료" });
+                                  }}>
                                   <CheckCircle2 className="h-3 w-3" />승인
                                 </Button>
                               )}
                               <Button variant="ghost" size="sm" className="h-7 text-xs text-destructive hover:bg-destructive/10"
-                                onClick={() => setMatches(prev => prev.filter(x => x.id !== m.id))}>
+                                onClick={async () => {
+                                  await supabase.from("buddy_matches").delete().eq("id", m.id);
+                                  fetchMatches();
+                                  fetchWaitingUsers();
+                                  toast({ title: "매칭 삭제 완료" });
+                                }}>
                                 <Trash2 className="h-3 w-3" />
                               </Button>
                             </div>
                           </TableCell>
                         </TableRow>
                       ))}
+                      {matches.length === 0 && (
+                        <TableRow>
+                          <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                            매칭 기록이 없습니다.
+                          </TableCell>
+                        </TableRow>
+                      )}
                     </TableBody>
                   </Table>
                 </div>

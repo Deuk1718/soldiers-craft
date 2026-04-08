@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Users, Phone, Mail, Shield, CreditCard, CheckCircle2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -7,77 +7,82 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import MatchSuccessAnimation from "./MatchSuccessAnimation";
-
-interface MockBuddy {
-  id: string;
-  name: string;
-  unit: string;
-  classYear: string;
-  periodStart: string;
-  periodEnd: string;
-  phone: string;
-  email: string;
-}
-
-const MOCK_BUDDIES: MockBuddy[] = [
-  { id: "1", name: "김OO", unit: "논산 23연대 21중대", classYear: "98", periodStart: "1998.01", periodEnd: "2000.01", phone: "010-1234-5678", email: "kim@mail.com" },
-  { id: "2", name: "이승훈", unit: "논산 23연대 21중대", classYear: "98", periodStart: "1998.03", periodEnd: "2000.03", phone: "010-2345-6789", email: "lee@mail.com" },
-  { id: "3", name: "박OO", unit: "3사단 22대대", classYear: "24-71", periodStart: "2023.01", periodEnd: "2024.09", phone: "010-3456-7890", email: "park@mail.com" },
-  { id: "4", name: "최OO", unit: "백골부대 수색중대", classYear: "24-71", periodStart: "2023.01", periodEnd: "2024.09", phone: "010-4567-8901", email: "choi@mail.com" },
-  { id: "5", name: "정OO", unit: "1사단 본부중대", classYear: "23-65", periodStart: "2022.06", periodEnd: "2024.03", phone: "010-5678-9012", email: "jung@mail.com" },
-  { id: "6", name: "한OO", unit: "7사단 수색대대", classYear: "24-73", periodStart: "2023.06", periodEnd: "2025.03", phone: "010-6789-0123", email: "han@mail.com" },
-];
 
 interface WaitingUser {
   id: string;
   name: string;
   unit: string;
-  serviceYear: string;
+  service_year: string;
   phone: string;
+  email: string | null;
+  is_matched: boolean;
+  created_at: string;
 }
 
 const BuddySearch = () => {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [query, setQuery] = useState("");
   const [searched, setSearched] = useState(false);
-  const [results, setResults] = useState<MockBuddy[]>([]);
+  const [results, setResults] = useState<WaitingUser[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   // Wait & Notify form
   const [waitName, setWaitName] = useState("");
   const [waitUnit, setWaitUnit] = useState("");
   const [waitYear, setWaitYear] = useState("");
   const [waitPhone, setWaitPhone] = useState("");
+  const [waitEmail, setWaitEmail] = useState("");
   const [waitConsent, setWaitConsent] = useState(false);
-  const [waitingList, setWaitingList] = useState<WaitingUser[]>([]);
   const [registered, setRegistered] = useState(false);
+  const [registering, setRegistering] = useState(false);
 
   // Matching flow
   const [matchDialogOpen, setMatchDialogOpen] = useState(false);
   const [matchStep, setMatchStep] = useState(1);
-  const [selectedBuddy, setSelectedBuddy] = useState<MockBuddy | null>(null);
+  const [selectedBuddy, setSelectedBuddy] = useState<WaitingUser | null>(null);
   const [privacyConsent, setPrivacyConsent] = useState(false);
   const [userPhone, setUserPhone] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [showMatchAnimation, setShowMatchAnimation] = useState(false);
 
-  // Natural language search — parse query for unit, year, name matches
-  const handleSearch = () => {
+  // Search from database
+  const handleSearch = async () => {
     if (!query.trim()) return;
     setSearched(true);
     setRegistered(false);
-    const q = query.toLowerCase().replace(/\s+/g, " ");
+    setSearchLoading(true);
 
-    const filtered = MOCK_BUDDIES.filter((b) => {
-      const combined = `${b.name} ${b.unit} ${b.classYear} ${b.periodStart} ${b.periodEnd}`.toLowerCase();
-      // Check if every word in the query appears somewhere
-      const words = q.split(" ").filter(Boolean);
+    const q = query.toLowerCase().replace(/\s+/g, " ").trim();
+    const words = q.split(" ").filter(Boolean);
+
+    // Fetch all non-matched waiting users
+    const { data, error } = await supabase
+      .from("buddy_waiting_users")
+      .select("*")
+      .eq("is_matched", false)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      toast({ title: "검색 오류", description: error.message, variant: "destructive" });
+      setSearchLoading(false);
+      return;
+    }
+
+    // Client-side filter by query words
+    const filtered = (data || []).filter((b: any) => {
+      const combined = `${b.name} ${b.unit} ${b.service_year}`.toLowerCase();
       return words.some((w) => combined.includes(w));
     });
-    setResults(filtered);
+
+    setResults(filtered as WaitingUser[]);
+    setSearchLoading(false);
   };
 
-  const handleConnect = (buddy: MockBuddy) => {
+  const handleConnect = (buddy: WaitingUser) => {
     setSelectedBuddy(buddy);
     setMatchStep(1);
     setPrivacyConsent(false);
@@ -91,18 +96,32 @@ const BuddySearch = () => {
     setShowMatchAnimation(true);
   };
 
-  const handleRegisterWait = () => {
+  const handleRegisterWait = async () => {
     if (!waitName || !waitUnit || !waitYear || !waitPhone || !waitConsent) return;
-    setWaitingList((prev) => [
-      ...prev,
-      { id: `w${Date.now()}`, name: waitName, unit: waitUnit, serviceYear: waitYear, phone: waitPhone },
-    ]);
-    setRegistered(true);
+    setRegistering(true);
+
+    const { error } = await supabase.from("buddy_waiting_users").insert({
+      name: waitName,
+      unit: waitUnit,
+      service_year: waitYear,
+      phone: waitPhone,
+      email: waitEmail || null,
+    } as any);
+
+    if (error) {
+      toast({ title: "등록 실패", description: error.message, variant: "destructive" });
+    } else {
+      setRegistered(true);
+      toast({ title: "등록 완료", description: "동기가 등록되면 연락드리겠습니다." });
+    }
+
     setWaitName("");
     setWaitUnit("");
     setWaitYear("");
     setWaitPhone("");
+    setWaitEmail("");
     setWaitConsent(false);
+    setRegistering(false);
   };
 
   const canProceedStep1 = privacyConsent && userPhone.length >= 10 && userEmail.includes("@");
@@ -143,7 +162,7 @@ const BuddySearch = () => {
                 className="h-12 pl-10 text-base"
               />
             </div>
-            <Button variant="warmBrown" onClick={handleSearch} className="h-12 shrink-0 px-6">
+            <Button variant="warmBrown" onClick={handleSearch} className="h-12 shrink-0 px-6" disabled={searchLoading}>
               <Search className="mr-2 h-4 w-4" />
               검색
             </Button>
@@ -181,11 +200,11 @@ const BuddySearch = () => {
                         <div className="flex items-center gap-2">
                           <p className="font-semibold text-card-foreground">{r.unit}</p>
                           <Badge variant="outline" className="text-xs border-primary/30 text-primary">
-                            {r.classYear}기
+                            {r.service_year}
                           </Badge>
                         </div>
                         <p className="mt-1 text-xs text-muted-foreground">
-                          {r.periodStart} ~ {r.periodEnd} · {r.name}
+                          {r.name}
                         </p>
                       </div>
                     </div>
@@ -225,8 +244,9 @@ const BuddySearch = () => {
                     <div className="space-y-3 max-w-md mx-auto">
                       <Input placeholder="이름" value={waitName} onChange={(e) => setWaitName(e.target.value)} />
                       <Input placeholder="부대 (예: 논산 23연대 21중대)" value={waitUnit} onChange={(e) => setWaitUnit(e.target.value)} />
-                      <Input placeholder="복무 연도 (예: 1998)" value={waitYear} onChange={(e) => setWaitYear(e.target.value)} />
+                      <Input placeholder="복무 연도 (예: 1998 또는 24-71기)" value={waitYear} onChange={(e) => setWaitYear(e.target.value)} />
                       <Input placeholder="전화번호 (010-0000-0000)" type="tel" value={waitPhone} onChange={(e) => setWaitPhone(e.target.value)} />
+                      <Input placeholder="이메일 (선택사항)" type="email" value={waitEmail} onChange={(e) => setWaitEmail(e.target.value)} />
 
                       <div className="flex items-start gap-3 rounded-xl border border-border bg-secondary/30 p-3">
                         <Checkbox
@@ -243,10 +263,10 @@ const BuddySearch = () => {
                       <Button
                         variant="warmBrown"
                         className="h-11 w-full"
-                        disabled={!waitName || !waitUnit || !waitYear || !waitPhone || !waitConsent}
+                        disabled={!waitName || !waitUnit || !waitYear || !waitPhone || !waitConsent || registering}
                         onClick={handleRegisterWait}
                       >
-                        등록하기
+                        {registering ? "등록 중..." : "등록하기"}
                       </Button>
                     </div>
                   )}
@@ -304,7 +324,7 @@ const BuddySearch = () => {
                   {selectedBuddy && (
                     <div className="rounded-xl border border-primary/20 bg-primary/5 p-3">
                       <p className="text-sm font-medium text-foreground">
-                        매칭 대상: {selectedBuddy.unit} {selectedBuddy.classYear}기 전우
+                        매칭 대상: {selectedBuddy.unit} {selectedBuddy.service_year} 전우
                       </p>
                     </div>
                   )}
@@ -378,8 +398,8 @@ const BuddySearch = () => {
           open={showMatchAnimation}
           onClose={() => setShowMatchAnimation(false)}
           userA={{ name: "나", unit: "내 부대", period: "내 복무기간" }}
-          userB={{ name: selectedBuddy.name, unit: selectedBuddy.unit, period: `${selectedBuddy.periodStart} ~ ${selectedBuddy.periodEnd}` }}
-          contactInfo={{ phone: selectedBuddy.phone, email: selectedBuddy.email }}
+          userB={{ name: selectedBuddy.name, unit: selectedBuddy.unit, period: selectedBuddy.service_year }}
+          contactInfo={{ phone: selectedBuddy.phone, email: selectedBuddy.email || "" }}
         />
       )}
     </section>
