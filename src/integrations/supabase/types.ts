@@ -80,6 +80,8 @@ export type Database = {
           email: string | null
           id: string
           is_matched: boolean
+          match_fee: number
+          match_fee_type: string
           name: string
           phone: string
           service_year: string
@@ -90,6 +92,8 @@ export type Database = {
           email?: string | null
           id?: string
           is_matched?: boolean
+          match_fee?: number
+          match_fee_type?: string
           name: string
           phone: string
           service_year: string
@@ -100,6 +104,8 @@ export type Database = {
           email?: string | null
           id?: string
           is_matched?: boolean
+          match_fee?: number
+          match_fee_type?: string
           name?: string
           phone?: string
           service_year?: string
