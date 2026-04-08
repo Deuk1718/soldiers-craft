@@ -71,7 +71,7 @@ const BuddySearch = () => {
       .order("created_at", { ascending: false });
 
     if (error) {
-      toast({ title: "검색 오류", description: error.message, variant: "destructive" });
+      toast({ title: t("buddy.searchError"), description: error.message, variant: "destructive" });
       setSearchLoading(false);
       return;
     }
@@ -145,10 +145,10 @@ const BuddySearch = () => {
           className="mb-10 text-center"
         >
           <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            전우애는 영원하다 ,전우 찾다.
+            {t("buddy.title")}
           </h2>
           <p className="mt-3 text-muted-foreground">
-            부대, 기수, 이름 등 기억나는 정보를 자유롭게 입력하세요
+            {t("buddy.hint")}
           </p>
         </motion.div>
 
@@ -163,7 +163,7 @@ const BuddySearch = () => {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="예: 논산 23연대 21중대 98년도 이승훈"
+                placeholder={t("buddy.searchPlaceholderLong")}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
@@ -172,7 +172,7 @@ const BuddySearch = () => {
             </div>
             <Button variant="warmBrown" onClick={handleSearch} className="h-12 shrink-0 px-6" disabled={searchLoading}>
               <Search className="mr-2 h-4 w-4" />
-              검색
+              {t("buddy.searchBtn")}
             </Button>
           </div>
         </motion.div>
@@ -188,7 +188,7 @@ const BuddySearch = () => {
               className="space-y-4"
             >
               <p className="text-sm text-muted-foreground">
-                검색 결과: <span className="font-semibold text-foreground">{results.length}명</span>
+                {t("buddy.results")} <span className="font-semibold text-foreground">{results.length}{t("buddy.resultUnit")}</span>
               </p>
 
               {results.length > 0 ? (
@@ -214,13 +214,13 @@ const BuddySearch = () => {
                         <div className="mt-1 flex items-center gap-2">
                           <p className="text-xs text-muted-foreground">{r.name}</p>
                           <Badge variant="outline" className={`text-xs ${r.match_fee_type === "paid" ? "border-primary/30 bg-primary/10 text-primary" : "border-muted"}`}>
-                            {r.match_fee_type === "paid" ? `₩${(r.match_fee || 0).toLocaleString()}` : "무료"}
+                            {r.match_fee_type === "paid" ? `₩${(r.match_fee || 0).toLocaleString()}` : t("buddy.free")}
                           </Badge>
                         </div>
                       </div>
                     </div>
                     <Button variant="warmBrown" size="sm" onClick={() => handleConnect(r)}>
-                      연결하기
+                      {t("buddy.connect")}
                     </Button>
                   </motion.div>
                 ))
@@ -233,9 +233,9 @@ const BuddySearch = () => {
                 >
                   <div className="text-center mb-6">
                     <Users className="mx-auto h-10 w-10 text-muted-foreground/40" />
-                    <h3 className="mt-3 text-lg font-semibold text-foreground">찾는 동기가 없나요?</h3>
+                    <h3 className="mt-3 text-lg font-semibold text-foreground">{t("buddy.noMatch.title")}</h3>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      등록해두면 매칭 시 연락드립니다
+                      {t("buddy.noMatch.desc")}
                     </p>
                   </div>
 
@@ -246,22 +246,22 @@ const BuddySearch = () => {
                       className="text-center py-4"
                     >
                       <CheckCircle2 className="mx-auto h-12 w-12 text-success" />
-                      <p className="mt-3 text-lg font-semibold text-foreground">등록 완료!</p>
+                      <p className="mt-3 text-lg font-semibold text-foreground">{t("buddy.registered")}</p>
                       <p className="mt-1 text-sm text-muted-foreground">
-                        동기가 등록되면 연락드리겠습니다.
+                        {t("buddy.registered.desc")}
                       </p>
                     </motion.div>
                   ) : (
                     <div className="space-y-3 max-w-md mx-auto">
-                      <Input placeholder="이름" value={waitName} onChange={(e) => setWaitName(e.target.value)} />
-                      <Input placeholder="부대 (예: 논산 23연대 21중대)" value={waitUnit} onChange={(e) => setWaitUnit(e.target.value)} />
-                      <Input placeholder="복무 연도 (예: 1998 또는 24-71기)" value={waitYear} onChange={(e) => setWaitYear(e.target.value)} />
-                      <Input placeholder="전화번호 (010-0000-0000)" type="tel" value={waitPhone} onChange={(e) => setWaitPhone(e.target.value)} />
-                      <Input placeholder="이메일 (선택사항)" type="email" value={waitEmail} onChange={(e) => setWaitEmail(e.target.value)} />
+                      <Input placeholder={t("buddy.form.name")} value={waitName} onChange={(e) => setWaitName(e.target.value)} />
+                      <Input placeholder={t("buddy.form.unit")} value={waitUnit} onChange={(e) => setWaitUnit(e.target.value)} />
+                      <Input placeholder={t("buddy.form.year")} value={waitYear} onChange={(e) => setWaitYear(e.target.value)} />
+                      <Input placeholder={t("buddy.form.phone")} type="tel" value={waitPhone} onChange={(e) => setWaitPhone(e.target.value)} />
+                      <Input placeholder={t("buddy.form.email")} type="email" value={waitEmail} onChange={(e) => setWaitEmail(e.target.value)} />
 
                       {/* Fee type selection */}
                       <div className="rounded-xl border border-border bg-secondary/30 p-4 space-y-3">
-                        <p className="text-sm font-semibold text-foreground">인증 비용 설정</p>
+                        <p className="text-sm font-semibold text-foreground">{t("buddy.form.feeTitle")}</p>
                         <div className="flex gap-3">
                           <button
                             type="button"
@@ -272,8 +272,8 @@ const BuddySearch = () => {
                                 : "border-border bg-card text-muted-foreground hover:border-primary/30"
                             }`}
                           >
-                            무료
-                            <p className="text-xs mt-1 font-normal">비용 없이 연결</p>
+                            {t("buddy.form.free")}
+                            <p className="text-xs mt-1 font-normal">{t("buddy.form.freeDesc")}</p>
                           </button>
                           <button
                             type="button"
@@ -284,8 +284,8 @@ const BuddySearch = () => {
                                 : "border-border bg-card text-muted-foreground hover:border-primary/30"
                             }`}
                           >
-                            장난전화 방지
-                            <p className="text-xs mt-1 font-normal">인증 비용 설정</p>
+                            {t("buddy.form.paid")}
+                            <p className="text-xs mt-1 font-normal">{t("buddy.form.paidDesc")}</p>
                           </button>
                         </div>
                         {waitFeeType === "paid" && (
@@ -293,13 +293,13 @@ const BuddySearch = () => {
                             <span className="text-sm font-medium text-foreground">₩</span>
                             <Input
                               type="number"
-                              placeholder="금액 입력 (예: 900)"
+                              placeholder={t("buddy.form.amount")}
                               value={waitFeeAmount}
                               onChange={(e) => setWaitFeeAmount(e.target.value)}
                               min="0"
                               className="flex-1"
                             />
-                            <span className="text-xs text-muted-foreground">원</span>
+                            <span className="text-xs text-muted-foreground">{t("buddy.form.won")}</span>
                           </div>
                         )}
                       </div>
@@ -312,7 +312,7 @@ const BuddySearch = () => {
                           className="mt-0.5"
                         />
                         <label htmlFor="wait-consent" className="text-sm leading-relaxed text-foreground cursor-pointer">
-                          <span className="font-semibold text-primary">[필수]</span> 개인정보 수집 및 매칭 알림 발송 동의
+                          <span className="font-semibold text-primary">{t("buddy.form.required")}</span> {t("buddy.form.consent")}
                         </label>
                       </div>
 
@@ -322,7 +322,7 @@ const BuddySearch = () => {
                         disabled={!waitName || !waitUnit || !waitYear || !waitPhone || !waitConsent || registering}
                         onClick={handleRegisterWait}
                       >
-                        {registering ? "등록 중..." : "등록하기"}
+                        {registering ? t("buddy.form.registering") : t("buddy.form.register")}
                       </Button>
                     </div>
                   )}
@@ -340,10 +340,10 @@ const BuddySearch = () => {
             >
               <Search className="mx-auto h-10 w-10 text-muted-foreground/30" />
               <p className="mt-4 text-muted-foreground">
-                기억나는 정보를 자유롭게 입력하세요
+                {t("buddy.hint")}
               </p>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
-                {["논산 23연대", "3사단 22대대", "백골부대", "24-71기", "이승훈"].map((ex) => (
+                {[t("buddy.example1"), t("buddy.example2"), t("buddy.example3"), t("buddy.example4"), t("buddy.example5")].map((ex) => (
                   <button
                     key={ex}
                     className="rounded-full border border-border bg-secondary/50 px-3 py-1 text-xs text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
