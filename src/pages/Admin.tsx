@@ -121,6 +121,8 @@ const Admin = () => {
     email: string | null;
     is_matched: boolean;
     created_at: string;
+    match_fee_type: string;
+    match_fee: number;
   }
   interface MatchRecord {
     id: string;
@@ -786,13 +788,14 @@ const Admin = () => {
                     </div>
                     <div className="overflow-x-auto">
                       <Table>
-                        <TableHeader>
+                         <TableHeader>
                           <TableRow>
                             <TableHead className="w-10"></TableHead>
                             <TableHead>이름</TableHead>
                             <TableHead>부대</TableHead>
                             <TableHead>기수/연도</TableHead>
                             <TableHead>전화번호</TableHead>
+                            <TableHead>인증비용</TableHead>
                             <TableHead>상태</TableHead>
                           </TableRow>
                         </TableHeader>
@@ -816,13 +819,18 @@ const Admin = () => {
                               <TableCell><Badge variant="outline" className="text-xs">{u.service_year}</Badge></TableCell>
                               <TableCell className="text-muted-foreground text-xs">{u.phone}</TableCell>
                               <TableCell>
+                                <Badge variant="outline" className={`text-xs ${u.match_fee_type === "paid" ? "border-primary/30 bg-primary/10 text-primary" : ""}`}>
+                                  {u.match_fee_type === "paid" ? `₩${(u.match_fee || 0).toLocaleString()}` : "무료"}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
                                 <Badge variant="outline" className="text-xs border-success/30 bg-success/10 text-success">대기중</Badge>
                               </TableCell>
                             </TableRow>
                           ))}
                           {waitingUsers.filter(u => !u.is_matched).length === 0 && (
                             <TableRow>
-                              <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                            <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                                 등록된 대기 사용자가 없습니다.
                               </TableCell>
                             </TableRow>
@@ -876,6 +884,7 @@ const Admin = () => {
                     <p className="mt-1 text-sm text-muted-foreground">
                       동일한 부대 및 복무 연도를 가진 사용자를 자동으로 찾아 매칭합니다.
                     </p>
+                    <p className="mt-1 text-xs text-primary font-medium">기본 인증 비용: ₩20,000</p>
                     <Button
                       variant="warmBrown"
                       className="mt-4 gap-1.5"

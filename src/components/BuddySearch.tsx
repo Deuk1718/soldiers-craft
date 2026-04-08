@@ -20,6 +20,8 @@ interface WaitingUser {
   email: string | null;
   is_matched: boolean;
   created_at: string;
+  match_fee_type: string;
+  match_fee: number;
 }
 
 const BuddySearch = () => {
@@ -37,6 +39,8 @@ const BuddySearch = () => {
   const [waitPhone, setWaitPhone] = useState("");
   const [waitEmail, setWaitEmail] = useState("");
   const [waitConsent, setWaitConsent] = useState(false);
+  const [waitFeeType, setWaitFeeType] = useState<"free" | "paid">("free");
+  const [waitFeeAmount, setWaitFeeAmount] = useState("");
   const [registered, setRegistered] = useState(false);
   const [registering, setRegistering] = useState(false);
 
@@ -106,6 +110,8 @@ const BuddySearch = () => {
       service_year: waitYear,
       phone: waitPhone,
       email: waitEmail || null,
+      match_fee_type: waitFeeType,
+      match_fee: waitFeeType === "paid" ? parseInt(waitFeeAmount) || 0 : 0,
     } as any);
 
     if (error) {
@@ -121,6 +127,8 @@ const BuddySearch = () => {
     setWaitPhone("");
     setWaitEmail("");
     setWaitConsent(false);
+    setWaitFeeType("free");
+    setWaitFeeAmount("");
     setRegistering(false);
   };
 
@@ -203,9 +211,12 @@ const BuddySearch = () => {
                             {r.service_year}
                           </Badge>
                         </div>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                          {r.name}
-                        </p>
+                        <div className="mt-1 flex items-center gap-2">
+                          <p className="text-xs text-muted-foreground">{r.name}</p>
+                          <Badge variant="outline" className={`text-xs ${r.match_fee_type === "paid" ? "border-primary/30 bg-primary/10 text-primary" : "border-muted"}`}>
+                            {r.match_fee_type === "paid" ? `₩${(r.match_fee || 0).toLocaleString()}` : "무료"}
+                          </Badge>
+                        </div>
                       </div>
                     </div>
                     <Button variant="warmBrown" size="sm" onClick={() => handleConnect(r)}>
@@ -247,6 +258,51 @@ const BuddySearch = () => {
                       <Input placeholder="복무 연도 (예: 1998 또는 24-71기)" value={waitYear} onChange={(e) => setWaitYear(e.target.value)} />
                       <Input placeholder="전화번호 (010-0000-0000)" type="tel" value={waitPhone} onChange={(e) => setWaitPhone(e.target.value)} />
                       <Input placeholder="이메일 (선택사항)" type="email" value={waitEmail} onChange={(e) => setWaitEmail(e.target.value)} />
+
+                      {/* Fee type selection */}
+                      <div className="rounded-xl border border-border bg-secondary/30 p-4 space-y-3">
+                        <p className="text-sm font-semibold text-foreground">인증 비용 설정</p>
+                        <div className="flex gap-3">
+                          <button
+                            type="button"
+                            onClick={() => { setWaitFeeType("free"); setWaitFeeAmount(""); }}
+                            className={`flex-1 rounded-lg border-2 p-3 text-center text-sm font-medium transition-all ${
+                              waitFeeType === "free"
+                                ? "border-primary bg-primary/10 text-primary"
+                                : "border-border bg-card text-muted-foreground hover:border-primary/30"
+                            }`}
+                          >
+                            무료
+                            <p className="text-xs mt-1 font-normal">비용 없이 연결</p>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setWaitFeeType("paid")}
+                            className={`flex-1 rounded-lg border-2 p-3 text-center text-sm font-medium transition-all ${
+                              waitFeeType === "paid"
+                                ? "border-primary bg-primary/10 text-primary"
+                                : "border-border bg-card text-muted-foreground hover:border-primary/30"
+                            }`}
+                          >
+                            장난전화 방지
+                            <p className="text-xs mt-1 font-normal">인증 비용 설정</p>
+                          </button>
+                        </div>
+                        {waitFeeType === "paid" && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-foreground">₩</span>
+                            <Input
+                              type="number"
+                              placeholder="금액 입력 (예: 900)"
+                              value={waitFeeAmount}
+                              onChange={(e) => setWaitFeeAmount(e.target.value)}
+                              min="0"
+                              className="flex-1"
+                            />
+                            <span className="text-xs text-muted-foreground">원</span>
+                          </div>
+                        )}
+                      </div>
 
                       <div className="flex items-start gap-3 rounded-xl border border-border bg-secondary/30 p-3">
                         <Checkbox
@@ -366,8 +422,14 @@ const BuddySearch = () => {
                 </DialogHeader>
                 <div className="mt-4 space-y-4">
                   <div className="rounded-xl border-2 border-primary/20 bg-primary/5 p-6 text-center">
-                    <p className="text-3xl font-bold text-foreground">₩900</p>
-                    <p className="mt-1 text-sm text-muted-foreground">인증 비용 (1회)</p>
+                    <p className="text-3xl font-bold text-foreground">
+                      {selectedBuddy?.match_fee_type === "free" || !selectedBuddy?.match_fee
+                        ? "무료"
+                        : `₩${(selectedBuddy?.match_fee ?? 0).toLocaleString()}`}
+                    </p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {selectedBuddy?.match_fee_type === "free" ? "무료 연결" : "장난전화 방지 인증 비용"}
+                    </p>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card p-3 text-sm font-medium text-foreground">
