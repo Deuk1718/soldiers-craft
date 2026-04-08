@@ -192,7 +192,7 @@ const MemberCardModal = ({
               <input
                 value={unit}
                 onChange={(e) => setUnit(e.target.value)}
-                placeholder="예: 제3보병사단 010.3436.000"
+                placeholder="예: 제3보병사단 010.0098.0000"
                 maxLength={30}
                 className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
               />
