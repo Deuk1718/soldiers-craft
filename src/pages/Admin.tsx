@@ -788,13 +788,14 @@ const Admin = () => {
                     </div>
                     <div className="overflow-x-auto">
                       <Table>
-                        <TableHeader>
+                         <TableHeader>
                           <TableRow>
                             <TableHead className="w-10"></TableHead>
                             <TableHead>이름</TableHead>
                             <TableHead>부대</TableHead>
                             <TableHead>기수/연도</TableHead>
                             <TableHead>전화번호</TableHead>
+                            <TableHead>인증비용</TableHead>
                             <TableHead>상태</TableHead>
                           </TableRow>
                         </TableHeader>
@@ -818,13 +819,18 @@ const Admin = () => {
                               <TableCell><Badge variant="outline" className="text-xs">{u.service_year}</Badge></TableCell>
                               <TableCell className="text-muted-foreground text-xs">{u.phone}</TableCell>
                               <TableCell>
+                                <Badge variant="outline" className={`text-xs ${u.match_fee_type === "paid" ? "border-primary/30 bg-primary/10 text-primary" : ""}`}>
+                                  {u.match_fee_type === "paid" ? `₩${(u.match_fee || 0).toLocaleString()}` : "무료"}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
                                 <Badge variant="outline" className="text-xs border-success/30 bg-success/10 text-success">대기중</Badge>
                               </TableCell>
                             </TableRow>
                           ))}
                           {waitingUsers.filter(u => !u.is_matched).length === 0 && (
                             <TableRow>
-                              <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                            <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                                 등록된 대기 사용자가 없습니다.
                               </TableCell>
                             </TableRow>
