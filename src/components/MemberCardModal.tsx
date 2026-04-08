@@ -121,6 +121,17 @@ const MemberCardModal = ({
 
   const cardNumber = `SC-${enlistDate.replace(/-/g, "").slice(2)}-${String(serviceDays).padStart(4, "0")}`;
 
+  const qrData = useMemo(() => JSON.stringify({
+    type: "SOLDIERS_CRAFT_MEMBER",
+    card: cardNumber,
+    name: name || "무명",
+    rank,
+    branch: branchLabel,
+    enlist: enlistDate,
+    progress: progressPct.toFixed(1),
+    issued: new Date().toISOString().split("T")[0],
+  }), [cardNumber, name, rank, branchLabel, enlistDate, progressPct]);
+
   if (!open) return null;
 
   return (
