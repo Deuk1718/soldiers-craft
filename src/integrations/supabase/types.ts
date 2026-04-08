@@ -32,6 +32,81 @@ export type Database = {
         }
         Relationships: []
       }
+      buddy_matches: {
+        Row: {
+          created_at: string
+          id: string
+          match_type: string
+          status: string
+          user_a_id: string
+          user_b_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          match_type?: string
+          status?: string
+          user_a_id: string
+          user_b_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          match_type?: string
+          status?: string
+          user_a_id?: string
+          user_b_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "buddy_matches_user_a_id_fkey"
+            columns: ["user_a_id"]
+            isOneToOne: false
+            referencedRelation: "buddy_waiting_users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "buddy_matches_user_b_id_fkey"
+            columns: ["user_b_id"]
+            isOneToOne: false
+            referencedRelation: "buddy_waiting_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      buddy_waiting_users: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          is_matched: boolean
+          name: string
+          phone: string
+          service_year: string
+          unit: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_matched?: boolean
+          name: string
+          phone: string
+          service_year: string
+          unit: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_matched?: boolean
+          name?: string
+          phone?: string
+          service_year?: string
+          unit?: string
+        }
+        Relationships: []
+      }
       consultations: {
         Row: {
           client_email: string | null
