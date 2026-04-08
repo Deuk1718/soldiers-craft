@@ -20,6 +20,8 @@ interface WaitingUser {
   email: string | null;
   is_matched: boolean;
   created_at: string;
+  match_fee_type: string;
+  match_fee: number;
 }
 
 const BuddySearch = () => {
