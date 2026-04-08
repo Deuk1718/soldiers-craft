@@ -511,6 +511,25 @@ const ko: Record<string, string> = {
   "buddy.feature2.desc": "부대명으로 전우를 검색하세요",
   "buddy.feature3.title": "복무 기간 매칭",
   "buddy.feature3.desc": "같은 시기 복무한 전우를 찾으세요",
+
+  // ── Member Card ──
+  "mc.title": "멤버증 발급",
+  "mc.name": "이름",
+  "mc.name.placeholder": "예: 손오공 902034-000000",
+  "mc.rank": "계급",
+  "mc.unit": "소속 부대 (선택)",
+  "mc.unit.placeholder": "예: 제3보병사단 010.0098.0000",
+  "mc.enlist": "입대",
+  "mc.discharge": "전역",
+  "mc.name.default": "손오공 902002-100000",
+  "mc.unit.default": "특수 공격전단대 010-2345-6789",
+  "mc.pdf": "PDF 저장",
+  "mc.image": "이미지 저장",
+  "mc.share": "공유하기",
+  "mc.share.tip": "📱 공유하기: 카카오톡, 인스타그램 스토리 등에 바로 공유 가능",
+  "mc.clipboard": "이미지가 클립보드에 복사되었습니다! 카카오톡이나 인스타그램에 붙여넣기 하세요.",
+  "mc.noname": "무명",
+  "mc.name.empty": "이름 입력",
 };
 
 const en: Record<string, string> = {
@@ -1000,6 +1019,25 @@ const en: Record<string, string> = {
   "buddy.feature2.desc": "Search comrades by unit name",
   "buddy.feature3.title": "Service Period Match",
   "buddy.feature3.desc": "Find those who served during the same period",
+
+  // ── Member Card ──
+  "mc.title": "Issue Member Card",
+  "mc.name": "Name",
+  "mc.name.placeholder": "e.g. John Doe 900101-100000",
+  "mc.rank": "Rank",
+  "mc.unit": "Unit (optional)",
+  "mc.unit.placeholder": "e.g. 3rd Infantry Division 010.0098.0000",
+  "mc.enlist": "Enlist",
+  "mc.discharge": "Discharge",
+  "mc.name.default": "Son Goku 902002-100000",
+  "mc.unit.default": "Special Attack Unit 010-2345-6789",
+  "mc.pdf": "Save PDF",
+  "mc.image": "Save Image",
+  "mc.share": "Share",
+  "mc.share.tip": "📱 Share: Share directly to KakaoTalk, Instagram Story, etc.",
+  "mc.clipboard": "Image copied to clipboard! Paste it on KakaoTalk or Instagram.",
+  "mc.noname": "Unknown",
+  "mc.name.empty": "Enter name",
 };
 
 // Japanese translations
@@ -1473,6 +1511,25 @@ const ja: Record<string, string> = {
   "buddy.feature2.desc": "部隊名で戦友を検索しましょう",
   "buddy.feature3.title": "勤務期間マッチング",
   "buddy.feature3.desc": "同時期に勤務した戦友を探しましょう",
+
+  // ── Member Card ──
+  "mc.title": "メンバー証発行",
+  "mc.name": "名前",
+  "mc.name.placeholder": "例: 孫悟空 900101-100000",
+  "mc.rank": "階級",
+  "mc.unit": "所属部隊（任意）",
+  "mc.unit.placeholder": "例: 第3歩兵師団 010.0098.0000",
+  "mc.enlist": "入隊",
+  "mc.discharge": "除隊",
+  "mc.name.default": "孫悟空 902002-100000",
+  "mc.unit.default": "特殊攻撃戦団 010-2345-6789",
+  "mc.pdf": "PDF保存",
+  "mc.image": "画像保存",
+  "mc.share": "共有",
+  "mc.share.tip": "📱 共有: カカオトーク、インスタグラムストーリーなどに直接共有可能",
+  "mc.clipboard": "画像がクリップボードにコピーされました！カカオトークやインスタグラムに貼り付けてください。",
+  "mc.noname": "無名",
+  "mc.name.empty": "名前を入力",
 };
 
 // Chinese translations
@@ -1946,6 +2003,25 @@ const zh: Record<string, string> = {
   "buddy.feature2.desc": "按部队名称搜索战友",
   "buddy.feature3.title": "服役期间匹配",
   "buddy.feature3.desc": "寻找同时期服役的战友",
+
+  // ── Member Card ──
+  "mc.title": "会员证发行",
+  "mc.name": "姓名",
+  "mc.name.placeholder": "例: 孙悟空 900101-100000",
+  "mc.rank": "军衔",
+  "mc.unit": "所属部队（选填）",
+  "mc.unit.placeholder": "例: 第3步兵师 010.0098.0000",
+  "mc.enlist": "入伍",
+  "mc.discharge": "退伍",
+  "mc.name.default": "孙悟空 902002-100000",
+  "mc.unit.default": "特殊攻击战团 010-2345-6789",
+  "mc.pdf": "保存PDF",
+  "mc.image": "保存图片",
+  "mc.share": "分享",
+  "mc.share.tip": "📱 分享: 可直接分享到KakaoTalk、Instagram Story等",
+  "mc.clipboard": "图片已复制到剪贴板！请粘贴到KakaoTalk或Instagram。",
+  "mc.noname": "无名",
+  "mc.name.empty": "输入姓名",
 };
 
 export type TranslationKey = keyof typeof ko;
