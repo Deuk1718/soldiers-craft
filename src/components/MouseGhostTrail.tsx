@@ -30,7 +30,7 @@ const MouseGhostTrail = () => {
     const idx = selectedColorRef.current;
     // Default: sand color
     if (idx === -2) {
-      return [245, 225, 195];
+      return [190, 215, 180];
     }
     if (idx === PASTEL_PRESETS.length - 1) return getRandomPastel();
     return PASTEL_PRESETS[idx].rgb;
