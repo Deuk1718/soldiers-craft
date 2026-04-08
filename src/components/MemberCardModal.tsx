@@ -75,7 +75,7 @@ const MemberCardModal = ({
       const cardH = 53.98;
       const pdf = new jsPDF("l", "mm", [cardW, cardH]);
       pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, cardW, cardH);
-      pdf.save(`Soldiers_Craft_멤버증_${name || "무명"}.pdf`);
+      pdf.save(`Soldiers_Craft_멤버증_${name || t("mc.noname")}.pdf`);
     } finally {
       setGenerating(false);
     }
@@ -87,7 +87,7 @@ const MemberCardModal = ({
       const canvas = await captureCard();
       if (!canvas) return;
       const link = document.createElement("a");
-      link.download = `Soldiers_Craft_멤버증_${name || "무명"}.png`;
+      link.download = `Soldiers_Craft_멤버증_${name || t("mc.noname")}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
     } finally {
@@ -120,7 +120,7 @@ const MemberCardModal = ({
         await navigator.clipboard.write([
           new ClipboardItem({ "image/png": blob }),
         ]);
-        alert("이미지가 클립보드에 복사되었습니다! 카카오톡이나 인스타그램에 붙여넣기 하세요.");
+        alert(t("mc.clipboard"));
       } catch {
         // Final fallback: download
         handleDownloadImage();
@@ -135,7 +135,7 @@ const MemberCardModal = ({
   const qrData = useMemo(() => JSON.stringify({
     type: "SOLDIERS_CRAFT_MEMBER",
     card: cardNumber,
-    name: name || "무명",
+    name: name || t("mc.noname"),
     rank,
     branch: branchLabel,
     enlist: enlistDate,
@@ -166,7 +166,7 @@ const MemberCardModal = ({
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-bold text-card-foreground flex items-center gap-2">
                 <Shield className="h-5 w-5 text-primary" />
-                멤버증 발급
+                {t("mc.title")}
               </h3>
               <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
                 <X className="h-5 w-5" />
@@ -176,17 +176,17 @@ const MemberCardModal = ({
             {/* Input fields */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs text-muted-foreground mb-1 block">이름</label>
+                <label className="text-xs text-muted-foreground mb-1 block">{t("mc.name")}</label>
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="예: 손오공 902034-000000"
+                  placeholder={t("mc.name.placeholder")}
                   maxLength={20}
                   className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
                 />
               </div>
               <div>
-                <label className="text-xs text-muted-foreground mb-1 block">계급</label>
+                <label className="text-xs text-muted-foreground mb-1 block">{t("mc.rank")}</label>
                 <select
                   value={rank}
                   onChange={(e) => setRank(e.target.value)}
@@ -199,11 +199,11 @@ const MemberCardModal = ({
               </div>
             </div>
             <div>
-              <label className="text-xs text-muted-foreground mb-1 block">소속 부대 (선택)</label>
+              <label className="text-xs text-muted-foreground mb-1 block">{t("mc.unit")}</label>
               <input
                 value={unit}
                 onChange={(e) => setUnit(e.target.value)}
-                placeholder="예: 제3보병사단 010.0098.0000"
+                placeholder={t("mc.unit.placeholder")}
                 maxLength={30}
                 className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
               />
@@ -244,7 +244,7 @@ const MemberCardModal = ({
                 {/* Center info */}
                 <div className="space-y-1">
                   <p className="text-xl tracking-wide text-gold font-serif text-left sm:text-xs font-light">
-                    {name || "이름 입력"}
+                    {name || t("mc.name.empty")}
                   </p>
                   <p className="text-[hsl(42,45%,52%)] font-medium text-base font-serif">{rank} · {branchLabel}</p>
                   {unit && <p className="text-white/60 text-base font-serif">{unit}</p>}
@@ -254,8 +254,8 @@ const MemberCardModal = ({
                 <div className="flex items-end justify-between">
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-3 text-[10px] text-white/50">
-                      <span>입대 {formatDate(enlistDate)}</span>
-                      <span>전역 {dischargeDate}</span>
+                      <span>{t("mc.enlist")} {formatDate(enlistDate)}</span>
+                      <span>{t("mc.discharge")} {dischargeDate}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-24 h-1.5 rounded-full bg-white/10 overflow-hidden">
@@ -293,7 +293,7 @@ const MemberCardModal = ({
                 disabled={generating}
               >
                 <Download className="h-3.5 w-3.5" />
-                PDF 저장
+                {t("mc.pdf")}
               </Button>
               <Button
                 variant="outline"
@@ -303,7 +303,7 @@ const MemberCardModal = ({
                 disabled={generating}
               >
                 <Download className="h-3.5 w-3.5" />
-                이미지 저장
+                {t("mc.image")}
               </Button>
               <Button
                 variant="outline"
@@ -313,11 +313,11 @@ const MemberCardModal = ({
                 disabled={generating}
               >
                 <Share2 className="h-3.5 w-3.5" />
-                공유하기
+                {t("mc.share")}
               </Button>
             </div>
             <p className="text-[10px] text-muted-foreground text-center">
-              📱 공유하기: 카카오톡, 인스타그램 스토리 등에 바로 공유 가능
+              {t("mc.share.tip")}
             </p>
           </motion.div>
         </motion.div>
