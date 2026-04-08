@@ -188,6 +188,20 @@ const DdayHeroSection = () => {
         </motion.div>
       </div>
     </section>
+
+    {result && (
+      <MemberCardModal
+        open={memberCardOpen}
+        onClose={() => setMemberCardOpen(false)}
+        enlistDate={enlistDate}
+        dischargeDate={result.dischargeStr}
+        serviceDays={serviceDays}
+        elapsedDays={result.elapsedDays}
+        progressPct={result.progressPct}
+        branchLabel={currentBranch}
+      />
+    )}
+    </>
   );
 };
 
