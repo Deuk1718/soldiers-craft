@@ -18,7 +18,7 @@ const buttonVariants = cva(
         hero: "bg-navy text-navy-foreground hover:bg-primary transition-colors rounded-xl font-medium",
         heroOutline: "border-2 border-navy text-navy hover:bg-navy hover:text-navy-foreground transition-colors rounded-xl font-medium",
         success: "bg-success text-success-foreground hover:bg-success/90",
-        warmBrown: "bg-[hsl(220_40%_55%)] text-white hover:bg-[hsl(220_40%_48%)] active:bg-[hsl(220_40%_42%)] active:scale-[0.98] transition-all rounded-xl font-semibold shadow-sm",
+        warmBrown: "bg-[hsl(85_30%_42%)] text-white hover:bg-[hsl(85_30%_36%)] active:bg-[hsl(85_30%_32%)] active:scale-[0.98] transition-all rounded-xl font-semibold shadow-sm",
       },
       size: {
         default: "h-10 px-4 py-2",

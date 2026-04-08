@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from "react";
-import { Heart, Menu, X, Globe } from "lucide-react";
+import { Shield, Menu, X, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -49,7 +49,7 @@ const Navbar = ({ onConsultClick }: NavbarProps) => {
     <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-lg">
       <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <a href="#" onClick={handleLogoClick} className="flex items-center gap-2 select-none">
-          <Heart className="h-5 w-5 text-gold" />
+          <Shield className="h-5 w-5 text-gold" />
           <span className="font-serif-legal text-lg font-bold text-foreground">{t("brand.name")}</span>
         </a>
 

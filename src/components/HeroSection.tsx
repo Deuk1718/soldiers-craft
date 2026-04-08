@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Shield, FileText, Calculator, Users } from "lucide-react";
+import { Shield, FileText, Calendar, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -55,7 +55,7 @@ const HeroSection = ({ onConsultClick, onServiceClick }: HeroSectionProps) => {
           >
             {[
               { icon: FileText, label: t("hero.card1.label"), desc: t("hero.card1.desc"), href: "#will" },
-              { icon: Calculator, label: t("hero.card2.label"), desc: t("hero.card2.desc"), href: "#tax" },
+              { icon: Calendar, label: t("hero.card2.label"), desc: t("hero.card2.desc"), href: "#tax" },
               { icon: Users, label: t("hero.card3.label"), desc: t("hero.card3.desc"), href: "#dispute" },
             ].map((item, i) => (
               <a key={i} href={item.href} onClick={(e) => { e.preventDefault(); document.querySelector(item.href)?.scrollIntoView({ behavior: "smooth" }); }} className="flex items-center gap-3 rounded-2xl border border-navy-foreground/8 bg-navy-foreground/5 p-4 text-left backdrop-blur-sm cursor-pointer transition-colors hover:bg-navy-foreground/10">

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FileText, Calculator, Camera, Users, Heart, Handshake } from "lucide-react";
+import { FileText, Calendar, Users, Search, Heart, Briefcase } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const ServiceOverview = () => {
@@ -7,11 +7,11 @@ const ServiceOverview = () => {
 
   const services = [
     { icon: FileText, number: "01", title: t("services.s1.title"), desc: t("services.s1.desc") },
-    { icon: Calculator, number: "02", title: t("services.s2.title"), desc: t("services.s2.desc") },
-    { icon: Camera, number: "03", title: t("services.s3.title"), desc: t("services.s3.desc") },
+    { icon: Calendar, number: "02", title: t("services.s2.title"), desc: t("services.s2.desc") },
+    { icon: Search, number: "03", title: t("services.s3.title"), desc: t("services.s3.desc") },
     { icon: Users, number: "04", title: t("services.s4.title"), desc: t("services.s4.desc") },
     { icon: Heart, number: "05", title: t("services.s5.title"), desc: t("services.s5.desc") },
-    { icon: Handshake, number: "06", title: t("services.s6.title"), desc: t("services.s6.desc") },
+    { icon: Briefcase, number: "06", title: t("services.s6.title"), desc: t("services.s6.desc") },
   ];
 
   return (
