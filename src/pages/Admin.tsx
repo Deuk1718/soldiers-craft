@@ -182,8 +182,34 @@ const Admin = () => {
       fetchExperts();
       fetchServiceStatus();
       fetchNotifications();
+      fetchWaitingUsers();
+      fetchMatches();
     }
   }, [session]);
+
+  const fetchWaitingUsers = async () => {
+    setWaitingLoading(true);
+    const { data } = await supabase.from("buddy_waiting_users").select("*").order("created_at", { ascending: false });
+    if (data) setWaitingUsers(data as unknown as WaitingUser[]);
+    setWaitingLoading(false);
+  };
+
+  const fetchMatches = async () => {
+    setMatchesLoading(true);
+    const { data } = await supabase.from("buddy_matches").select("*").order("created_at", { ascending: false });
+    if (data) {
+      // Enrich with user info
+      const { data: users } = await supabase.from("buddy_waiting_users").select("*");
+      const userMap = new Map((users || []).map((u: any) => [u.id, u]));
+      const enriched = data.map((m: any) => ({
+        ...m,
+        user_a: userMap.get(m.user_a_id),
+        user_b: userMap.get(m.user_b_id),
+      }));
+      setMatches(enriched as MatchRecord[]);
+    }
+    setMatchesLoading(false);
+  };
 
   const fetchServiceStatus = async () => {
     const { data } = await supabase.from("site_settings").select("service_enabled").eq("id", "main").single();
