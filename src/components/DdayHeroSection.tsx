@@ -36,8 +36,6 @@ const DdayHeroSection = () => {
 
     const dischargeStr = `${discharge.getFullYear()}.${String(discharge.getMonth() + 1).padStart(2, "0")}.${String(discharge.getDate()).padStart(2, "0")}`;
 
-  const currentBranch = branchOptions.find(b => b.days === serviceDays)?.label || branchOptions[0].label;
-
   return { remainingDays, elapsedDays, progressPct, dischargeStr, discharged: remainingDays <= 0 };
   }, [enlistDate, serviceDays]);
 
