@@ -808,7 +808,7 @@ const Admin = () => {
                         <Input
                           placeholder="이름, 부대, 연도 검색..."
                           value={matchSearchQuery}
-                          onChange={(e) => setMatchSearchQuery(e.target.value)}
+                          onChange={(e) => { setMatchSearchQuery(e.target.value); setMatchPage(0); }}
                           className="h-8 text-xs"
                         />
                         <Button variant="outline" size="sm" onClick={fetchWaitingUsers} disabled={waitingLoading} className="gap-1.5 shrink-0">
