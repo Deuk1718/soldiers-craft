@@ -1,7 +1,8 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Download, Share2, Shield, SquareStack as SquaresSubtract } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { QRCodeSVG } from "qrcode.react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
@@ -119,6 +120,17 @@ const MemberCardModal = ({
   }, [captureCard, handleDownloadImage]);
 
   const cardNumber = `SC-${enlistDate.replace(/-/g, "").slice(2)}-${String(serviceDays).padStart(4, "0")}`;
+
+  const qrData = useMemo(() => JSON.stringify({
+    type: "SOLDIERS_CRAFT_MEMBER",
+    card: cardNumber,
+    name: name || "무명",
+    rank,
+    branch: branchLabel,
+    enlist: enlistDate,
+    progress: progressPct.toFixed(1),
+    issued: new Date().toISOString().split("T")[0],
+  }), [cardNumber, name, rank, branchLabel, enlistDate, progressPct]);
 
   if (!open) return null;
 
@@ -243,8 +255,19 @@ const MemberCardModal = ({
                       </div>
                       <span className="text-[10px] text-[hsl(42,45%,52%)] font-mono">{progressPct.toFixed(1)}%</span>
                     </div>
+                   </div>
+                  <div className="flex flex-col items-end gap-0.5">
+                    <div className="bg-white rounded p-0.5">
+                      <QRCodeSVG
+                        value={qrData}
+                        size={36}
+                        level="M"
+                        bgColor="#ffffff"
+                        fgColor="#1a1a1a"
+                      />
+                    </div>
+                    <p className="text-[8px] text-white/30 font-mono">{cardNumber}</p>
                   </div>
-                  <p className="text-[9px] text-white/30 font-mono">{cardNumber}</p>
                 </div>
               </div>
             </div>
