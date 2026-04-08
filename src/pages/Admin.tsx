@@ -945,15 +945,23 @@ const Admin = () => {
                       {matches.map((m) => (
                         <TableRow key={m.id}>
                           <TableCell>
-                            <div>
-                              <p className="font-medium text-foreground">{m.user_a?.name || "—"}</p>
+                            <div
+                              className="cursor-pointer group"
+                              onClick={() => toast({ title: `${m.user_a?.name || "—"} 연락처`, description: `📞 ${m.user_a?.phone || "없음"}${m.user_a?.email ? `\n📧 ${m.user_a.email}` : ""}` })}
+                            >
+                              <p className="font-medium text-foreground group-hover:text-primary transition-colors">{m.user_a?.name || "—"}</p>
                               <p className="text-xs text-muted-foreground">{m.user_a?.unit || ""}</p>
+                              <p className="text-xs text-primary/60 group-hover:text-primary"><Phone className="inline h-3 w-3 mr-0.5" />클릭하여 연락처 보기</p>
                             </div>
                           </TableCell>
                           <TableCell>
-                            <div>
-                              <p className="font-medium text-foreground">{m.user_b?.name || "—"}</p>
+                            <div
+                              className="cursor-pointer group"
+                              onClick={() => toast({ title: `${m.user_b?.name || "—"} 연락처`, description: `📞 ${m.user_b?.phone || "없음"}${m.user_b?.email ? `\n📧 ${m.user_b.email}` : ""}` })}
+                            >
+                              <p className="font-medium text-foreground group-hover:text-primary transition-colors">{m.user_b?.name || "—"}</p>
                               <p className="text-xs text-muted-foreground">{m.user_b?.unit || ""}</p>
+                              <p className="text-xs text-primary/60 group-hover:text-primary"><Phone className="inline h-3 w-3 mr-0.5" />클릭하여 연락처 보기</p>
                             </div>
                           </TableCell>
                           <TableCell>
@@ -985,10 +993,13 @@ const Admin = () => {
                               )}
                               <Button variant="ghost" size="sm" className="h-7 text-xs text-destructive hover:bg-destructive/10"
                                 onClick={async () => {
+                                  // Reset is_matched for both users
+                                  if (m.user_a_id) await supabase.from("buddy_waiting_users").update({ is_matched: false } as any).eq("id", m.user_a_id);
+                                  if (m.user_b_id) await supabase.from("buddy_waiting_users").update({ is_matched: false } as any).eq("id", m.user_b_id);
                                   await supabase.from("buddy_matches").delete().eq("id", m.id);
                                   fetchMatches();
                                   fetchWaitingUsers();
-                                  toast({ title: "매칭 삭제 완료" });
+                                  toast({ title: "매칭 취소 완료", description: "사용자가 대기 목록으로 복귀되었습니다." });
                                 }}>
                                 <Trash2 className="h-3 w-3" />
                               </Button>
