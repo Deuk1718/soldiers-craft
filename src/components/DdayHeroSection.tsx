@@ -123,16 +123,14 @@ const DdayHeroSection = () => {
                   onChange={(e) => setEnlistDate(e.target.value)}
                   className="max-w-xs bg-navy-foreground/5 border-navy-foreground/10 text-navy-foreground placeholder:text-navy-foreground/30"
                 />
-                {result && (
-                  <Button
-                    onClick={() => setMemberCardOpen(true)}
-                    className="gap-1.5 bg-gold/20 text-gold border border-gold/40 hover:bg-gold/30 rounded-xl text-sm font-medium whitespace-nowrap"
-                    size="sm"
-                  >
-                    <CreditCard className="h-4 w-4" />
-                    멤버증 발급
-                  </Button>
-                )}
+                <Button
+                  onClick={() => setMemberCardOpen(true)}
+                  className="gap-1.5 bg-gold/20 text-gold border border-gold/40 hover:bg-gold/30 rounded-xl text-sm font-medium whitespace-nowrap"
+                  size="sm"
+                >
+                  <CreditCard className="h-4 w-4" />
+                  멤버증 발급
+                </Button>
               </div>
             </div>
 
@@ -189,18 +187,16 @@ const DdayHeroSection = () => {
       </div>
     </section>
 
-    {result && (
-      <MemberCardModal
-        open={memberCardOpen}
-        onClose={() => setMemberCardOpen(false)}
-        enlistDate={enlistDate}
-        dischargeDate={result.dischargeStr}
-        serviceDays={serviceDays}
-        elapsedDays={result.elapsedDays}
-        progressPct={result.progressPct}
-        branchLabel={currentBranch}
-      />
-    )}
+    <MemberCardModal
+      open={memberCardOpen}
+      onClose={() => setMemberCardOpen(false)}
+      enlistDate={enlistDate}
+      dischargeDate={result?.dischargeStr || ""}
+      serviceDays={serviceDays}
+      elapsedDays={result?.elapsedDays || 0}
+      progressPct={result?.progressPct || 0}
+      branchLabel={currentBranch}
+    />
     </>
   );
 };
