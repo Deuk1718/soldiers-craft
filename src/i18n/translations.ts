@@ -110,6 +110,7 @@ const ko: Record<string, string> = {
   "experts.intro": "GJ 그룹 전문 파트너 소개",
   "experts.specialties": "전문 분야",
   "experts.book": "상담 예약하기",
+  "experts.disclaimer": "※ 본 서비스는 GJ 그룹 전문 파트너와의 정보 제공 및 연결을 안내하는 플랫폼입니다. 직접적인 법률·의료·세무 자문이 아니며, 구체적인 사안은 해당 분야 자격을 갖춘 전문가에게 별도 상담을 권장합니다.",
 
   // ── Dispute → Comrade Finder ──
   "dispute.label": "Comrade Finder",
@@ -672,6 +673,7 @@ const en: Record<string, string> = {
   "experts.intro": "GJ Group Partner Profile",
   "experts.specialties": "Specialties",
   "experts.book": "Book Consultation",
+  "experts.disclaimer": "※ This service is a platform that introduces and connects you with GJ Group partners. It does not constitute direct legal, medical, or tax advice. For specific matters, please seek separate consultation with a qualified professional.",
 
   "dispute.label": "Comrade Finder",
   "dispute.title": "Find Comrades",
@@ -1215,6 +1217,7 @@ const ja: Record<string, string> = {
   "experts.intro": "GJグループ専門パートナー紹介",
   "experts.specialties": "専門分野",
   "experts.book": "相談予約",
+  "experts.disclaimer": "※ 本サービスはGJグループ専門パートナーとの情報提供および紹介を行うプラットフォームです。直接の法律・医療・税務助言ではなく、具体的な案件は該当分野の有資格者に別途ご相談ください。",
   "dispute.label": "Comrade Finder",
   "dispute.title": "戦友探し",
   "dispute.subtitle": "同じ部隊、同期の戦友を見つけましょう。",
@@ -1746,6 +1749,7 @@ const zh: Record<string, string> = {
   "experts.intro": "GJ集团专业伙伴介绍",
   "experts.specialties": "专长领域",
   "experts.book": "预约咨询",
+  "experts.disclaimer": "※ 本服务是介绍并对接GJ集团专业伙伴的平台，不构成直接的法律、医疗或税务建议。具体事宜请另行咨询相关领域的专业人士。",
   "dispute.label": "Comrade Finder",
   "dispute.title": "找战友",
   "dispute.subtitle": "搜索同部队、同期的战友。",
