@@ -876,12 +876,7 @@ const Admin = () => {
                         </TableHeader>
                         <TableBody>
                           {(() => {
-                            const filtered = waitingUsers.filter(u => {
-                              if (u.is_matched) return false;
-                              if (!matchSearchQuery.trim()) return true;
-                              const q = matchSearchQuery.toLowerCase();
-                              return `${u.name} ${u.unit} ${u.service_year} ${u.phone}`.toLowerCase().includes(q);
-                            });
+                            const filtered = filteredWaiting;
                             const totalPages = Math.ceil(filtered.length / MATCH_PAGE_SIZE);
                             const currentPage = Math.min(matchPage, Math.max(0, totalPages - 1));
                             const paged = filtered.slice(currentPage * MATCH_PAGE_SIZE, (currentPage + 1) * MATCH_PAGE_SIZE);
