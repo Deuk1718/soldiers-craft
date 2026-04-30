@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import MouseGhostTrail from "@/components/MouseGhostTrail";
+import MouseGhostTrail from "@/components/MouseGhostTrailLoader";
 import Index from "./pages/Index.tsx";
 
 // Heavy / less-frequent routes — split into separate chunks
