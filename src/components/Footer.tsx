@@ -1,6 +1,8 @@
-import { Shield, Share2 } from "lucide-react";
+import { Shield, Share2, QrCode } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { QRCodeSVG } from "qrcode.react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
 
