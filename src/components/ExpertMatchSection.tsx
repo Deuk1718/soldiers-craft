@@ -165,7 +165,7 @@ const ExpertMatchSection = () => {
                         </div>
                       )}
                       <div className="rounded-full bg-gold/10 px-2.5 py-1 text-xs font-medium text-gold">
-                        {getField(expert, 'consult_fee')}
+                        {t("experts.customerFirst")}
                       </div>
                     </div>
 
