@@ -170,7 +170,7 @@ const ExpertMatchSection = () => {
                     </div>
 
                     <div className="mt-3 flex flex-wrap gap-1.5">
-                      {getArray(expert, 'tags').map((tag, j) => (
+                      {t(`experts.anonTags.${cat}`).split("|").map((tag, j) => (
                         <span key={j} className="rounded-lg bg-secondary px-2.5 py-1 text-xs text-muted-foreground">
                           {tag}
                         </span>
@@ -207,7 +207,7 @@ const ExpertMatchSection = () => {
                                 {t("experts.specialties")}
                               </div>
                               <div className="flex flex-wrap gap-1.5">
-                                {getArray(expert, 'specialties').map((s, k) => (
+                                {(t(`experts.anonSpecialties.${cat}`).split("|")).map((s, k) => (
                                   <span key={k} className="rounded-lg border border-border bg-background px-2.5 py-1 text-xs text-foreground">
                                     {s}
                                   </span>
