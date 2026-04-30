@@ -465,11 +465,7 @@ const Admin = () => {
     );
   }
 
-  const today = format(new Date(), "yyyy-MM-dd");
-  const total = consultations.length;
-  const todayCount = consultations.filter(c => c.consultation_date === today || c.created_at.startsWith(today)).length;
-  const pending = consultations.filter(c => c.status === "pending").length;
-  const completed = consultations.filter(c => c.status === "completed").length;
+  const { total, todayCount, pending, completed } = stats;
 
   const statusConfig: Record<string, { label: string; className: string }> = {
     pending: { label: "대기중", className: "border-warning/30 bg-warning/10 text-warning" },
