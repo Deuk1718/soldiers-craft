@@ -11,6 +11,9 @@ import Index from "./pages/Index.tsx";
 import Admin from "./pages/Admin.tsx";
 import Maintenance from "./pages/Maintenance.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Legal from "./pages/Legal.tsx";
+import FAQ from "./pages/FAQ.tsx";
+import About from "./pages/About.tsx";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +52,10 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="/legal" element={<Legal />} />
+      <Route path="/legal/:section" element={<Legal />} />
+      <Route path="/faq" element={<FAQ />} />
+      <Route path="/about" element={<About />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

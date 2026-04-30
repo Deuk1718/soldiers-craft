@@ -219,6 +219,10 @@ const ExpertMatchSection = () => {
             })}
           </div>
         )}
+
+        <p className="mt-10 rounded-xl border border-border bg-secondary/30 p-4 text-xs leading-relaxed text-muted-foreground">
+          {t("experts.disclaimer")}
+        </p>
       </div>
 
       {selectedExpert && (

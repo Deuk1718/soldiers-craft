@@ -1,4 +1,5 @@
 import { Shield, Share2 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
@@ -10,7 +11,7 @@ interface FooterProps {
 const Footer = ({ onConsultClick }: FooterProps) => {
   const { t } = useLanguage();
 
-  const siteUrl = "https://willwise-future-guide.lovable.app";
+  const siteUrl = "https://s-craft.lovable.app";
   const shareTitle = t("footer.share.title");
   const shareText = t("footer.share.text");
 
@@ -23,12 +24,11 @@ const Footer = ({ onConsultClick }: FooterProps) => {
         // User cancelled — fall through to clipboard
       }
     }
-    // PC / unsupported: clipboard fallback
     try {
       await navigator.clipboard.writeText(siteUrl);
-      toast("🔗 링크가 복사되었습니다. 원하는 곳에 붙여넣기 해주세요.");
+      toast(t("footer.share.copied"));
     } catch {
-      toast("🔗 링크가 복사되었습니다. 원하는 곳에 붙여넣기 해주세요.");
+      toast(t("footer.share.copied"));
     }
   };
 
@@ -57,7 +57,23 @@ const Footer = ({ onConsultClick }: FooterProps) => {
               {t("footer.share")}
             </Button>
           </div>
-          <p className="mt-8 text-xs text-navy-foreground/30">
+
+          <nav className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-navy-foreground/70">
+            <Link to="/about" className="hover:text-gold">{t("footer.about")}</Link>
+            <span className="text-navy-foreground/20">·</span>
+            <Link to="/faq" className="hover:text-gold">{t("footer.faq")}</Link>
+            <span className="text-navy-foreground/20">·</span>
+            <Link to="/legal/terms" className="hover:text-gold">{t("footer.terms")}</Link>
+            <span className="text-navy-foreground/20">·</span>
+            <Link to="/legal/privacy" className="hover:text-gold">{t("footer.privacy")}</Link>
+            <span className="text-navy-foreground/20">·</span>
+            <Link to="/legal/disclaimer" className="hover:text-gold">{t("footer.disclaimer")}</Link>
+          </nav>
+
+          <p className="mt-6 max-w-2xl text-xs leading-relaxed text-navy-foreground/40">
+            {t("footer.businessInfo")}: GJ Group · support@gjgroup.example
+          </p>
+          <p className="mt-2 text-xs text-navy-foreground/30">
             {t("footer.copyright")}
           </p>
         </div>
@@ -67,3 +83,4 @@ const Footer = ({ onConsultClick }: FooterProps) => {
 };
 
 export default Footer;
+
