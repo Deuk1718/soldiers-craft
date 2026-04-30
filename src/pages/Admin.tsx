@@ -592,11 +592,11 @@ const Admin = () => {
               <Star className="h-4 w-4" />전문가 관리
             </TabsTrigger>
             <TabsTrigger value="notifications" className="relative gap-1.5 rounded-lg px-4 data-[state=active]:bg-background data-[state=active]:shadow-sm">
-              {notifications.filter(n => !n.is_read).length > 0 ? <BellDot className="h-4 w-4 text-warning" /> : <Bell className="h-4 w-4" />}
+              {unreadCount > 0 ? <BellDot className="h-4 w-4 text-warning" /> : <Bell className="h-4 w-4" />}
               알림
-              {notifications.filter(n => !n.is_read).length > 0 && (
+              {unreadCount > 0 && (
                 <span className="ml-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-warning text-[10px] font-bold text-warning-foreground px-1">
-                  {notifications.filter(n => !n.is_read).length}
+                  {unreadCount}
                 </span>
               )}
             </TabsTrigger>
@@ -771,7 +771,7 @@ const Admin = () => {
               <div>
                 <h2 className="text-xl font-bold text-foreground">알림 센터</h2>
                 <p className="text-sm text-muted-foreground">
-                  읽지 않은 알림 {notifications.filter(n => !n.is_read).length}건 / 전체 {notifications.length}건
+                  읽지 않은 알림 {unreadCount}건 / 전체 {notifications.length}건
                 </p>
               </div>
               <div className="flex gap-2">
