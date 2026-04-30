@@ -122,6 +122,15 @@ const ko: Record<string, string> = {
   "experts.category.legal": "법무 정보 안내",
   "experts.category.veterans": "보훈·행정 정보 안내",
   "experts.category.psych": "심리 케어 안내",
+  "experts.category.default": "일반 정보 안내",
+  "experts.anonTags.legal": "일반 정보|전역 안내|권익 가이드",
+  "experts.anonTags.veterans": "혜택 안내|행정 가이드|등록 안내",
+  "experts.anonTags.psych": "심리 케어|적응 가이드|소통 안내",
+  "experts.anonTags.default": "일반 정보|안내|가이드",
+  "experts.anonSpecialties.legal": "군 생활 일반 정보|전역 절차 안내|권익 정보 가이드|관련 자료 안내",
+  "experts.anonSpecialties.veterans": "보훈 혜택 일반 안내|제대 후 지원 정보|등록 절차 가이드|행정 자료 안내",
+  "experts.anonSpecialties.psych": "군 생활 적응 안내|마음 건강 정보|전역 후 적응 가이드|가족 소통 안내",
+  "experts.anonSpecialties.default": "일반 정보 안내|관련 자료 가이드|절차 안내|참고 정보",
 
   // ── Dispute → Comrade Finder ──
   "dispute.label": "Comrade Finder",
