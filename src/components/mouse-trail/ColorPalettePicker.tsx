@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Palette, X, Pause, Play, Pipette } from "lucide-react";
 import { PASTEL_PRESETS, COLOR_CATEGORIES } from "./pastelColors";
 import CustomColorPicker from "./CustomColorPicker";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ColorPalettePickerProps {
