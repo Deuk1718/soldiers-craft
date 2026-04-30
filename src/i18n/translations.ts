@@ -199,7 +199,7 @@ const ko: Record<string, string> = {
   "booking.edit": "수정하기",
   "booking.complete": "예약 완료",
   "booking.success.title": "예약이 완료되었습니다",
-  "booking.success.desc": "{expert} GJ 그룹 전문 파트너와의 상담이\n{date} {time}에 예약되었습니다.",
+  "booking.success.desc": "{expert} GJ 그룹 전문 파트너와의 안내가\n{date} {time}에 예약되었습니다.",
   "booking.success.note": "확인 연락을 드릴 예정입니다.",
   "booking.confirm.btn": "확인",
   "booking.fail": "예약 실패",
@@ -702,7 +702,7 @@ const en: Record<string, string> = {
   "dispute.advice3": "Enter exact service period",
   "dispute.disclaimer": "※ This service is a reference tool for finding comrades. Contact info is not shared without consent per privacy law.",
 
-  "footer.desc": "Prepare for every stage of military life with experts. We provide systematic support through our GJ Group's legal, veterans affairs, and psychology partner network.",
+  "footer.desc": "Prepare for every stage of military life with GJ Group partners. We provide systematic information and referral services through our legal, veterans affairs, and psychology partner network.",
   "footer.cta": "Free GJ Group Partner Consultation",
   "footer.copyright": "© 2026 ComradeFind by GJ Group. All rights reserved.",
   "footer.share": "Share with a Fellow Soldier",
