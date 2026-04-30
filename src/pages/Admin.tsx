@@ -388,7 +388,38 @@ const Admin = () => {
     fetchExperts();
   };
 
-  if (loading) {
+  // Debounced search input — avoid re-filtering thousands of users on each keystroke
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(matchSearchQuery), 200);
+    return () => clearTimeout(t);
+  }, [matchSearchQuery]);
+
+  // Memoized derived values
+  const stats = useMemo(() => {
+    const today = format(new Date(), "yyyy-MM-dd");
+    return {
+      total: consultations.length,
+      todayCount: consultations.filter(c => c.consultation_date === today || c.created_at.startsWith(today)).length,
+      pending: consultations.filter(c => c.status === "pending").length,
+      completed: consultations.filter(c => c.status === "completed").length,
+    };
+  }, [consultations]);
+
+  const unreadCount = useMemo(
+    () => notifications.reduce((n, x) => n + (x.is_read ? 0 : 1), 0),
+    [notifications]
+  );
+
+  const filteredWaiting = useMemo(() => {
+    const q = debouncedSearch.trim().toLowerCase();
+    return waitingUsers.filter(u => {
+      if (u.is_matched) return false;
+      if (!q) return true;
+      return `${u.name} ${u.unit} ${u.service_year} ${u.phone}`.toLowerCase().includes(q);
+    });
+  }, [waitingUsers, debouncedSearch]);
+
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3">
