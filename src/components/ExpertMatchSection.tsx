@@ -48,6 +48,19 @@ const useLangArray = () => {
   };
 };
 
+// 실명·자격사 명칭 노출 우회: 분야 자동 감지 → 익명 라벨 매핑
+const detectCategory = (expert: Expert): "legal" | "veterans" | "psych" | "default" => {
+  const blob = [
+    expert.expertise, expert.expertise_en, expert.expertise_ja, expert.expertise_zh,
+    expert.name, expert.career,
+    ...(expert.tags || []),
+  ].filter(Boolean).join(" ").toLowerCase();
+  if (/(법|법무|변호|legal|law|弁護|律|法務)/i.test(blob)) return "legal";
+  if (/(보훈|행정|veteran|보상|援護|退伍|退役)/i.test(blob)) return "veterans";
+  if (/(심리|상담|ptsd|psych|mental|心理|カウン|咨询|关怀)/i.test(blob)) return "psych";
+  return "default";
+};
+
 const ExpertMatchSection = () => {
   const { t } = useLanguage();
   const getField = useLangField();
