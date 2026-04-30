@@ -21,8 +21,8 @@ const Index = () => {
       <Navbar onConsultClick={() => setConsultOpen(true)} />
       <DdayHeroSection />
       <DischargeChecklist />
-      <ExpertMatchSection />
       <BuddySearch />
+      <ExpertMatchSection />
       <ServiceOverview />
       <Footer onConsultClick={() => setConsultOpen(true)} />
 
