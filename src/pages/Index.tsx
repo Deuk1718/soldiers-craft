@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import Navbar from "@/components/Navbar";
 import DdayHeroSection from "@/components/DdayHeroSection";
 import DischargeChecklist from "@/components/DischargeChecklist";
-import ExpertMatchSection from "@/components/ExpertMatchSection";
-import BuddySearch from "@/components/BuddySearch";
-import ServiceOverview from "@/components/ServiceOverview";
-import Footer from "@/components/Footer";
-import FreeConsultModal from "@/components/FreeConsultModal";
-import ServiceInfoModal from "@/components/ServiceInfoModal";
-import WelcomeModal from "@/components/WelcomeModal";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+// Below-the-fold sections — split for faster TTI
+const BuddySearch = lazy(() => import("@/components/BuddySearch"));
+const ExpertMatchSection = lazy(() => import("@/components/ExpertMatchSection"));
+const ServiceOverview = lazy(() => import("@/components/ServiceOverview"));
+const Footer = lazy(() => import("@/components/Footer"));
+
+// Modals — only load when triggered
+const FreeConsultModal = lazy(() => import("@/components/FreeConsultModal"));
+const ServiceInfoModal = lazy(() => import("@/components/ServiceInfoModal"));
+const WelcomeModal = lazy(() => import("@/components/WelcomeModal"));
+
+const SectionFallback = () => <div className="py-20" aria-hidden="true" />;
 
 const Index = () => {
   const { t } = useLanguage();
@@ -21,14 +27,36 @@ const Index = () => {
       <Navbar onConsultClick={() => setConsultOpen(true)} />
       <DdayHeroSection />
       <DischargeChecklist />
-      <BuddySearch />
-      <ExpertMatchSection />
-      <ServiceOverview />
-      <Footer onConsultClick={() => setConsultOpen(true)} />
+      <Suspense fallback={<SectionFallback />}>
+        <BuddySearch />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <ExpertMatchSection />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <ServiceOverview />
+      </Suspense>
+      <Suspense fallback={null}>
+        <Footer onConsultClick={() => setConsultOpen(true)} />
+      </Suspense>
 
-      <FreeConsultModal open={consultOpen} onOpenChange={setConsultOpen} />
-      <ServiceInfoModal open={serviceOpen} onOpenChange={setServiceOpen} onRequestConsult={() => setConsultOpen(true)} />
-      <WelcomeModal onStart={() => document.querySelector("#dday")?.scrollIntoView({ behavior: "smooth" })} />
+      {consultOpen && (
+        <Suspense fallback={null}>
+          <FreeConsultModal open={consultOpen} onOpenChange={setConsultOpen} />
+        </Suspense>
+      )}
+      {serviceOpen && (
+        <Suspense fallback={null}>
+          <ServiceInfoModal
+            open={serviceOpen}
+            onOpenChange={setServiceOpen}
+            onRequestConsult={() => setConsultOpen(true)}
+          />
+        </Suspense>
+      )}
+      <Suspense fallback={null}>
+        <WelcomeModal onStart={() => document.querySelector("#dday")?.scrollIntoView({ behavior: "smooth" })} />
+      </Suspense>
     </div>
   );
 };

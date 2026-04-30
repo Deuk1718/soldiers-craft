@@ -97,7 +97,7 @@ const MouseGhostTrail = () => {
       }, 2000);
     };
 
-    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mousemove", onMove, { passive: true });
     const ctx = canvasRef.current?.getContext("2d");
 
     const animate = () => {
@@ -105,9 +105,16 @@ const MouseGhostTrail = () => {
         animFrameRef.current = requestAnimationFrame(animate);
         return;
       }
-      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
       const ps = particlesRef.current;
+      // Skip the entire frame work when paused AND no particles remain
+      if (pausedRef.current && ps.length === 0) {
+        animFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
+      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
       for (let i = ps.length - 1; i >= 0; i--) {
         const p = ps[i];
         p.x += p.speedX;
