@@ -144,10 +144,10 @@ const Admin = () => {
   const [matchPage, setMatchPage] = useState(0);
   const MATCH_PAGE_SIZE = 50;
 
-  // 30-minute inactivity auto-logout (throttled, passive listeners)
+  // 1-hour inactivity auto-logout (throttled, passive listeners)
   useEffect(() => {
     if (!session) return;
-    const TIMEOUT_MS = 30 * 60 * 1000;
+    const TIMEOUT_MS = 60 * 60 * 1000;
     let inactivityTimer: ReturnType<typeof setTimeout>;
     let lastReset = 0;
 
@@ -158,7 +158,7 @@ const Admin = () => {
       clearTimeout(inactivityTimer);
       inactivityTimer = setTimeout(async () => {
         await supabase.auth.signOut();
-        toast({ title: "자동 로그아웃", description: "30분간 활동이 없어 보안을 위해 자동 로그아웃되었습니다." });
+        toast({ title: "자동 로그아웃", description: "1시간 동안 활동이 없어 보안을 위해 자동 로그아웃되었습니다." });
       }, TIMEOUT_MS);
     };
 
