@@ -115,10 +115,10 @@ const BuddySearch = () => {
     } as any);
 
     if (error) {
-      toast({ title: "등록 실패", description: error.message, variant: "destructive" });
+      toast({ title: t("buddy.toast.regFail"), description: error.message, variant: "destructive" });
     } else {
       setRegistered(true);
-      toast({ title: "등록 완료", description: "동기가 등록되면 연락드리겠습니다." });
+      toast({ title: t("buddy.toast.regOk"), description: t("buddy.toast.regOkDesc") });
     }
 
     setWaitName("");
@@ -370,40 +370,40 @@ const BuddySearch = () => {
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2">
                     <Shield className="h-5 w-5 text-primary" />
-                    개인정보 동의 및 연락처 입력
+                    {t("buddy.dlg.step1.title")}
                   </DialogTitle>
                   <DialogDescription>
-                    안전한 매칭을 위해 개인정보 수집에 동의하고 연락처를 입력해 주세요.
+                    {t("buddy.dlg.step1.desc")}
                   </DialogDescription>
                 </DialogHeader>
                 <div className="mt-4 space-y-4">
                   {selectedBuddy && (
                     <div className="rounded-xl border border-primary/20 bg-primary/5 p-3">
                       <p className="text-sm font-medium text-foreground">
-                        매칭 대상: {selectedBuddy.unit} {selectedBuddy.service_year} 전우
+                        {t("buddy.dlg.target", { unit: selectedBuddy.unit, year: selectedBuddy.service_year })}
                       </p>
                     </div>
                   )}
                   <div className="flex items-start gap-3 rounded-xl border border-border bg-secondary/30 p-3">
                     <Checkbox id="privacy" checked={privacyConsent} onCheckedChange={(v) => setPrivacyConsent(v === true)} className="mt-0.5" />
                     <label htmlFor="privacy" className="text-sm leading-relaxed text-foreground cursor-pointer">
-                      <span className="font-semibold text-primary">[필수]</span> 개인정보 수집 및 제공 동의
+                      <span className="font-semibold text-primary">{t("buddy.dlg.required")}</span> {t("buddy.dlg.consent")}
                     </label>
                   </div>
                   <div>
                     <label className="mb-1.5 block text-sm font-medium text-foreground">
-                      <Phone className="mr-1 inline h-3.5 w-3.5" />전화번호
+                      <Phone className="mr-1 inline h-3.5 w-3.5" />{t("buddy.dlg.phone")}
                     </label>
                     <Input type="tel" placeholder="010-0000-0000" value={userPhone} onChange={(e) => setUserPhone(e.target.value)} />
                   </div>
                   <div>
                     <label className="mb-1.5 block text-sm font-medium text-foreground">
-                      <Mail className="mr-1 inline h-3.5 w-3.5" />이메일 주소 (선택사항)
+                      <Mail className="mr-1 inline h-3.5 w-3.5" />{t("buddy.dlg.email")}
                     </label>
                     <Input type="email" placeholder="email@example.com" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
                   </div>
                   <Button variant="warmBrown" className="h-11 w-full" disabled={!canProceedStep1} onClick={() => setMatchStep(2)}>
-                    다음 단계로
+                    {t("buddy.dlg.next")}
                   </Button>
                 </div>
               </motion.div>
@@ -414,38 +414,38 @@ const BuddySearch = () => {
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5 text-primary" />
-                    인증 비용 결제
+                    {t("buddy.dlg.step2.title")}
                   </DialogTitle>
                   <DialogDescription>
-                    안전하고 검증된 매칭을 위해 소액의 인증 비용이 필요합니다.
+                    {t("buddy.dlg.step2.desc")}
                   </DialogDescription>
                 </DialogHeader>
                 <div className="mt-4 space-y-4">
                   <div className="rounded-xl border-2 border-primary/20 bg-primary/5 p-6 text-center">
                     <p className="text-3xl font-bold text-foreground">
                       {selectedBuddy?.match_fee_type === "free" || !selectedBuddy?.match_fee
-                        ? "무료"
+                        ? t("buddy.dlg.free")
                         : `₩${(selectedBuddy?.match_fee ?? 0).toLocaleString()}`}
                     </p>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      {selectedBuddy?.match_fee_type === "free" ? "무료 연결" : "장난전화 방지 인증 비용"}
+                      {selectedBuddy?.match_fee_type === "free" ? t("buddy.dlg.freeConnect") : t("buddy.dlg.paidLabel")}
                     </p>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card p-3 text-sm font-medium text-foreground">
-                      <CreditCard className="h-4 w-4 text-muted-foreground" />신용카드
+                      <CreditCard className="h-4 w-4 text-muted-foreground" />{t("buddy.dlg.cardPay")}
                     </div>
                     <div className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card p-3 text-sm font-medium text-foreground">
-                      <Shield className="h-4 w-4 text-muted-foreground" />간편결제
+                      <Shield className="h-4 w-4 text-muted-foreground" />{t("buddy.dlg.simplePay")}
                     </div>
                   </div>
                   <div className="rounded-lg bg-secondary/50 p-3 text-xs text-muted-foreground leading-relaxed">
                     <CheckCircle2 className="mr-1 inline h-3.5 w-3.5 text-primary" />
-                    결제 완료 시 매칭된 전우의 연락처가 즉시 공개됩니다.
+                    {t("buddy.dlg.payNote")}
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" className="h-11 flex-1" onClick={() => setMatchStep(1)}>이전</Button>
-                    <Button variant="warmBrown" className="h-11 flex-1" onClick={handlePayAndMatch}>결제 및 매칭 완료</Button>
+                    <Button variant="outline" className="h-11 flex-1" onClick={() => setMatchStep(1)}>{t("buddy.dlg.prev")}</Button>
+                    <Button variant="warmBrown" className="h-11 flex-1" onClick={handlePayAndMatch}>{t("buddy.dlg.payAndMatch")}</Button>
                   </div>
                 </div>
               </motion.div>
@@ -459,7 +459,7 @@ const BuddySearch = () => {
         <MatchSuccessAnimation
           open={showMatchAnimation}
           onClose={() => setShowMatchAnimation(false)}
-          userA={{ name: "나", unit: "내 부대", period: "내 복무기간" }}
+          userA={{ name: t("buddy.match.me"), unit: t("buddy.match.myUnit"), period: t("buddy.match.myPeriod") }}
           userB={{ name: selectedBuddy.name, unit: selectedBuddy.unit, period: selectedBuddy.service_year }}
           contactInfo={{ phone: selectedBuddy.phone, email: selectedBuddy.email || "" }}
         />
