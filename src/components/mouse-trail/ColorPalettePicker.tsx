@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Palette, X, Pause, Play, Pipette } from "lucide-react";
 import { PASTEL_PRESETS, COLOR_CATEGORIES } from "./pastelColors";
 import CustomColorPicker from "./CustomColorPicker";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ColorPalettePickerProps {
   selectedIdx: number;
@@ -13,6 +14,7 @@ interface ColorPalettePickerProps {
 }
 
 const ColorPalettePicker = ({ selectedIdx, onSelect, onCustomColor, paused, onTogglePause, customColor: customColorProp }: ColorPalettePickerProps) => {
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   const [customPickerOpen, setCustomPickerOpen] = useState(false);
 
@@ -46,7 +48,7 @@ const ColorPalettePicker = ({ selectedIdx, onSelect, onCustomColor, paused, onTo
         style={{
           background: buttonBg,
         }}
-        aria-label="파티클 색상 선택"
+        aria-label={t("trail.aria")}
       >
         <Palette size={18} className="text-gray-700" />
       </button>
@@ -74,7 +76,7 @@ const ColorPalettePicker = ({ selectedIdx, onSelect, onCustomColor, paused, onTo
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 pt-4 pb-2">
-              <p className="text-sm text-white/90 font-semibold">🎨 방울 색상 선택</p>
+              <p className="text-sm text-white/90 font-semibold">🎨 {t("trail.title")}</p>
               <button
                 onClick={() => setOpen(false)}
                 className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
@@ -113,7 +115,7 @@ const ColorPalettePicker = ({ selectedIdx, onSelect, onCustomColor, paused, onTo
 
               {/* Special buttons */}
               <div>
-                <p className="text-[11px] text-white/50 mb-1.5 font-medium">스페셜</p>
+                <p className="text-[11px] text-white/50 mb-1.5 font-medium">{t("trail.special")}</p>
                 <div className="flex items-center gap-2 flex-wrap">
                   <button
                     onClick={() => handleSelect(lastIdx)}
@@ -126,7 +128,7 @@ const ColorPalettePicker = ({ selectedIdx, onSelect, onCustomColor, paused, onTo
                       background: "conic-gradient(#FFB6C1, #C8B4FF, #AAF0D1, #ADD8FA, #FFDAB9, #FFFAB4, #FFB6C1)",
                     }}
                   >
-                    🎲 랜덤
+                    🎲 {t("trail.random")}
                   </button>
 
                   {/* Custom color picker */}
@@ -143,7 +145,7 @@ const ColorPalettePicker = ({ selectedIdx, onSelect, onCustomColor, paused, onTo
                     }}
                   >
                     <Pipette size={14} />
-                    커스텀
+                    {t("trail.custom")}
                   </button>
 
                   <CustomColorPicker
@@ -167,7 +169,7 @@ const ColorPalettePicker = ({ selectedIdx, onSelect, onCustomColor, paused, onTo
                     }}
                   >
                     {paused ? <Play size={14} /> : <Pause size={14} />}
-                    {paused ? "재생" : "멈춤"}
+                    {paused ? t("trail.play") : t("trail.pause")}
                   </button>
                 </div>
               </div>

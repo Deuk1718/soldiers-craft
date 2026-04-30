@@ -33,13 +33,14 @@ interface AssetItem {
   valuation: number;
 }
 
-const formatKRW = (v: number) => {
-  if (v >= 10000) return `${(v / 10000).toFixed(1)}억`;
-  return `${v.toLocaleString()}만`;
-};
+// formatKRW is moved inside component to access translations
 
 const AssetDashboard = ({ onTotalChange }: { onTotalChange?: (total: number) => void }) => {
   const { t } = useLanguage();
+  const formatKRW = (v: number) =>
+    v >= 10000
+      ? `${(v / 10000).toFixed(1)}${t("unit.eok")}`
+      : `${v.toLocaleString()}${t("unit.man")}`;
   const [assets, setAssets] = useState<AssetItem[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
@@ -109,7 +110,7 @@ const AssetDashboard = ({ onTotalChange }: { onTotalChange?: (total: number) => 
         <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-8 rounded-2xl bg-navy p-8 text-navy-foreground shadow-card">
           <p className="text-sm text-navy-foreground/50">{t("assets.total")}</p>
           <p className="mt-1 font-mono-num text-4xl font-bold text-gold">
-            {totalValue > 0 ? `${totalValue.toLocaleString()} 만원` : "0 만원"}
+            {totalValue > 0 ? `${totalValue.toLocaleString()} ${t("unit.manwon")}` : `0 ${t("unit.manwon")}`}
           </p>
           {totalValue > 0 && (
             <p className="mt-1 font-mono-num text-sm text-navy-foreground/40">{t("assets.approx", { value: formatKRW(totalValue) })}</p>

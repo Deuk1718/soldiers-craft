@@ -31,11 +31,26 @@ export const useLanguage = () => {
   return ctx;
 };
 
+const TITLE_BY_LANG: Record<Language, string> = {
+  ko: "전우찾기 | 군 생활 종합 가이드 · D-Day · 전우 매칭 - GJ Group",
+  en: "ComradeFind | Military Life Guide · D-Day · Comrade Match - GJ Group",
+  ja: "戦友探し | 軍生活ガイド・D-Day・戦友マッチング - GJ Group",
+  zh: "找战友 | 军旅生活指南 · D-Day · 战友匹配 - GJ Group",
+};
+
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [lang, setLangState] = useState<Language>(() => {
     const saved = localStorage.getItem("lv-lang") as Language;
     return saved && LANGUAGE_LABELS[saved] ? saved : "ko";
   });
+
+  // Sync <html lang> and <title> to current language
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    document.documentElement.lang = lang;
+    const title = TITLE_BY_LANG[lang];
+    if (title) document.title = title;
+  }, [lang]);
 
   const setLang = useCallback((newLang: Language) => {
     localStorage.setItem("lv-lang", newLang);

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Users, MessageCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface MatchedUser {
   name: string;
@@ -41,6 +42,7 @@ const Particle = ({ delay, x }: { delay: number; x: number }) => (
 );
 
 const MatchSuccessAnimation = ({ open, onClose, userA, userB, contactInfo }: MatchSuccessAnimationProps) => {
+  const { t } = useLanguage();
   const [showButtons, setShowButtons] = useState(false);
 
   useEffect(() => {
@@ -133,7 +135,7 @@ const MatchSuccessAnimation = ({ open, onClose, userA, userB, contactInfo }: Mat
               transition={{ delay: 1.8 }}
             >
               <h2 className="text-2xl font-bold text-foreground">
-                {contactInfo ? "매칭 성공! 유료 결제(900원) 후 연락처가 공개됩니다." : "새로운 전우가 연결되었습니다!"}
+                {contactInfo ? t("buddy.match.success") : t("buddy.match.connected")}
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">{userA.period} ~ {userB.period}</p>
             </motion.div>
@@ -162,11 +164,11 @@ const MatchSuccessAnimation = ({ open, onClose, userA, userB, contactInfo }: Mat
                 >
                   <Button variant="warmBrown" size="lg" className="gap-2" onClick={onClose}>
                     <MessageCircle className="h-4 w-4" />
-                    대화 시작하기
+                    {t("buddy.match.startChat")}
                   </Button>
                   <Button variant="outline" size="lg" className="gap-2" onClick={onClose}>
                     <X className="h-4 w-4" />
-                    닫기
+                    {t("buddy.match.close")}
                   </Button>
                 </motion.div>
               )}
