@@ -97,7 +97,7 @@ const MouseGhostTrail = () => {
       }, 2000);
     };
 
-    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mousemove", onMove, { passive: true });
     const ctx = canvasRef.current?.getContext("2d");
 
     const animate = () => {
