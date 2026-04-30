@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -144,30 +144,34 @@ const Admin = () => {
   const [matchPage, setMatchPage] = useState(0);
   const MATCH_PAGE_SIZE = 50;
 
-  // 30-minute inactivity auto-logout
+  // 30-minute inactivity auto-logout (throttled, passive listeners)
   useEffect(() => {
-    const TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+    if (!session) return;
+    const TIMEOUT_MS = 30 * 60 * 1000;
     let inactivityTimer: ReturnType<typeof setTimeout>;
+    let lastReset = 0;
 
     const resetTimer = () => {
+      const now = Date.now();
+      if (now - lastReset < 1000) return; // throttle to 1/s
+      lastReset = now;
       clearTimeout(inactivityTimer);
-      if (session) {
-        inactivityTimer = setTimeout(async () => {
-          await supabase.auth.signOut();
-          toast({ title: "자동 로그아웃", description: "30분간 활동이 없어 보안을 위해 자동 로그아웃되었습니다." });
-        }, TIMEOUT_MS);
-      }
+      inactivityTimer = setTimeout(async () => {
+        await supabase.auth.signOut();
+        toast({ title: "자동 로그아웃", description: "30분간 활동이 없어 보안을 위해 자동 로그아웃되었습니다." });
+      }, TIMEOUT_MS);
     };
 
-    const events = ["mousedown", "keydown", "scroll", "touchstart", "mousemove"];
-    events.forEach(e => window.addEventListener(e, resetTimer));
+    const events: (keyof WindowEventMap)[] = ["mousedown", "keydown", "scroll", "touchstart", "mousemove"];
+    const opts: AddEventListenerOptions = { passive: true };
+    events.forEach(e => window.addEventListener(e, resetTimer, opts));
     resetTimer();
 
     return () => {
       clearTimeout(inactivityTimer);
-      events.forEach(e => window.removeEventListener(e, resetTimer));
+      events.forEach(e => window.removeEventListener(e, resetTimer, opts));
     };
-  }, [session]);
+  }, [session, toast]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -182,14 +186,27 @@ const Admin = () => {
   }, []);
 
   useEffect(() => {
-    if (session) {
-      fetchConsultations();
-      fetchExperts();
-      fetchServiceStatus();
-      fetchNotifications();
-      fetchWaitingUsers();
-      fetchMatches();
-    }
+    if (!session) return;
+    // Parallel initial fetch — was sequential before
+    Promise.all([
+      fetchConsultations(),
+      fetchExperts(),
+      fetchServiceStatus(),
+      fetchNotifications(),
+      fetchWaitingUsers(),
+      fetchMatches(),
+    ]);
+
+    // Realtime: keep tables in sync without manual refresh
+    const ch = supabase
+      .channel("admin-realtime")
+      .on("postgres_changes", { event: "*", schema: "public", table: "consultations" }, () => fetchConsultations())
+      .on("postgres_changes", { event: "*", schema: "public", table: "notifications" }, () => fetchNotifications())
+      .on("postgres_changes", { event: "*", schema: "public", table: "buddy_matches" }, () => fetchMatches())
+      .on("postgres_changes", { event: "*", schema: "public", table: "buddy_waiting_users" }, () => fetchWaitingUsers())
+      .subscribe();
+
+    return () => { supabase.removeChannel(ch); };
   }, [session]);
 
   const fetchWaitingUsers = async () => {
@@ -371,6 +388,38 @@ const Admin = () => {
     fetchExperts();
   };
 
+  // Debounced search input — avoid re-filtering thousands of users on each keystroke
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(matchSearchQuery), 200);
+    return () => clearTimeout(t);
+  }, [matchSearchQuery]);
+
+  // Memoized derived values
+  const stats = useMemo(() => {
+    const today = format(new Date(), "yyyy-MM-dd");
+    return {
+      total: consultations.length,
+      todayCount: consultations.filter(c => c.consultation_date === today || c.created_at.startsWith(today)).length,
+      pending: consultations.filter(c => c.status === "pending").length,
+      completed: consultations.filter(c => c.status === "completed").length,
+    };
+  }, [consultations]);
+
+  const unreadCount = useMemo(
+    () => notifications.reduce((n, x) => n + (x.is_read ? 0 : 1), 0),
+    [notifications]
+  );
+
+  const filteredWaiting = useMemo(() => {
+    const q = debouncedSearch.trim().toLowerCase();
+    return waitingUsers.filter(u => {
+      if (u.is_matched) return false;
+      if (!q) return true;
+      return `${u.name} ${u.unit} ${u.service_year} ${u.phone}`.toLowerCase().includes(q);
+    });
+  }, [waitingUsers, debouncedSearch]);
+
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
@@ -416,11 +465,7 @@ const Admin = () => {
     );
   }
 
-  const today = format(new Date(), "yyyy-MM-dd");
-  const total = consultations.length;
-  const todayCount = consultations.filter(c => c.consultation_date === today || c.created_at.startsWith(today)).length;
-  const pending = consultations.filter(c => c.status === "pending").length;
-  const completed = consultations.filter(c => c.status === "completed").length;
+  const { total, todayCount, pending, completed } = stats;
 
   const statusConfig: Record<string, { label: string; className: string }> = {
     pending: { label: "대기중", className: "border-warning/30 bg-warning/10 text-warning" },
@@ -547,11 +592,11 @@ const Admin = () => {
               <Star className="h-4 w-4" />전문가 관리
             </TabsTrigger>
             <TabsTrigger value="notifications" className="relative gap-1.5 rounded-lg px-4 data-[state=active]:bg-background data-[state=active]:shadow-sm">
-              {notifications.filter(n => !n.is_read).length > 0 ? <BellDot className="h-4 w-4 text-warning" /> : <Bell className="h-4 w-4" />}
+              {unreadCount > 0 ? <BellDot className="h-4 w-4 text-warning" /> : <Bell className="h-4 w-4" />}
               알림
-              {notifications.filter(n => !n.is_read).length > 0 && (
+              {unreadCount > 0 && (
                 <span className="ml-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-warning text-[10px] font-bold text-warning-foreground px-1">
-                  {notifications.filter(n => !n.is_read).length}
+                  {unreadCount}
                 </span>
               )}
             </TabsTrigger>
@@ -726,7 +771,7 @@ const Admin = () => {
               <div>
                 <h2 className="text-xl font-bold text-foreground">알림 센터</h2>
                 <p className="text-sm text-muted-foreground">
-                  읽지 않은 알림 {notifications.filter(n => !n.is_read).length}건 / 전체 {notifications.length}건
+                  읽지 않은 알림 {unreadCount}건 / 전체 {notifications.length}건
                 </p>
               </div>
               <div className="flex gap-2">
@@ -831,12 +876,7 @@ const Admin = () => {
                         </TableHeader>
                         <TableBody>
                           {(() => {
-                            const filtered = waitingUsers.filter(u => {
-                              if (u.is_matched) return false;
-                              if (!matchSearchQuery.trim()) return true;
-                              const q = matchSearchQuery.toLowerCase();
-                              return `${u.name} ${u.unit} ${u.service_year} ${u.phone}`.toLowerCase().includes(q);
-                            });
+                            const filtered = filteredWaiting;
                             const totalPages = Math.ceil(filtered.length / MATCH_PAGE_SIZE);
                             const currentPage = Math.min(matchPage, Math.max(0, totalPages - 1));
                             const paged = filtered.slice(currentPage * MATCH_PAGE_SIZE, (currentPage + 1) * MATCH_PAGE_SIZE);
