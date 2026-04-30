@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { X } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CustomColorPickerProps {
   open: boolean;
@@ -22,6 +23,7 @@ const QUICK_COLORS: [number, number, number][] = [
 ];
 
 const CustomColorPicker = ({ open, onClose, onSelect, initialColor }: CustomColorPickerProps) => {
+  const { t } = useLanguage();
   const [hue, setHue] = useState(270);
   const [sat, setSat] = useState(60);
   const [light, setLight] = useState(75);
@@ -51,7 +53,7 @@ const CustomColorPicker = ({ open, onClose, onSelect, initialColor }: CustomColo
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <p className="text-sm text-white/90 font-semibold">🎨 커스텀 색상</p>
+          <p className="text-sm text-white/90 font-semibold">🎨 {t("trail.custom.title")}</p>
           <button onClick={onClose} className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors">
             <X size={16} className="text-white/60" />
           </button>
@@ -73,7 +75,7 @@ const CustomColorPicker = ({ open, onClose, onSelect, initialColor }: CustomColo
 
         {/* Hue */}
         <div className="mb-3">
-          <p className="text-[10px] text-white/50 mb-1.5">색상 (Hue)</p>
+          <p className="text-[10px] text-white/50 mb-1.5">{t("trail.custom.hue")}</p>
           <input
             type="range" min={0} max={360} value={hue}
             onChange={e => setHue(Number(e.target.value))}
@@ -86,7 +88,7 @@ const CustomColorPicker = ({ open, onClose, onSelect, initialColor }: CustomColo
 
         {/* Saturation */}
         <div className="mb-3">
-          <p className="text-[10px] text-white/50 mb-1.5">채도 (Saturation)</p>
+          <p className="text-[10px] text-white/50 mb-1.5">{t("trail.custom.sat")}</p>
           <input
             type="range" min={0} max={100} value={sat}
             onChange={e => setSat(Number(e.target.value))}
@@ -99,7 +101,7 @@ const CustomColorPicker = ({ open, onClose, onSelect, initialColor }: CustomColo
 
         {/* Lightness */}
         <div className="mb-4">
-          <p className="text-[10px] text-white/50 mb-1.5">밝기 (Lightness)</p>
+          <p className="text-[10px] text-white/50 mb-1.5">{t("trail.custom.light")}</p>
           <input
             type="range" min={10} max={95} value={light}
             onChange={e => setLight(Number(e.target.value))}
@@ -112,7 +114,7 @@ const CustomColorPicker = ({ open, onClose, onSelect, initialColor }: CustomColo
 
         {/* Quick colors */}
         <div className="mb-4">
-          <p className="text-[10px] text-white/50 mb-1.5">빠른 선택</p>
+          <p className="text-[10px] text-white/50 mb-1.5">{t("trail.custom.quick")}</p>
           <div className="flex gap-1.5 flex-wrap">
             {QUICK_COLORS.map((c, i) => (
               <button
@@ -134,7 +136,7 @@ const CustomColorPicker = ({ open, onClose, onSelect, initialColor }: CustomColo
             boxShadow: `0 4px 16px rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.35)`,
           }}
         >
-          적용하기
+          {t("trail.custom.apply")}
         </button>
       </div>
 
