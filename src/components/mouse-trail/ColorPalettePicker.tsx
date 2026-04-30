@@ -43,16 +43,24 @@ const ColorPalettePicker = ({ selectedIdx, onSelect, onCustomColor, paused, onTo
 
   return (
     <div style={{ position: "fixed", bottom: 20, right: 20, zIndex: 10000 }}>
-      <button
-        onClick={() => setOpen((p) => !p)}
-        className="w-11 h-11 rounded-full shadow-lg flex items-center justify-center backdrop-blur-sm border border-white/20 transition-all hover:scale-110 bg-[#496209]/[0.58]"
-        style={{
-          background: buttonBg,
-        }}
-        aria-label={t("trail.aria")}
-      >
-        <Palette size={18} className="text-gray-700" />
-      </button>
+      <TooltipProvider delayDuration={150}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={() => setOpen((p) => !p)}
+              className="w-11 h-11 rounded-full shadow-lg flex items-center justify-center backdrop-blur-sm border border-white/20 transition-all hover:scale-110 bg-[#496209]/[0.58]"
+              style={{ background: buttonBg }}
+              aria-label={t("trail.aria")}
+            >
+              <Palette size={18} className="text-gray-700" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="left" className="max-w-[240px]">
+            <p className="font-semibold text-xs mb-1">🎨 {t("trail.howto.title")}</p>
+            <p className="text-xs leading-relaxed text-muted-foreground">{t("trail.howto.desc")}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
 
       {open && (
         <>
