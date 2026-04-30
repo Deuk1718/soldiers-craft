@@ -58,6 +58,25 @@ const Footer = ({ onConsultClick }: FooterProps) => {
               <Share2 className="h-4 w-4" />
               {t("footer.share")}
             </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  className="gap-2 rounded-xl border border-gold/40 bg-gold/10 px-6 text-gold hover:bg-gold/20 hover:text-gold"
+                  aria-label={t("footer.qr")}
+                >
+                  <QrCode className="h-4 w-4" />
+                  {t("footer.qr")}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto bg-white p-4" align="center">
+                <div className="flex flex-col items-center gap-2">
+                  <QRCodeSVG value={siteUrl} size={180} level="M" includeMargin={false} />
+                  <p className="text-xs text-muted-foreground">{t("footer.qr.desc")}</p>
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
 
           <nav className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-navy-foreground/70">
