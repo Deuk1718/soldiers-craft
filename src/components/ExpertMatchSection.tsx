@@ -114,6 +114,10 @@ const ExpertMatchSection = () => {
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             {experts.map((expert, i) => {
               const isExpanded = expandedIndex === i;
+              const cat = detectCategory(expert);
+              const anonName = t(`experts.anonName.${cat}`);
+              const anonCareer = t(`experts.anonCareer.${cat}`);
+              const anonCategory = cat === "default" ? getField(expert, 'expertise') : t(`experts.category.${cat}`);
               return (
                 <motion.div
                   key={expert.id}
@@ -129,10 +133,10 @@ const ExpertMatchSection = () => {
                     <div className="flex items-start justify-between">
                       <div>
                         <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                          {getField(expert, 'expertise')}
+                          {anonCategory}
                         </span>
                         <h3 className="mt-1 text-xl font-semibold text-card-foreground">
-                          {getField(expert, 'name')}
+                          {anonName}
                         </h3>
                       </div>
                       <div className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-muted-foreground">
@@ -142,7 +146,7 @@ const ExpertMatchSection = () => {
 
                     <div className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground">
                       <GraduationCap className="h-3.5 w-3.5" />
-                      {getField(expert, 'career')}
+                      {anonCareer}
                     </div>
 
                     <div className="mt-4 flex flex-wrap items-center gap-2">
