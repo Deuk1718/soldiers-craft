@@ -199,7 +199,7 @@ const ExpertMatchSection = () => {
                                 <Briefcase className="h-3.5 w-3.5" />
                                 {t("experts.intro")}
                               </div>
-                              <p className="text-sm leading-relaxed text-muted-foreground">{getField(expert, 'description')}</p>
+                              <p className="text-sm leading-relaxed text-muted-foreground">{anonCareer}</p>
                             </div>
                             <div>
                               <div className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-card-foreground">
