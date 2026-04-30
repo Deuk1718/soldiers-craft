@@ -39,13 +39,15 @@ const ServiceOverview = () => {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((s, i) => (
-            <motion.div
+            <motion.button
+              type="button"
+              onClick={() => handleClick(s.target)}
               key={i}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.06 }}
-              className="group relative rounded-2xl border border-border bg-card p-6 shadow-card transition-shadow hover:shadow-card-hover"
+              className="group relative rounded-2xl border border-border bg-card p-6 text-left shadow-card transition-all hover:-translate-y-0.5 hover:shadow-card-hover focus:outline-none focus:ring-2 focus:ring-primary/40"
             >
               <div className="mb-4 flex items-center justify-between">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/8">
@@ -55,7 +57,7 @@ const ServiceOverview = () => {
               </div>
               <h3 className="mb-2 text-lg font-semibold text-card-foreground">{s.title}</h3>
               <p className="text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
-            </motion.div>
+            </motion.button>
           ))}
         </div>
       </div>
