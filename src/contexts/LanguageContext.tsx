@@ -75,3 +75,11 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     </LanguageContext.Provider>
   );
 };
+
+// Force a full reload instead of partial HMR — prevents the context module from
+// being duplicated, which would make `useLanguage` see a different Context
+// instance than the one the Provider mounted.
+if (import.meta.hot) {
+  import.meta.hot.invalidate();
+}
+
