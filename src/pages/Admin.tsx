@@ -144,30 +144,34 @@ const Admin = () => {
   const [matchPage, setMatchPage] = useState(0);
   const MATCH_PAGE_SIZE = 50;
 
-  // 30-minute inactivity auto-logout
+  // 30-minute inactivity auto-logout (throttled, passive listeners)
   useEffect(() => {
-    const TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+    if (!session) return;
+    const TIMEOUT_MS = 30 * 60 * 1000;
     let inactivityTimer: ReturnType<typeof setTimeout>;
+    let lastReset = 0;
 
     const resetTimer = () => {
+      const now = Date.now();
+      if (now - lastReset < 1000) return; // throttle to 1/s
+      lastReset = now;
       clearTimeout(inactivityTimer);
-      if (session) {
-        inactivityTimer = setTimeout(async () => {
-          await supabase.auth.signOut();
-          toast({ title: "자동 로그아웃", description: "30분간 활동이 없어 보안을 위해 자동 로그아웃되었습니다." });
-        }, TIMEOUT_MS);
-      }
+      inactivityTimer = setTimeout(async () => {
+        await supabase.auth.signOut();
+        toast({ title: "자동 로그아웃", description: "30분간 활동이 없어 보안을 위해 자동 로그아웃되었습니다." });
+      }, TIMEOUT_MS);
     };
 
-    const events = ["mousedown", "keydown", "scroll", "touchstart", "mousemove"];
-    events.forEach(e => window.addEventListener(e, resetTimer));
+    const events: (keyof WindowEventMap)[] = ["mousedown", "keydown", "scroll", "touchstart", "mousemove"];
+    const opts: AddEventListenerOptions = { passive: true };
+    events.forEach(e => window.addEventListener(e, resetTimer, opts));
     resetTimer();
 
     return () => {
       clearTimeout(inactivityTimer);
-      events.forEach(e => window.removeEventListener(e, resetTimer));
+      events.forEach(e => window.removeEventListener(e, resetTimer, opts));
     };
-  }, [session]);
+  }, [session, toast]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -182,14 +186,27 @@ const Admin = () => {
   }, []);
 
   useEffect(() => {
-    if (session) {
-      fetchConsultations();
-      fetchExperts();
-      fetchServiceStatus();
-      fetchNotifications();
-      fetchWaitingUsers();
-      fetchMatches();
-    }
+    if (!session) return;
+    // Parallel initial fetch — was sequential before
+    Promise.all([
+      fetchConsultations(),
+      fetchExperts(),
+      fetchServiceStatus(),
+      fetchNotifications(),
+      fetchWaitingUsers(),
+      fetchMatches(),
+    ]);
+
+    // Realtime: keep tables in sync without manual refresh
+    const ch = supabase
+      .channel("admin-realtime")
+      .on("postgres_changes", { event: "*", schema: "public", table: "consultations" }, () => fetchConsultations())
+      .on("postgres_changes", { event: "*", schema: "public", table: "notifications" }, () => fetchNotifications())
+      .on("postgres_changes", { event: "*", schema: "public", table: "buddy_matches" }, () => fetchMatches())
+      .on("postgres_changes", { event: "*", schema: "public", table: "buddy_waiting_users" }, () => fetchWaitingUsers())
+      .subscribe();
+
+    return () => { supabase.removeChannel(ch); };
   }, [session]);
 
   const fetchWaitingUsers = async () => {
