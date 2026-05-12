@@ -5,14 +5,14 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const content = {
   ko: {
-    title: "GJ 그룹 소개",
+    title: "전우찾기 소개",
     tagline: "군 생활의 모든 단계를 함께하는 신뢰의 동반자",
     mission: {
       title: "우리의 미션",
-      body: "GJ Group은 대한민국 군 장병과 가족들이 군 생활의 모든 단계를 안심하고 준비할 수 있도록, 검증된 분야 전문 파트너를 연결하고 체계적인 정보를 제공하는 것을 사명으로 합니다.",
+      body: "ComradeFind는 대한민국 군 장병과 가족들이 군 생활의 모든 단계를 안심하고 준비할 수 있도록, 검증된 분야별 안내 가이드를 연결하고 체계적인 정보를 제공하는 것을 사명으로 합니다.",
     },
     values: [
-      { icon: Target, title: "정확성", body: "사실에 기반한 정보와 검증된 파트너만을 안내합니다." },
+      { icon: Target, title: "정확성", body: "사실에 기반한 정보와 검증된 안내 채널만을 안내합니다." },
       { icon: Users, title: "고객중심", body: "장병과 가족의 입장에서 가장 필요한 것을 우선합니다." },
       { icon: Award, title: "신뢰", body: "투명한 운영과 강력한 개인정보 보호로 신뢰를 쌓습니다." },
     ],
@@ -21,7 +21,7 @@ const content = {
       list: [
         "전역일 D-Day 계산기 및 단계별 전역 준비 가이드",
         "동기·전우 찾기 매칭 플랫폼",
-        "법무·보훈·심리 분야 GJ 그룹 전문 파트너 안내",
+        "법무·보훈·심리 분야 군 생활 케어 가이드 안내",
         "Soldiers Craft 멤버증 발급",
         "다국어(한·영·일·중) 지원",
       ],
@@ -29,21 +29,21 @@ const content = {
     contact: {
       title: "회사 정보",
       lines: [
-        "회사명: GJ Group",
-        "이메일: support@gjgroup.example",
+        "회사명: ComradeFind",
+        "이메일: support@soldiers-craft.com",
         "운영시간: 평일 09:00~18:00 (KST)",
       ],
     },
   },
   en: {
-    title: "About GJ Group",
-    tagline: "A trusted partner for every stage of military life",
+    title: "About ComradeFind",
+    tagline: "A trusted guide for every stage of military life",
     mission: {
       title: "Our Mission",
-      body: "GJ Group is committed to helping ROK service members and their families navigate every stage of military life — by connecting them with vetted partners and providing systematic, reliable information.",
+      body: "ComradeFind is committed to helping ROK service members and their families navigate every stage of military life — by connecting them with vetted guide channels and providing systematic, reliable information.",
     },
     values: [
-      { icon: Target, title: "Accuracy", body: "Fact-based information and vetted partners only." },
+      { icon: Target, title: "Accuracy", body: "Fact-based information and vetted guide channels only." },
       { icon: Users, title: "Client First", body: "We prioritize what soldiers and families truly need." },
       { icon: Award, title: "Trust", body: "Transparent operations and strong privacy protection." },
     ],
@@ -52,7 +52,7 @@ const content = {
       list: [
         "Discharge D-Day calculator and step-by-step preparation guide",
         "Comrade-finding matching platform",
-        "GJ Group partners in legal, veterans-affairs, and psychology",
+        "military life guides in legal, veterans-affairs, and psychology",
         "Soldiers Craft membership card issuance",
         "Multilingual support (KO/EN/JA/ZH)",
       ],
@@ -60,21 +60,21 @@ const content = {
     contact: {
       title: "Company Information",
       lines: [
-        "Company: GJ Group",
-        "Email: support@gjgroup.example",
+        "Company: ComradeFind",
+        "Email: support@soldiers-craft.com",
         "Hours: Weekdays 09:00–18:00 (KST)",
       ],
     },
   },
   ja: {
-    title: "GJグループ紹介",
-    tagline: "軍生活のすべての段階に寄り添う信頼のパートナー",
+    title: "戦友探し紹介",
+    tagline: "軍生活のすべての段階に寄り添う信頼のガイド",
     mission: {
       title: "私たちのミッション",
-      body: "GJ Groupは、大韓民国の軍将兵とご家族が軍生活のあらゆる段階を安心して準備できるよう、検証済みの専門パートナーをつなぎ、体系的な情報を提供することを使命としています。",
+      body: "戦友探しは、大韓民国の軍将兵とご家族が軍生活のあらゆる段階を安心して準備できるよう、検証済みの分野別ガイドをつなぎ、体系的な情報を提供することを使命としています。",
     },
     values: [
-      { icon: Target, title: "正確性", body: "事実に基づく情報と検証済みパートナーのみご案内します。" },
+      { icon: Target, title: "正確性", body: "事実に基づく情報と検証済みガイドのみご案内します。" },
       { icon: Users, title: "顧客中心", body: "将兵とご家族の立場から最も必要なものを優先します。" },
       { icon: Award, title: "信頼", body: "透明な運営と強固な個人情報保護で信頼を築きます。" },
     ],
@@ -83,7 +83,7 @@ const content = {
       list: [
         "除隊D-Day計算機・段階別準備ガイド",
         "戦友マッチングプラットフォーム",
-        "法務・援護・心理分野のGJグループ専門パートナー紹介",
+        "法務・援護・心理分野の軍生活ケアガイド紹介",
         "Soldiers Craftメンバー証発行",
         "多言語対応（韓・英・日・中）",
       ],
@@ -91,21 +91,21 @@ const content = {
     contact: {
       title: "会社情報",
       lines: [
-        "会社名：GJ Group",
-        "メール：support@gjgroup.example",
+        "会社名：ComradeFind",
+        "メール：support@soldiers-craft.com",
         "営業時間：平日 09:00〜18:00 (KST)",
       ],
     },
   },
   zh: {
-    title: "GJ集团介绍",
-    tagline: "陪伴军旅生活每一阶段的可信赖伙伴",
+    title: "找战友介绍",
+    tagline: "陪伴军旅生活每一阶段的可信赖指南",
     mission: {
       title: "我们的使命",
-      body: "GJ集团致力于帮助大韩民国军人及其家属安心规划军旅生活的每一阶段——对接经过审核的专业伙伴，并提供系统、可靠的信息。",
+      body: "找战友致力于帮助大韩民国军人及其家属安心规划军旅生活的每一阶段——对接经过审核的领域指引顾问，并提供系统、可靠的信息。",
     },
     values: [
-      { icon: Target, title: "准确", body: "仅提供基于事实的信息与审核过的伙伴。" },
+      { icon: Target, title: "准确", body: "仅提供基于事实的信息与审核过的指引渠道。" },
       { icon: Users, title: "以客为本", body: "优先满足军人与家属真正所需。" },
       { icon: Award, title: "信赖", body: "透明运营、强力的个人信息保护。" },
     ],
@@ -114,7 +114,7 @@ const content = {
       list: [
         "退伍D-Day计算器与分阶段准备指南",
         "战友匹配平台",
-        "法务、退伍军人事务、心理领域GJ集团专业伙伴介绍",
+        "法务、退伍军人事务、心理领域军旅生活关怀指南介绍",
         "Soldiers Craft 会员证发放",
         "多语言支持（韩/英/日/中）",
       ],
@@ -122,8 +122,8 @@ const content = {
     contact: {
       title: "公司信息",
       lines: [
-        "公司名称：GJ Group",
-        "邮箱：support@gjgroup.example",
+        "公司名称：ComradeFind",
+        "邮箱：support@soldiers-craft.com",
         "工作时间：工作日 09:00–18:00 (KST)",
       ],
     },

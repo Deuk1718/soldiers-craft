@@ -32,10 +32,10 @@ export const useLanguage = () => {
 };
 
 const TITLE_BY_LANG: Record<Language, string> = {
-  ko: "전우찾기 | 군 생활 종합 가이드 · D-Day · 전우 매칭 - GJ Group",
-  en: "ComradeFind | Military Life Guide · D-Day · Comrade Match - GJ Group",
-  ja: "戦友探し | 軍生活ガイド・D-Day・戦友マッチング - GJ Group",
-  zh: "找战友 | 军旅生活指南 · D-Day · 战友匹配 - GJ Group",
+  ko: "전우찾기 | 군 생활 종합 가이드 · D-Day · 전우 매칭",
+  en: "ComradeFind | Military Life Guide · D-Day · Comrade Match",
+  ja: "戦友探し | 軍生活ガイド・D-Day・戦友マッチング",
+  zh: "找战友 | 军旅生活指南 · D-Day · 战友匹配",
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {

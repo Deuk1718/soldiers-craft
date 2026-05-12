@@ -13,7 +13,7 @@ interface FooterProps {
 const Footer = ({ onConsultClick }: FooterProps) => {
   const { t } = useLanguage();
 
-  const siteUrl = "https://s-craft.lovable.app";
+  const siteUrl = typeof window !== "undefined" ? window.location.origin : "https://soldiers-craft.com";
   const shareTitle = t("footer.share.title");
   const shareText = t("footer.share.text");
 
@@ -92,7 +92,7 @@ const Footer = ({ onConsultClick }: FooterProps) => {
           </nav>
 
           <p className="mt-6 max-w-2xl text-xs leading-relaxed text-navy-foreground/40">
-            {t("footer.businessInfo")}: GJ Group · support@gjgroup.example
+            {t("footer.businessInfo")}: ComradeFind · support@soldiers-craft.com
           </p>
           <p className="mt-2 text-xs text-navy-foreground/30">
             {t("footer.copyright")}
@@ -104,4 +104,3 @@ const Footer = ({ onConsultClick }: FooterProps) => {
 };
 
 export default Footer;
-

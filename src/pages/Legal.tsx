@@ -10,10 +10,10 @@ const content: Record<string, Record<Section, { title: string; body: string }>> 
     terms: {
       title: "이용약관",
       body: `제1조 (목적)
-본 약관은 GJ Group(이하 "회사")이 운영하는 "전우찾기" 서비스(이하 "서비스")의 이용 조건과 절차, 회사와 이용자의 권리·의무 및 책임 사항을 규정함을 목적으로 합니다.
+본 약관은 ComradeFind(이하 "회사")이 운영하는 "전우찾기" 서비스(이하 "서비스")의 이용 조건과 절차, 회사와 이용자의 권리·의무 및 책임 사항을 규정함을 목적으로 합니다.
 
 제2조 (서비스의 성격)
-본 서비스는 군 생활 정보 제공, D-Day 계산, 동기·전우 찾기, GJ 그룹 전문 파트너 안내 등 정보·연결 서비스를 제공하는 플랫폼입니다. 회사는 직접 법률·의료·세무 자문을 제공하지 않으며, 전문 파트너의 상담 결과에 대해 책임지지 않습니다.
+본 서비스는 군 생활 정보 제공, D-Day 계산, 동기·전우 찾기, 군 생활 케어 가이드 안내 등 정보·연결 서비스를 제공하는 플랫폼입니다. 회사는 직접 법률·의료·세무 자문을 제공하지 않으며, 분야별 안내 가이드의 상담 결과에 대해 책임지지 않습니다.
 
 제3조 (회원가입 및 정보)
 이용자는 정확한 정보를 제공해야 하며, 허위 정보로 인한 불이익은 이용자 본인이 부담합니다.
@@ -40,14 +40,14 @@ const content: Record<string, Record<Section, { title: string; body: string }>> 
 
 2. 수집·이용 목적
 - 동기·전우 매칭 서비스 제공
-- GJ 그룹 전문 파트너 연결 및 상담 안내
+- 군 생활 케어 가이드 연결 및 상담 안내
 - 서비스 운영, 통계, 문의 응대
 
 3. 보유 및 이용 기간
 - 회원 탈퇴 시까지 또는 관련 법령에서 정한 기간 동안 보관 후 즉시 파기
 
 4. 제3자 제공
-- 이용자가 동의한 경우에 한해 GJ 그룹 전문 파트너에게 상담 목적으로 제공
+- 이용자가 동의한 경우에 한해 군 생활 케어 가이드에게 상담 목적으로 제공
 - 법령에 의거 수사기관 요구가 있는 경우
 
 5. 안전 조치
@@ -58,15 +58,15 @@ const content: Record<string, Record<Section, { title: string; body: string }>> 
 - 개인정보 열람·정정·삭제·처리 정지를 요구할 수 있습니다.
 
 7. 개인정보 보호책임자
-GJ Group 개인정보팀 (privacy@gjgroup.example)`,
+ComradeFind 개인정보팀 (privacy@soldiers-craft.com)`,
     },
     disclaimer: {
       title: "면책조항",
-      body: `본 서비스("전우찾기")는 정보 제공 및 GJ 그룹 전문 파트너 안내·연결을 목적으로 운영되며, 다음 사항을 명확히 고지합니다.
+      body: `본 서비스("전우찾기")는 정보 제공 및 군 생활 케어 가이드 안내·연결을 목적으로 운영되며, 다음 사항을 명확히 고지합니다.
 
 1. 본 서비스의 콘텐츠는 일반 정보 제공 목적이며, 법률 자문, 의료 진단, 세무 자문, 심리 치료를 대체하지 않습니다.
 
-2. GJ 그룹 전문 파트너는 회사와 별도의 독립된 자격 소지자이며, 파트너의 상담 내용·결과·서비스 품질에 대한 최종 책임은 해당 파트너에게 있습니다.
+2. 군 생활 케어 가이드는 회사와 별도의 독립된 자격 소지자이며, 담당 가이드의 안내 내용·결과·서비스 품질에 대한 최종 책임은 해당 담당자에게 있습니다.
 
 3. 이용자는 본인의 판단과 책임 하에 서비스를 이용하며, 본 서비스 이용으로 인한 직·간접적 손해에 대해 회사는 책임지지 않습니다.
 
@@ -74,17 +74,17 @@ GJ Group 개인정보팀 (privacy@gjgroup.example)`,
 
 5. 본 서비스는 군 관련 법령(군인사법, 병역법 등)을 위반하는 어떠한 행위도 권유하지 않습니다.
 
-문의: support@gjgroup.example`,
+문의: support@soldiers-craft.com`,
     },
   },
   en: {
     terms: {
       title: "Terms of Service",
       body: `Article 1 (Purpose)
-These Terms govern the use of the "ComradeFind" service ("Service") operated by GJ Group ("Company"), including conditions, procedures, rights, and obligations.
+These Terms govern the use of the "ComradeFind" service ("Service") operated by ComradeFind ("Company"), including conditions, procedures, rights, and obligations.
 
 Article 2 (Nature of the Service)
-The Service is an information and referral platform offering military-life information, D-Day calculations, comrade search, and GJ Group partner introductions. The Company does not directly provide legal, medical, or tax advice and is not responsible for the outcomes of partner consultations.
+The Service is an information and referral platform offering military-life information, D-Day calculations, comrade search, and military life guide introductions. The Company does not directly provide legal, medical, or tax advice and is not responsible for the outcomes of guide consultations.
 
 Article 3 (Member Information)
 Users must provide accurate information; consequences of false information rest with the user.
@@ -111,14 +111,14 @@ Effective Date: January 1, 2026.`,
 
 2. Purpose
 - Comrade matching
-- Connecting users with GJ Group partners
+- Connecting users with military life guides
 - Service operation, statistics, inquiry response
 
 3. Retention
 - Until account deletion or as required by law
 
 4. Sharing with Third Parties
-- Only with user consent, shared with GJ Group partners for consultation
+- Only with user consent, shared with military life guides for consultation
 - When required by law enforcement
 
 5. Security
@@ -129,15 +129,15 @@ Effective Date: January 1, 2026.`,
 - You may request access, correction, deletion, or restriction of your data.
 
 7. Data Protection Officer
-GJ Group Privacy Team (privacy@gjgroup.example)`,
+ComradeFind Privacy Desk (privacy@soldiers-craft.com)`,
     },
     disclaimer: {
       title: "Disclaimer",
-      body: `The "ComradeFind" Service is operated for the purpose of providing information and introducing/connecting users with GJ Group partners. The following is hereby disclosed:
+      body: `The "ComradeFind" Service is operated for the purpose of providing information and introducing/connecting users with military life guides. The following is hereby disclosed:
 
 1. Content is for general information only and does not substitute for legal, medical, tax, or psychological professional advice.
 
-2. GJ Group partners are independent qualified providers; final responsibility for consultation content, outcomes, and service quality lies with the respective partner.
+2. military life guides are independent qualified providers; final responsibility for consultation content, outcomes, and service quality lies with the respective guide.
 
 3. Users use the Service at their own discretion; the Company is not liable for direct or indirect damages.
 
@@ -145,17 +145,17 @@ GJ Group Privacy Team (privacy@gjgroup.example)`,
 
 5. The Service does not encourage any conduct that violates military or related laws.
 
-Contact: support@gjgroup.example`,
+Contact: support@soldiers-craft.com`,
     },
   },
   ja: {
     terms: {
       title: "利用規約",
       body: `第1条（目的）
-本規約は、GJ Group（以下「当社」）が運営する「戦友探し」サービス（以下「本サービス」）の利用条件、手続、権利義務を定めるものです。
+本規約は、戦友探し（以下「当社」）が運営する「戦友探し」サービス（以下「本サービス」）の利用条件、手続、権利義務を定めるものです。
 
 第2条（サービスの性質）
-本サービスは、軍生活情報、D-Day計算、戦友検索、GJグループ専門パートナー紹介などを提供する情報・連結プラットフォームです。当社は法律・医療・税務助言を直接提供せず、パートナー相談結果について責任を負いません。
+本サービスは、軍生活情報、D-Day計算、戦友検索、軍生活ケアガイド紹介などを提供する情報・連結プラットフォームです。当社は法律・医療・税務助言を直接提供せず、ガイド相談結果について責任を負いません。
 
 第3条（会員情報）
 利用者は正確な情報を提供しなければならず、虚偽情報による不利益は本人が負担します。
@@ -182,14 +182,14 @@ Contact: support@gjgroup.example`,
 
 2. 利用目的
 - 戦友マッチングサービスの提供
-- GJグループ専門パートナー紹介・相談案内
+- 軍生活ケアガイド紹介・相談案内
 - サービス運営、統計、問合せ対応
 
 3. 保有期間
 - 退会時まで、または法令で定める期間後直ちに破棄
 
 4. 第三者提供
-- 同意がある場合に限り、相談目的でGJグループ専門パートナーに提供
+- 同意がある場合に限り、相談目的で軍生活ケアガイドに提供
 - 法令に基づく要請がある場合
 
 5. 安全措置
@@ -200,15 +200,15 @@ Contact: support@gjgroup.example`,
 - 個人情報の閲覧・訂正・削除・処理停止を要求できます。
 
 7. 個人情報保護責任者
-GJ Group プライバシーチーム（privacy@gjgroup.example）`,
+戦友探し プライバシーチーム（privacy@soldiers-craft.com）`,
     },
     disclaimer: {
       title: "免責事項",
-      body: `本サービス（「戦友探し」）は情報提供およびGJグループ専門パートナー紹介・連結を目的とし、以下を明示します。
+      body: `本サービス（「戦友探し」）は情報提供および軍生活ケアガイド紹介・連結を目的とし、以下を明示します。
 
 1. 本サービスのコンテンツは一般情報提供を目的とし、法律相談、医療診断、税務助言、心理治療に代わるものではありません。
 
-2. GJグループ専門パートナーは独立した有資格者であり、相談内容・結果・サービス品質の最終責任は各パートナーにあります。
+2. 軍生活ケアガイドは独立した有資格者であり、相談内容・結果・サービス品質の最終責任は各ガイドにあります。
 
 3. 利用者はご自身の判断と責任で本サービスを利用し、利用に起因する直接・間接損害について当社は責任を負いません。
 
@@ -216,17 +216,17 @@ GJ Group プライバシーチーム（privacy@gjgroup.example）`,
 
 5. 本サービスは軍関連法令に違反する行為を推奨しません。
 
-お問い合わせ：support@gjgroup.example`,
+お問い合わせ：support@soldiers-craft.com`,
     },
   },
   zh: {
     terms: {
       title: "使用条款",
       body: `第1条（目的）
-本条款规定GJ Group（以下简称"本公司"）运营的"找战友"服务（以下简称"本服务"）的使用条件、程序及权利义务。
+本条款规定找战友（以下简称"本公司"）运营的"找战友"服务（以下简称"本服务"）的使用条件、程序及权利义务。
 
 第2条（服务性质）
-本服务是提供军旅生活信息、D-Day计算、战友查找、GJ集团专业伙伴介绍的信息与对接平台。本公司不直接提供法律、医疗或税务咨询，对伙伴咨询结果不承担责任。
+本服务是提供军旅生活信息、D-Day计算、战友查找、军旅生活关怀指南介绍的信息与对接平台。本公司不直接提供法律、医疗或税务咨询，对指引结果不承担责任。
 
 第3条（会员信息）
 用户须提供准确信息，因虚假信息造成的不利后果由本人承担。
@@ -253,14 +253,14 @@ GJ Group プライバシーチーム（privacy@gjgroup.example）`,
 
 2. 使用目的
 - 提供战友匹配服务
-- 对接GJ集团专业伙伴
+- 对接军旅生活关怀指南
 - 服务运营、统计、咨询应答
 
 3. 保存期限
 - 至注销账户或法律规定期限届满后立即销毁
 
 4. 第三方提供
-- 经用户同意后，为咨询目的提供给GJ集团专业伙伴
+- 经用户同意后，为咨询目的提供给军旅生活关怀指南
 - 依法律要求时
 
 5. 安全措施
@@ -271,15 +271,15 @@ GJ Group プライバシーチーム（privacy@gjgroup.example）`,
 - 可要求查阅、更正、删除或限制处理。
 
 7. 个人信息保护负责人
-GJ Group 隐私团队（privacy@gjgroup.example）`,
+找战友 隐私团队（privacy@soldiers-craft.com）`,
     },
     disclaimer: {
       title: "免责声明",
-      body: `本服务（"找战友"）以提供信息及对接GJ集团专业伙伴为目的运营，特此声明：
+      body: `本服务（"找战友"）以提供信息及对接军旅生活关怀指南为目的运营，特此声明：
 
 1. 本服务内容仅供一般信息参考，不构成法律咨询、医疗诊断、税务建议或心理治疗。
 
-2. GJ集团专业伙伴为独立有资质的提供者，咨询内容、结果及服务质量的最终责任由相应伙伴承担。
+2. 军旅生活关怀指南为独立有资质的提供者，咨询内容、结果及服务质量的最终责任由相应指引人员承担。
 
 3. 用户自行判断使用本服务，本公司对因使用造成的直接或间接损害不承担责任。
 
@@ -287,7 +287,7 @@ GJ Group 隐私团队（privacy@gjgroup.example）`,
 
 5. 本服务不鼓励任何违反军事相关法律的行为。
 
-联系方式：support@gjgroup.example`,
+联系方式：support@soldiers-craft.com`,
     },
   },
 };

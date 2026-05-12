@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Shield, Calendar, Clock, CreditCard } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { Calendar, CheckCircle2, Clock, CreditCard, Languages, Shield, UsersRound } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -59,133 +58,171 @@ const DdayHeroSection = () => {
 
   const currentBranch = branchOptions.find(b => b.days === serviceDays)?.label || branchOptions[0].label;
 
+  const briefStats = [
+    { icon: Clock, label: t("dday.stat.dDay") },
+    { icon: CheckCircle2, label: t("dday.stat.checklist") },
+    { icon: UsersRound, label: t("dday.stat.matching") },
+    { icon: Languages, label: t("dday.stat.languages") },
+  ];
+
   return (
     <>
-    <section className="relative overflow-hidden bg-navy py-24 lg:py-32" id="dday">
-      <div className="absolute inset-0 opacity-[0.04]" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c5a0' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-      }} />
+    <section className="relative overflow-hidden bg-[#202818] py-20 text-navy-foreground lg:py-24" id="dday">
+      <div
+        className="absolute inset-0 opacity-35"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(230,225,202,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(230,225,202,0.08) 1px, transparent 1px)",
+          backgroundSize: "44px 44px",
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(circle at 20% 20%, rgba(132, 153, 88, 0.24), transparent 32%), linear-gradient(135deg, rgba(23, 32, 20, 0.92), rgba(36, 43, 27, 0.96))",
+        }}
+      />
 
-      <div className="container relative z-10 mx-auto max-w-5xl px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col items-center text-center"
-        >
-          <div className="mb-8 flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-5 py-2">
-            <Shield className="h-4 w-4 text-gold" />
-            <span className="text-sm font-medium text-gold">{t("hero.badge")}</span>
-          </div>
-
-          <h1 className="font-serif-legal text-balance text-4xl font-bold leading-tight text-navy-foreground md:text-5xl lg:text-6xl">
-            {t("dday.heroTitle")}
-          </h1>
-
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-navy-foreground/65 md:text-lg">
-            {t("dday.heroSubtitle")}
-          </p>
-
-          {/* D-Day Calculator Card */}
+      <div className="container relative z-10 mx-auto max-w-6xl px-4">
+        <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-12 w-full max-w-2xl rounded-2xl border border-navy-foreground/10 bg-navy-foreground/5 p-6 md:p-8 backdrop-blur-sm text-left"
+            transition={{ duration: 0.6 }}
+            className="text-left"
           >
-            {/* Branch selector */}
-            <div className="mb-5">
-              <Label className="mb-2 block text-sm font-medium text-navy-foreground/70">{t("dday.branch")}</Label>
-              <div className="flex flex-wrap gap-2">
-                {branchOptions.map((b) => (
-                  <button
-                    key={b.days + b.label}
-                    onClick={() => setServiceDays(b.days)}
-                    className={`rounded-xl px-4 py-2 text-sm font-medium transition-all ${
-                      serviceDays === b.days
-                        ? "bg-gold/20 text-gold border border-gold/40"
-                        : "bg-navy-foreground/5 text-navy-foreground/50 border border-navy-foreground/10 hover:border-gold/30"
-                    }`}
-                  >
-                    {b.label} ({b.days}{t("dday.days")})
-                  </button>
-                ))}
-              </div>
+            <div className="mb-6 inline-flex items-center gap-2 border border-gold/30 bg-gold/10 px-4 py-2 text-sm font-medium text-gold">
+              <Shield className="h-4 w-4" />
+              <span>{t("hero.badge")}</span>
             </div>
 
-            {/* Enlist date input */}
-            <div className="mb-6">
-              <Label className="mb-2 block text-sm font-medium text-navy-foreground/70">
-                {t("dday.enlistDate")} <span className="text-xs text-navy-foreground/40 ml-1">({t("dday.dateHint")})</span>
-              </Label>
-              <div className="flex items-end gap-3">
-                <Input
-                  type="date"
-                  value={enlistDate}
-                  onChange={(e) => setEnlistDate(e.target.value)}
-                  className="max-w-xs bg-navy-foreground/5 border-navy-foreground/10 text-navy-foreground placeholder:text-navy-foreground/30"
-                />
-                <Button
-                  onClick={() => setMemberCardOpen(true)}
-                  className="gap-1.5 bg-gold/20 text-gold border border-gold/40 hover:bg-gold/30 rounded-xl text-sm font-medium whitespace-nowrap"
-                  size="sm"
-                >
-                  <CreditCard className="h-4 w-4" />
-                  {t("dday.memberCard")}
-                </Button>
-              </div>
-            </div>
+            <h1 className="font-serif-legal text-balance text-4xl font-bold leading-tight text-navy-foreground md:text-5xl lg:text-6xl">
+              {t("dday.heroTitle")}
+            </h1>
 
-            {/* Result */}
-            {result && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="space-y-5"
-              >
-                {/* Progress bar with animation */}
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-navy-foreground/72 md:text-lg">
+              {t("dday.heroSubtitle")}
+            </p>
+
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:max-w-xl">
+              {briefStats.map((stat) => (
+                <div key={stat.label} className="border border-navy-foreground/10 bg-navy-foreground/[0.04] px-3 py-3">
+                  <stat.icon className="mb-2 h-4 w-4 text-gold" />
+                  <p className="text-sm font-medium leading-snug text-navy-foreground/80">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="border border-navy-foreground/10 bg-[#f4f1e7]/[0.075] p-4 shadow-[0_28px_80px_rgba(0,0,0,0.28)] backdrop-blur-md md:p-5"
+          >
+            <div className="border border-navy-foreground/10 bg-[#12190f]/80 p-5 md:p-7">
+              <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-navy-foreground/60">{t("dday.progress")}</span>
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gold">{t("dday.panelLabel")}</p>
+                  <h2 className="mt-2 text-xl font-bold text-navy-foreground sm:text-2xl">{t("dday.panelTitle")}</h2>
+                </div>
+                <div className="self-start border border-gold/30 bg-gold/10 px-3 py-2 text-right sm:self-auto">
+                  <p className="text-[10px] uppercase tracking-[0.18em] text-gold/70">{t("dday.currentBranch")}</p>
+                  <p className="mt-1 text-sm font-semibold text-gold">{currentBranch}</p>
+                </div>
+              </div>
+
+              <div className="space-y-5">
+                <div>
+                  <Label className="mb-2 block text-sm font-medium text-navy-foreground/70">{t("dday.branch")}</Label>
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                    {branchOptions.map((b) => (
+                      <button
+                        key={b.days + b.label}
+                        onClick={() => setServiceDays(b.days)}
+                        className={`min-h-12 border px-3 py-2 text-sm font-medium transition-all ${
+                          serviceDays === b.days
+                            ? "border-gold/60 bg-gold/[0.18] text-gold"
+                            : "border-navy-foreground/10 bg-navy-foreground/[0.04] text-navy-foreground/60 hover:border-gold/35 hover:text-navy-foreground"
+                        }`}
+                      >
+                        <span className="block">{b.label}</span>
+                        <span className="mt-0.5 block font-mono-num text-[11px] opacity-70">{b.days}{t("dday.days")}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <Label className="mb-2 block text-sm font-medium text-navy-foreground/70">
+                    {t("dday.enlistDate")} <span className="ml-1 text-xs text-navy-foreground/40">({t("dday.dateHint")})</span>
+                  </Label>
+                  <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+                    <Input
+                      type="date"
+                      value={enlistDate}
+                      onChange={(e) => setEnlistDate(e.target.value)}
+                      className="h-12 border-navy-foreground/10 bg-navy-foreground/[0.06] text-navy-foreground placeholder:text-navy-foreground/30"
+                    />
+                    <Button
+                      onClick={() => setMemberCardOpen(true)}
+                      className="h-12 gap-2 border border-gold/45 bg-gold/[0.18] px-5 text-gold hover:bg-gold/[0.28] hover:text-gold"
+                    >
+                      <CreditCard className="h-4 w-4" />
+                      {t("dday.memberCard")}
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="border border-navy-foreground/10 bg-navy-foreground/[0.035] p-4">
+                  <div className="mb-3 flex items-center justify-between">
+                    <span className="text-sm text-navy-foreground/64">{t("dday.progress")}</span>
                     <span className="font-mono-num text-sm font-bold text-gold">{animatedProgress.toFixed(1)}%</span>
                   </div>
-                  <div className="relative h-5 w-full overflow-hidden rounded-full bg-navy-foreground/10">
+                  <div className="relative h-3 w-full overflow-hidden bg-navy-foreground/10">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${animatedProgress}%` }}
                       transition={{ duration: 1.5, ease: "easeOut" }}
-                      className="h-full rounded-full bg-gradient-to-r from-primary to-gold"
+                      className="h-full bg-gradient-to-r from-primary via-[#9da86c] to-gold"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                  <div className="rounded-xl bg-navy-foreground/5 p-4 text-center">
-                    <Calendar className="mx-auto mb-1 h-5 w-5 text-gold" />
-                    <p className="text-xs text-navy-foreground/50">{t("dday.dischargeDate")}</p>
-                    <p className="mt-1 font-mono-num text-lg font-bold text-navy-foreground">{result.dischargeStr}</p>
+                {result ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="grid grid-cols-2 gap-3 sm:grid-cols-3"
+                  >
+                    <div className="border border-navy-foreground/10 bg-navy-foreground/[0.04] p-4">
+                      <Calendar className="mb-3 h-5 w-5 text-gold" />
+                      <p className="text-xs text-navy-foreground/50">{t("dday.dischargeDate")}</p>
+                      <p className="mt-1 font-mono-num text-lg font-bold text-navy-foreground">{result.dischargeStr}</p>
+                    </div>
+                    <div className="border border-navy-foreground/10 bg-navy-foreground/[0.04] p-4">
+                      <Clock className="mb-3 h-5 w-5 text-gold" />
+                      <p className="text-xs text-navy-foreground/50">{result.discharged ? t("dday.discharged") : t("dday.remaining")}</p>
+                      <p className={`mt-1 font-mono-num text-lg font-bold ${result.discharged ? "text-success" : "text-navy-foreground"}`}>
+                        {result.discharged ? t("dday.done") : `D-${result.remainingDays}`}
+                      </p>
+                    </div>
+                    <div className="col-span-2 border border-navy-foreground/10 bg-navy-foreground/[0.04] p-4 sm:col-span-1">
+                      <Shield className="mb-3 h-5 w-5 text-gold" />
+                      <p className="text-xs text-navy-foreground/50">{t("dday.served")}</p>
+                      <p className="mt-1 font-mono-num text-lg font-bold text-navy-foreground">{result.elapsedDays}{t("dday.days")}</p>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <div className="border border-dashed border-navy-foreground/16 bg-navy-foreground/[0.025] px-4 py-7 text-center text-sm text-navy-foreground/45">
+                    {t("dday.placeholder")}
                   </div>
-                  <div className="rounded-xl bg-navy-foreground/5 p-4 text-center">
-                    <Clock className="mx-auto mb-1 h-5 w-5 text-gold" />
-                    <p className="text-xs text-navy-foreground/50">{result.discharged ? t("dday.discharged") : t("dday.remaining")}</p>
-                    <p className={`mt-1 font-mono-num text-lg font-bold ${result.discharged ? "text-success" : "text-navy-foreground"}`}>
-                      {result.discharged ? t("dday.done") : `D-${result.remainingDays}`}
-                    </p>
-                  </div>
-                  <div className="rounded-xl bg-navy-foreground/5 p-4 text-center col-span-2 sm:col-span-1">
-                    <Shield className="mx-auto mb-1 h-5 w-5 text-gold" />
-                    <p className="text-xs text-navy-foreground/50">{t("dday.served")}</p>
-                    <p className="mt-1 font-mono-num text-lg font-bold text-navy-foreground">{result.elapsedDays}{t("dday.days")}</p>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
-            {!result && (
-              <p className="text-center text-sm text-navy-foreground/40 py-4">{t("dday.placeholder")}</p>
-            )}
+                )}
+              </div>
+            </div>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
 
